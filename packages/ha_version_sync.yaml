@@ -3,7 +3,7 @@
 #
 # Prerequisite: secrets.yaml must contain:
 #   github_pat: "Bearer <your-fine-grained-PAT>"
-#   (PAT needs Contents:Write on lentago/homeassistant-config)
+#   (PAT needs Contents:Write on lentago/epigaea)
 
 command_line:
   - sensor:
@@ -14,7 +14,7 @@ command_line:
 
 rest_command:
   github_dispatch_version:
-    url: "https://api.github.com/repos/lentago/homeassistant-config/dispatches"
+    url: "https://api.github.com/repos/lentago/epigaea/dispatches"
     method: POST
     headers:
       Accept: "application/vnd.github+json"
