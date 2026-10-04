@@ -225,7 +225,7 @@ HAOS pushes the running version to GitHub on every full startup. The loop is eve
 
 ```
 homeassistant_started event
-  → rest_command POSTs to /repos/lentago/homeassistant-config/dispatches
+  → rest_command POSTs to /repos/lentago/epigaea/dispatches
   → ha-version-sync workflow validates payload, compares to .ha-version
   → if drift: branch, bump, PR (opened with HA_SYNC_PAT so downstream workflows fire)
   → PR triggers Card 1 ha-config-check against the new version

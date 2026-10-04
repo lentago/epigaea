@@ -4,7 +4,7 @@ set -euo pipefail
 readonly WORKTREE="/config/.context-mirror"
 readonly CONTEXT_DIR="${WORKTREE}/context"
 readonly REPO_OWNER="lentago"
-readonly REPO_NAME="homeassistant-config"
+readonly REPO_NAME="epigaea"
 readonly SECRETS_FILE="/config/secrets.yaml"
 readonly LOG_FILE="/config/ha-context-dump.log"
 readonly LOG_MAX_BYTES=1048576
