@@ -1,0 +1,19 @@
+# ============================================================================
+# ShellCheck — static analysis of the repo's shell scripts
+# (scripts/ and .claude/hooks/).
+# Thin wrapper around lentago/shared-workflows/shellcheck.yml. No `scripts`
+# input → discovers all *.sh files in the repo.
+#
+# Deliberately NOT path-filtered, so it can serve as a required status check
+# without holding non-matching PRs at "Expected" (see
+# fleet-ops/required-checks.json in lentago/.github).
+# ============================================================================
+name: ShellCheck
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+jobs:
+  shellcheck:
+    uses: lentago/shared-workflows/.github/workflows/shellcheck.yml@v1.2.3
