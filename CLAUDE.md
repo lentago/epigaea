@@ -219,16 +219,21 @@ Arm **every** PR you open for auto-merge (squash) immediately after creating
 it — `gh pr merge --auto --squash <pr>`, or the `enable_pr_auto_merge` MCP
 tool with `mergeMethod: SQUASH`. If the PR's checks have already gone green by
 then (arming returns "already clean"), merge it directly with squash instead —
-same outcome. Required checks (`YAML Lint`, `check-config`, `claude-review`,
-plus the `Tests` and `ESPHome Config` gates) still gate the merge; auto-merge
-just lands it the instant they pass, with no human round-trip. This is the
+same outcome. The required checks still gate the merge; auto-merge just lands
+it the instant they pass, with no human round-trip. This is the
 fleet-wide rule restated here precisely so it can't fall out of context.
 
 ### No issues for change dispatch — PRs are the canonical record
 
 Changes to this repo are dispatched by talking to Claude Code directly. There
 is no issue step *for change requests*. The PR itself is the canonical record
-of intent. Required status checks: `YAML Lint`, `check-config`, `claude-review`.
+of intent. Required status checks are set by the `.github` meta-repo's
+Terraform (`fleet-ops/required-checks.json`, enforced on the live `main`
+ruleset): as of 2026-10-06, `check-config` and `docs-check / docs-check`. The
+repo's other CI (`YAML Lint`, `Bats`, `ESPHome Config`, `ShellCheck`, and the
+rest) runs on every PR as an advisory signal. The `claude-review` workflow was
+retired fleet-wide on 2026-10-06; CodeRabbit is the org's advisory reviewer.
+Check the live set with `gh api repos/lentago/epigaea/rules/branches/main`.
 
 ### Do file issues for incidentally-observed latent problems
 
