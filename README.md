@@ -2,7 +2,7 @@
      Regenerate there; do not hand-edit the banner or badge URLs. -->
 <a href="https://lentago.dev"><img src="./assets/banner.svg" alt="epigaea — Smart home · 40+ entities, declarative YAML" width="100%"></a>
 
-[![main](https://img.shields.io/github/check-runs/lentago/epigaea/main?style=flat-square&labelColor=0e2b1a&color=1b4b2e&label=main)](https://github.com/lentago/epigaea/actions) [![License](https://img.shields.io/github/license/lentago/epigaea?style=flat-square&labelColor=0e2b1a&color=1b4b2e)](https://github.com/lentago/epigaea/blob/main/LICENSE) [![Ask DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-1b4b2e?style=flat-square&labelColor=0e2b1a&logo=readthedocs&logoColor=E0A81C)](https://deepwiki.com/lentago/epigaea)
+[![main](https://img.shields.io/github/check-runs/lentago/epigaea/main?style=flat-square&labelColor=0e2b1a&color=1b4b2e&label=main)](https://github.com/lentago/epigaea/actions) [![License](https://img.shields.io/github/license/lentago/epigaea?style=flat-square&labelColor=0e2b1a&color=1b4b2e)](https://github.com/lentago/epigaea/blob/main/LICENSE)
 
 ![Home Assistant](https://img.shields.io/badge/Home%20Assistant-1b4b2e?style=flat-square&labelColor=0e2b1a&logo=homeassistant&logoColor=E0A81C) ![ESPHome](https://img.shields.io/badge/ESPHome-1b4b2e?style=flat-square&labelColor=0e2b1a&logo=esphome&logoColor=E0A81C) ![YAML](https://img.shields.io/badge/YAML-1b4b2e?style=flat-square&labelColor=0e2b1a&logo=yaml&logoColor=E0A81C)
 
@@ -73,21 +73,6 @@ a version-bump PR that re-enters Card 1 like any other change. Drift is
 caught from both directions — a bad config PR is rejected before it reaches
 the VM, and a VM that drifts from the pin (a manual HA update, a reflash)
 corrects the git record instead of silently diverging from it.
-
-## 📚 Ask this codebase (DeepWiki)
-
-<a href="https://deepwiki.com/lentago/epigaea"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" height="32"></a>
-
-[DeepWiki](https://deepwiki.com/lentago/epigaea) maintains an AI-generated wiki over this
-repository — architecture pages, diagrams, and a Q&A box grounded in the actual code. Every
-public Lentago Labs repo is indexed ([deepwiki.com/lentago](https://deepwiki.com/lentago));
-it is the fastest way to orient before reading source. It is AI-generated: trust it to orient
-you, verify against the code before you act on it.
-
-**Good first questions:**
-- How does a merged PR actually reach the running Home Assistant instance — what is the deploy mechanism and how long does it take?
-- What is the difference between `automations.yaml` and the `automations/` directory, and why does that split exist?
-- Why does the ha-version-sync workflow use a PAT (`HA_SYNC_PAT`) instead of the default `GITHUB_TOKEN`?
 
 ## 🧭 What this repo demonstrates
 
@@ -413,5 +398,4 @@ MIT
 > 🌱 **Lentago Labs** is a pro-bono operations practice for organizations that
 > run on volunteers, donations, and one overworked tech person. Everything here
 > is free to take, and we practice what we publish: our own estate runs this
-> way, in the open. Start at the [org profile](https://github.com/lentago), and
-> read this repo on [DeepWiki](https://deepwiki.com/lentago/epigaea).
+> way, in the open. Start at the [org profile](https://github.com/lentago).
