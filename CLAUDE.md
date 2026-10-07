@@ -229,9 +229,10 @@ Changes to this repo are dispatched by talking to Claude Code directly. There
 is no issue step *for change requests*. The PR itself is the canonical record
 of intent. Required status checks are set by the `.github` meta-repo's
 Terraform (`fleet-ops/required-checks.json`, enforced on the live `main`
-ruleset): as of 2026-10-06, `check-config` and `docs-check / docs-check`. The
-repo's other CI (`YAML Lint`, `Bats`, `ESPHome Config`, `ShellCheck`, and the
-rest) runs on every PR as an advisory signal. The `claude-review` workflow was
+ruleset): as of 2026-10-06, `check-config`, `docs-check / docs-check`, and
+`shellcheck / shellcheck` (every tracked `*.sh`, severity style). The repo's
+other CI (`YAML Lint`, `Bats`, `ESPHome Config`, and the rest) runs on every PR
+as an advisory signal. The `claude-review` workflow was
 retired fleet-wide on 2026-10-06; CodeRabbit is the org's advisory reviewer.
 Check the live set with `gh api repos/lentago/epigaea/rules/branches/main`.
 
