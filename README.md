@@ -18,7 +18,8 @@ nothing in this tree is facilities-specific yet.
 Renamed from `homeassistant-config` on 2026-08-17
 ([lentago/.github#116](https://github.com/lentago/.github/issues/116)) —
 it graduated into the fleet's botanical codename tier because it stopped
-being a config dump and became a product line.
+being a config dump and became a system kept as code, with validation,
+rollback, and a record of why.
 
 **Authorship:** The YAML configuration, ESPHome firmware, automations, dashboards, scripts, and documentation in this repo are co-written with [Claude](https://claude.ai) (Anthropic). I direct the work and review the output; Claude writes the code. I'm an infrastructure operator, not a software engineer — please don't read this repo as a portfolio of coding ability.
 
