@@ -1,6 +1,6 @@
 # CLAUDE.md — epigaea (lentago/epigaea)
 
-Renamed from `homeassistant-config` on 2026-08-17 ([lentago/.github#116](https://github.com/lentago/.github/issues/116)) — it graduated into the fleet's botanical codename tier because it stopped being a config dump and became the base for the cold-chain and facilities product line.
+Renamed from `homeassistant-config` on 2026-08-17 ([lentago/.github#116](https://github.com/lentago/.github/issues/116)) — it graduated into the fleet's botanical codename tier because it stopped being a config dump: it is a production smart home kept as declarative YAML, and the base a cold-chain and facilities kit would be built on. That kit is tracked in [lentago/.github#129](https://github.com/lentago/.github/issues/129); nothing in this tree is facilities-specific yet.
 
 Git-controlled Home Assistant OS deployment on a Proxmox VM. YAML-driven —
 the HA UI is used only for integration setup (which HA stores in `.storage/`,

@@ -11,7 +11,10 @@
 **Epigaea** (trailing arbutus, mayflower — the Massachusetts state flower,
 a low evergreen native that blooms at the edge of winter) is the Lentago
 Labs physical-world telemetry practice: a production smart home run as
-declarative YAML, and the base for the cold-chain and facilities offering.
+declarative YAML. It is the base a cold-chain and facilities kit would
+stand on; that kit is tracked in
+[lentago/.github#129](https://github.com/lentago/.github/issues/129) and
+nothing in this tree is facilities-specific yet.
 Renamed from `homeassistant-config` on 2026-08-17
 ([lentago/.github#116](https://github.com/lentago/.github/issues/116)) —
 it graduated into the fleet's botanical codename tier because it stopped
