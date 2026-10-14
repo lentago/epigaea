@@ -5,7 +5,7 @@ YAML-managed Lovelace dashboards. The git-tracked dashboards — `home.yaml`, `h
 ## The Home dashboard family — one master, two clones
 
 The Home dashboard follows a deliberate **single-master / two-clone** scheme so
-design iteration and ad-hoc UI tweaks never put the live household display at
+design iteration and ad-hoc UI tweaks never put the live wall display at
 risk. Intent flows in one direction — **out from the master** — and each clone
 has a single job:
 

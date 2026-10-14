@@ -390,7 +390,7 @@ This repository is one piece of a broader infrastructure portfolio at [github.co
 
 - **[solidago](https://github.com/lentago/solidago)** — Terraform-managed three-tier AWS environment (VPC, ECS Fargate, RDS, ElastiCache, CI/CD)
 - **[betula](https://github.com/lentago/betula)** — Fluent Bit log pipeline shipping Firewalla network telemetry to Axiom
-- **[drosera](https://github.com/lentago/drosera)** — Grafana Cloud + Alloy observability for the Firewalla home network
+- **[drosera](https://github.com/lentago/drosera)** — Grafana Cloud + Alloy observability for the on-prem network behind the Firewalla (on-prem: the machines in your own building)
 - **[kalmia](https://github.com/lentago/kalmia)** — Idempotent workstation provisioning for ChromeOS, Xubuntu, and Fedora
 
 ## License
