@@ -1,8 +1,8 @@
 # Security
 
 This repo runs a real building's hardware (a physical alarm
-panel, door locks via automations, a Sonos/Hue smart home), non-critical
-stakes. This document exists so the one write credential in the loop is
+panel, door locks via automations, a Sonos/Hue smart home) with no external
+users and no service-level agreement. This document exists so the one write credential in the loop is
 handled deliberately, not because the repo faces a formal threat model.
 
 ## `HA_SYNC_PAT` — the one write credential in the GitOps loop
