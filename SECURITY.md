@@ -1,8 +1,8 @@
 # Security
 
-This is a Lentago Labs learning-lab repo — real hardware (a physical alarm
-panel, door locks via automations, a Sonos/Hue smart home), non-critical
-stakes. This document exists so the one write credential in the loop is
+This repo runs a real building's hardware (a physical alarm
+panel, door locks via automations, a Sonos/Hue smart home) with no external
+users and no service-level agreement. This document exists so the one write credential in the loop is
 handled deliberately, not because the repo faces a formal threat model.
 
 ## `HA_SYNC_PAT` — the one write credential in the GitOps loop
@@ -104,7 +104,7 @@ Chris's control).
 
 ### Reporting a problem
 
-This is a personal lab repo with no external users or SLA. If you spot a
+This is a single-operator repo with no external users or SLA. If you spot a
 credential accidentally committed, or a way the GitOps loop's automated
 merge could be abused, open a GitHub issue (this is the "incidentally
 observed latent problem" carve-out in

@@ -178,7 +178,7 @@ The complementary `ha-context-dump.sh` (driven by
 ## Home dashboard display & live-preview loop — RETIRED 2026-06-23
 
 pve2's Chromium wall-display and everything that drove it were **torn down on
-2026-06-23** when Chris abandoned the household wall monitor (see `~/CLAUDE.md`
+2026-06-23** when Chris abandoned the wall display (see `~/CLAUDE.md`
 → *pve2 display host — RETIRED*). pve2 is now a headless quorum node — no
 X/Chromium, no `snapshot-server` (`pve2.local:9999`), no `dashboard-home-gitops`
 loop — and the `office-presence` repo that held the display plumbing
