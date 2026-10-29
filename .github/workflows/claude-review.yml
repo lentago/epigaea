@@ -1,0 +1,114 @@
+# ============================================================================
+# Claude Code — Automated PR Review (advisory)
+# ============================================================================
+# Thin wrapper around lentago/shared-workflows/claude-review.yml, per
+# lentago/.github ADR-0013. Copied from repo-template's; other repos
+# copy this file and replace only the review_prompt.
+#
+# - Runs when a PR is opened or marked ready for review, and again when it is
+#   labelled `re-review` (Haiku) or `review:sonnet` (Sonnet). It does NOT run on
+#   every push: it shares the fleet's Claude subscription with the bullpen.
+# - Advisory, never a required status check (shared-workflows ADR-0003). The
+#   gate is the arming rule: don't arm until a review has posted and every
+#   finding is triaged on the PR (shared-workflows CLAUDE.md, Auto-merge
+#   arming). A "could not complete" soft-fail comment is not a review —
+#   label `re-review`.
+# - After a labelled run, `clear-label` removes the label so adding it again
+#   triggers again.
+# - A PR that adds or changes THIS file is not reviewed by it: the Claude Code
+#   action skips unless the workflow is identical to the default branch's copy,
+#   and the reusable workflow (v1.5.0+) posts a "not a review" notice instead.
+#   Review such PRs locally and post the result as "Review (Haiku, local)"
+#   (ADR-0013 Decision 2).
+# - Dependabot PRs are skipped: Dependabot runs don't receive Actions secrets,
+#   so the required token would fail the call. Review a bump locally if it
+#   warrants one.
+# - Drafts are skipped (by the reusable workflow) and keep their trigger label
+#   until they are ready.
+# ============================================================================
+
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, labeled]
+
+jobs:
+  review:
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      github.event.pull_request.draft == false &&
+      (github.event.action != 'labeled' ||
+       github.event.label.name == 're-review' ||
+       github.event.label.name == 'review:sonnet')
+    # One review at a time per PR: a re-label during a running review queues
+    # behind it instead of posting a duplicate.
+    concurrency:
+      group: claude-review-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    uses: lentago/shared-workflows/.github/workflows/claude-review.yml@v1.5.0
+    secrets: inherit
+    with:
+      model: ${{ github.event.label.name == 'review:sonnet' && 'sonnet' || 'haiku' }}
+      review_prompt: |
+        This repository is lentago/epigaea, a production Home Assistant OS smart
+        home kept as declarative YAML (automations, packages, Lovelace
+        dashboards, themes, ESPHome firmware) plus the bash scripts and GitOps
+        loop that deploy it. Merged main is pulled onto the live HAOS VM within
+        five minutes, so a defect here reaches the running house. Focus your
+        review on:
+
+        - **HA YAML correctness**: trigger / condition / action shape, Jinja
+          template errors, the right automation `mode`, and native conditions
+          over templates. Prefer `entity_id` over `device_id`. Flag entity
+          renames or removals that would break consumers (dashboards,
+          automations, template sensors in `configuration.yaml`). Entity IDs
+          keep their original adoption names by design.
+        - **GitOps and script safety**: `scripts/*.sh` (gitops-sync, context
+          dump, force-sync) apply to production. Check quoting, unset
+          variables, the lock file, main-branch guard, rollback-on-failed-check
+          and log-rotation invariants, and that a bad change can never restart
+          HA Core. Every tracked `*.sh` must stay shellcheck-clean.
+        - **Secrets**: real values belong only in the gitignored `secrets.yaml`
+          (and `esphome/` equivalents). Flag tokens, passwords, or API keys in
+          YAML, scripts, or logs; `!secret` references must match keys in
+          `secrets.yaml.example` and `secrets.fake.yaml`.
+        - **Generated and layered state**: `context/` is a read-only snapshot
+          and must not be hand-edited. `dashboards/home-codesign.yaml` is
+          generated from `dashboards/home.yaml` by
+          `scripts/sync-home-codesign.sh`, so a change to one without the other
+          is drift. Things that must survive a rebuild belong in git, not
+          `.storage/`.
+        - **Dashboards and ESPHome**: dashboard cards must reference entities
+          that exist and keep the `sections` layout (no fixed-pixel fitting);
+          HACS cards must not be added to `frontend.extra_module_url`. ESPHome
+          configs stay fully inlined (no `github://` packages), and alarm-panel
+          changes must preserve the alarm color semantics and siren safety.
+
+  clear-label:
+    needs: review
+    if: >-
+      always() && github.event.action == 'labeled' &&
+      github.event.pull_request.draft == false &&
+      (github.event.label.name == 're-review' || github.event.label.name == 'review:sonnet')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Remove the trigger label so it can be added again
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          LABEL: ${{ github.event.label.name }}
+        # REST, not `gh pr edit`: the GraphQL path can trip on PR project
+        # fields with GITHUB_TOKEN, and a label left behind would make the
+        # next re-add a no-op (no `labeled` event).
+        run: |
+          enc=$(jq -rn --arg l "$LABEL" '$l|@uri')
+          gh api --method DELETE "repos/$REPO/issues/$PR/labels/$enc" >/dev/null
