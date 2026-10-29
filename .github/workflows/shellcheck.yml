@@ -16,7 +16,7 @@ on:
 
 jobs:
   shellcheck:
-    uses: lentago/shared-workflows/.github/workflows/shellcheck.yml@v1.3.0
+    uses: lentago/shared-workflows/.github/workflows/shellcheck.yml@v1.4.0
     with:
       # style, not the reusable's default warning: this replaces the former
       # inline tests.yml job, which ran shellcheck at its default (all levels).
