@@ -72,8 +72,8 @@ jobs:
         - **GitOps and script safety**: `scripts/*.sh` (gitops-sync, context
           dump, force-sync) apply to production. Check quoting, unset
           variables, the lock file, main-branch guard, rollback-on-failed-check
-          and log-rotation invariants, and that a bad change can never restart
-          HA Core. Every tracked `*.sh` must stay shellcheck-clean.
+          and log-rotation invariants, and that a failed config check rolls back
+          before any HA Core restart. Every tracked `*.sh` must stay shellcheck-clean.
         - **Secrets**: real values belong only in the gitignored `secrets.yaml`
           (and `esphome/` equivalents). Flag tokens, passwords, or API keys in
           YAML, scripts, or logs; `!secret` references must match keys in
