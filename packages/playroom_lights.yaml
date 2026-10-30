@@ -1,0 +1,168 @@
+# Play Room lights: power helper, software color loop, external-off guard
+#
+# These used to be driven by the Hue Tap Dial (RDM002). On 2026-10-30 the dial
+# was repurposed as the Kitchen Sonos volume control (see
+# packages/hue_tap_dial_kitchen_sonos.yaml) and its eight button automations
+# and the dial-rotation brightness automation were retired, along with
+# script.playroom_brightness_step, which only the rotation automation called.
+# The bulbs, the scripts below and the color-loop guard are unchanged, so the
+# scenes can be rebuilt on another controller (or called from a dashboard or
+# Assist) without re-deriving the wiring notes.
+#
+# Wired-power note: the four Hue White-and-Color bulbs (light.playroom_1..4,
+# model LCT011) are downstream of a Belkin Wemo in-wall LightSwitch exposed
+# as `switch.bonus_room` (device renamed "Playroom Lights Power" in HA UI but
+# entity_id retained to match adoption-history convention used elsewhere in
+# this repo, e.g. switch.alarm_panel_56ac70_siren). If the wall switch is off
+# the bulbs lose mains and drop off the Zigbee mesh. Anything that turns the
+# bulbs on should call `script.playroom_lights_power_on` first, which flips
+# the switch on (if needed) and waits for the bulbs to rejoin.
+# `light.turn_off` does NOT cut mains: the bulbs stay powered-but-off so they
+# can be woken again later without a rejoin delay.
+# (`switch.play_room_outlet` is a separate TP-Link Kasa HS200 outlet in the
+# same room that does NOT power the bulbs.)
+#
+# Color Loop driver:
+#   `script.playroom_color_loop` is an infinite `mode: restart` loop. Every
+#   ~2.5s it advances a base hue and writes four evenly-spread colors (base,
+#   base+90, base+180, base+270) across the bulbs, so the room shows a rotating
+#   four-colour wash. Start it fire-and-forget via `script.turn_on` (a direct
+#   `action: script.playroom_color_loop` call would block the caller forever)
+#   and stop it with `script.turn_off`. The loop only writes colour, never
+#   brightness. Same pattern as `script.office_sonoff_candle_loop`.
+#
+#   A plain light.turn_off from outside (Alexa, dashboard, companion app,
+#   Assist) never stops the loop, so it would re-light the bulbs on its next
+#   pass. The `playroom_color_loop_external_off_guard` automation at the
+#   bottom of this file closes that gap.
+
+script:
+  playroom_lights_power_on:
+    alias: 'Playroom: ensure wall switch on and bulbs reachable'
+    mode: single
+    sequence:
+      - if:
+          - condition: state
+            entity_id: switch.bonus_room
+            state: 'off'
+        then:
+          - action: switch.turn_on
+            target:
+              entity_id: switch.bonus_room
+          # Hue bulbs need a moment to rejoin the Zigbee mesh after mains
+          # is restored. Wait until all 4 report a usable state, capped at
+          # 8s so a single missing bulb can't block the scene apply forever.
+          - wait_template: >-
+              {{ states('light.playroom_1') not in ['unavailable', 'unknown']
+                 and states('light.playroom_2') not in ['unavailable', 'unknown']
+                 and states('light.playroom_3') not in ['unavailable', 'unknown']
+                 and states('light.playroom_4') not in ['unavailable', 'unknown'] }}
+            timeout: '00:00:08'
+            continue_on_timeout: true
+
+  playroom_color_loop:
+    alias: 'Playroom: fast color loop driver'
+    # Infinite loop. mode: restart means any fresh script.turn_on cleanly
+    # relaunches it; script.turn_off halts it mid-delay.
+    # Started fire-and-forget via script.turn_on — never called directly as
+    # `action: script.playroom_color_loop`, which would block the caller.
+    mode: restart
+    sequence:
+      - repeat:
+          while:
+            - condition: template
+              value_template: "{{ true }}"
+          sequence:
+            # Advance the base hue ~23° per step. 23 is not a divisor of 360,
+            # so the four-colour pattern drifts rather than snapping back.
+            - variables:
+                base: "{{ (repeat.index * 23) % 360 }}"
+            # Four evenly-spread hues, one per bulb, all rotating together.
+            # transition matches the delay so colours flow with no pause.
+            # No brightness key — the dial keeps independent brightness control.
+            - parallel:
+                - action: light.turn_on
+                  target:
+                    entity_id: light.playroom_1
+                  data:
+                    hs_color:
+                      - "{{ base }}"
+                      - 100
+                    transition: 2.5
+                - action: light.turn_on
+                  target:
+                    entity_id: light.playroom_2
+                  data:
+                    hs_color:
+                      - "{{ (base + 90) % 360 }}"
+                      - 100
+                    transition: 2.5
+                - action: light.turn_on
+                  target:
+                    entity_id: light.playroom_3
+                  data:
+                    hs_color:
+                      - "{{ (base + 180) % 360 }}"
+                      - 100
+                    transition: 2.5
+                - action: light.turn_on
+                  target:
+                    entity_id: light.playroom_4
+                  data:
+                    hs_color:
+                      - "{{ (base + 270) % 360 }}"
+                      - 100
+                    transition: 2.5
+            - delay: "00:00:02.5"
+
+automation:
+  - id: playroom_color_loop_external_off_guard
+    alias: 'Playroom: external off stops the color loop'
+    description: >-
+      Makes "turn off the playroom lights" work while the software color
+      loop is running. Alexa, the dashboard, the companion app and Assist all
+      call plain light.turn_off, which the loop overwrites on its next pass
+      (2.5 s later) because it writes light.turn_on with hs_color, enough to
+      re-light a bulb that was just turned off. This guard watches for a bulb
+      going off while the loop is running, kills the loop, and re-issues the
+      off.
+
+      Only script.playroom_color_loop needs this. The Hue native colorloop
+      effect runs on the bulbs themselves, so HA sends nothing and an external
+      off already works there.
+    triggers:
+      - trigger: state
+        entity_id:
+          - light.playroom_1
+          - light.playroom_2
+          - light.playroom_3
+          - light.playroom_4
+        from: 'on'
+        to: 'off'
+    conditions:
+      # The loop only ever writes colour, never brightness and never off, so an
+      # on→off transition while it runs came from outside the loop.
+      - condition: state
+        entity_id: script.playroom_color_loop
+        state: 'on'
+    # restart: an off command lands on all four bulbs at once, so several
+    # triggers fire within a few hundred ms. Only the last run needs to finish.
+    mode: restart
+    actions:
+      - action: script.turn_off
+        target:
+          entity_id: script.playroom_color_loop
+      # Let the loop's in-flight parallel light.turn_on calls land before the
+      # sweep, otherwise a late write re-lights a bulb behind us. The loop's
+      # writes carry transition: 2.5, so give them room to complete.
+      - delay:
+          seconds: 3
+      - action: light.turn_off
+        target:
+          entity_id:
+            - light.playroom_1
+            - light.playroom_2
+            - light.playroom_3
+            - light.playroom_4
+        data:
+          transition: 1
