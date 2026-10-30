@@ -58,3 +58,13 @@ A physical "in a meeting" signal for Rachel's office. An ESP32 button (`switch.m
 **`script.meeting_indicator_clear`** — turns the hallway light off, then hands `corner_lamp` back: off if the rest of the office is off, otherwise re-renders the current office scene via `script.office_sonoff_apply_scene` so `corner_lamp` rejoins it.
 
 **Four automations** — `meeting_status_on` / `meeting_status_off` (button on/off), `meeting_button_offline` (unavailable 10 s — fail-safe clear), `meeting_button_reconnect` (re-sync after a WiFi blip). Each just calls one of the two scripts.
+
+## `hue_tap_dial_kitchen_sonos.yaml` — Hue Tap Dial → Kitchen Sonos
+
+The Hue Tap Dial (RDM002, ZHA, `device_ieee 00:17:88:01:0d:35:c4:85`) is the physical volume knob for `media_player.kitchen`. Turning it steps the volume 2% per event, up to 6% on a fast spin, clamped to 0-100%; turning up while muted unmutes first. Short presses: 1 play/pause, 2 next track, 3 previous track, 4 mute toggle. Long presses are unmapped. The file header documents the ZHA event shapes and the speed-tuning knobs.
+
+Until 2026-10-30 the dial drove the Play Room lights. Those automations were retired; what the playroom still uses lives in `playroom_lights.yaml`.
+
+## `playroom_lights.yaml` — Play Room lights helpers
+
+`script.playroom_lights_power_on` (turns on the Wemo wall switch that feeds the four Hue bulbs and waits for them to rejoin), `script.playroom_color_loop` (software four-colour wash), and the `playroom_color_loop_external_off_guard` automation that lets a plain `light.turn_off` stop the loop. No controller drives them right now; they are kept so the playroom scenes can be rebuilt on another button without re-deriving the wiring.

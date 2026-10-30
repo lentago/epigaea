@@ -1,0 +1,217 @@
+# Hue Tap Dial (RDM002) → Kitchen Sonos
+#
+# Device: "Hue Tap Dial" (Signify RDM002) via ZHA
+#   device_ieee: 00:17:88:01:0d:35:c4:85
+#   target:      media_player.kitchen (Sonos)
+#
+# Repurposed 2026-10-30. Until then this dial drove the Play Room lights; those
+# automations were retired and the remaining playroom scripts and guard moved
+# to packages/playroom_lights.yaml.
+#
+# Dial rotation → Kitchen volume, relative steps, clamped to 0-100%.
+#   Clockwise          → louder
+#   Counter-clockwise  → quieter
+#   Each rotation event moves the volume by STEP_PCT (2%) times a speed
+#   multiplier of 1-3, derived from the event's step_size (args[1]): a slow
+#   turn moves 2% per event, a fast spin up to 6%. The divisor (50) and cap (3)
+#   are the tuning knobs in the `points` variable below. The automation's
+#   trace shows `step_size` for every event, so real values from this dial can
+#   be read there when tuning.
+#   Turning up while the speaker is muted unmutes it first.
+#
+# Buttons (short press). Long presses are deliberately unmapped.
+#   1 (top)    → play / pause
+#   2          → next track
+#   3          → previous track
+#   4 (bottom) → mute toggle
+#   Play/pause and track commands follow the Sonos group coordinator when the
+#   Kitchen is grouped; volume and mute stay on the Kitchen speaker alone.
+#
+# ZHA event signatures (PhilipsRDM002 quirk, zha-device-handlers):
+#   Buttons fire on cluster 0xFC00 (64512) with commands of the form
+#   `button_N_short_release` / `button_N_long_release` where N is 1-4.
+#   Older or alternate quirk builds emit `N_short_release` (no `button_`
+#   prefix). Both shapes are matched defensively so the automation survives
+#   quirk updates.
+#   The dial fires `step` / `step_with_on_off` (and possibly `move` /
+#   `move_with_on_off`) on cluster 8 (Level Control). args[0] = direction
+#   (0 = up, 1 = down) per Zigbee spec, args[1] = step size (or rate for move).
+#   Triggers use `device_ieee` (persistent across device re-add) instead of
+#   `device_id` (changes if device is removed/re-paired).
+#
+# If you ever need to see exactly what this dial emits, watch
+# Tools → Events → listen for `zha_event` and rotate / press.
+
+automation:
+  # ───────────────────────── DIAL ROTATION ─────────────────────────
+  - id: hue_tap_dial_rotation_kitchen_sonos_volume
+    alias: 'Hue Tap Dial: dial rotation → Kitchen Sonos volume'
+    description: >-
+      Relative volume steps on media_player.kitchen from the Hue Tap Dial.
+      Direction from args[0], speed from args[1], clamped to 0-100%.
+    triggers:
+      - trigger: event
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          cluster_id: 8
+          command: step
+      - trigger: event
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          cluster_id: 8
+          command: step_with_on_off
+      - trigger: event
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          cluster_id: 8
+          command: move
+      - trigger: event
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          cluster_id: 8
+          command: move_with_on_off
+    conditions:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: media_player.kitchen
+            state:
+              - unavailable
+              - unknown
+    variables:
+      args: "{{ trigger.event.data.args | default([], true) }}"
+      step_size: "{{ (args[1] | int(0)) if args | length > 1 else 0 }}"
+      turning_down: "{{ ((args[0] | int(0)) == 1) if args | length > 0 else false }}"
+      # Speed multiplier 1-3. Tuning knobs: the divisor and the cap.
+      points: "{{ [[ (step_size / 50) | round(0, 'ceil') | int(1), 1 ] | max, 3 ] | min }}"
+      step_pct: 2
+      delta: "{{ (points * step_pct / 100) * (-1 if turning_down else 1) }}"
+      current: "{{ state_attr('media_player.kitchen', 'volume_level') | float(0) }}"
+      target_volume: "{{ [[ (current + delta) | round(2), 0 ] | max, 1 ] | min }}"
+    actions:
+      - if:
+          - condition: state
+            entity_id: media_player.kitchen
+            attribute: is_volume_muted
+            state: true
+          - condition: template
+            value_template: "{{ not turning_down }}"
+        then:
+          - action: media_player.volume_mute
+            target:
+              entity_id: media_player.kitchen
+            data:
+              is_volume_muted: false
+      - action: media_player.volume_set
+        target:
+          entity_id: media_player.kitchen
+        data:
+          volume_level: "{{ target_volume }}"
+    # queued: every detent is a separate relative step, so none may be dropped
+    # (restart would lose steps mid-spin) and each run must read the volume
+    # the previous run left behind.
+    mode: queued
+    max: 10
+
+  # ───────────────────────── BUTTONS ─────────────────────────
+  - id: hue_tap_dial_buttons_kitchen_sonos
+    alias: 'Hue Tap Dial: buttons → Kitchen Sonos transport and mute'
+    description: >-
+      1 play/pause, 2 next, 3 previous, 4 mute toggle (short presses).
+    triggers:
+      - trigger: event
+        id: play_pause
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_1_short_release
+      - trigger: event
+        id: play_pause
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: '1_short_release'
+      - trigger: event
+        id: next_track
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_2_short_release
+      - trigger: event
+        id: next_track
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: '2_short_release'
+      - trigger: event
+        id: previous_track
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_3_short_release
+      - trigger: event
+        id: previous_track
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: '3_short_release'
+      - trigger: event
+        id: mute_toggle
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_4_short_release
+      - trigger: event
+        id: mute_toggle
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: '4_short_release'
+    conditions:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: media_player.kitchen
+            state:
+              - unavailable
+              - unknown
+    actions:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: play_pause
+            sequence:
+              - action: media_player.media_play_pause
+                target:
+                  entity_id: media_player.kitchen
+          - conditions:
+              - condition: trigger
+                id: next_track
+            sequence:
+              - action: media_player.media_next_track
+                target:
+                  entity_id: media_player.kitchen
+          - conditions:
+              - condition: trigger
+                id: previous_track
+            sequence:
+              - action: media_player.media_previous_track
+                target:
+                  entity_id: media_player.kitchen
+          - conditions:
+              - condition: trigger
+                id: mute_toggle
+            sequence:
+              - action: media_player.volume_mute
+                target:
+                  entity_id: media_player.kitchen
+                data:
+                  is_volume_muted: "{{ not (state_attr('media_player.kitchen', 'is_volume_muted') | default(false, true)) }}"
+    # queued: presses are short and ordered; a quick double press of 2 should
+    # skip two tracks rather than drop the second.
+    mode: queued
+    max: 5
