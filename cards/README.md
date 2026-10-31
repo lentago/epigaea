@@ -73,6 +73,7 @@ for that publish. The file in this directory stays the canonical standalone copy
 |---|---|---|---|
 | [`kitchen-speaker-dial.html`](kitchen-speaker-dial.html) | Hue Tap Dial (RDM002) in the kitchen | [`packages/hue_tap_dial_kitchen_sonos.yaml`](../packages/hue_tap_dial_kitchen_sonos.yaml) | Fridge, next to the dial; publishes to `http://pub.lan/cards/kitchen-speaker-dial/` |
 | [`office-wall-switch.html`](office-wall-switch.html) | Zooz ZEN77 paddle on the office wall | [`packages/office_zen77.yaml`](../packages/office_zen77.yaml); scene list from [`packages/sonoff_button_office.yaml`](../packages/sonoff_button_office.yaml) | Office wall, beside the switch; publishes to `http://pub.lan/cards/office-wall-switch/` |
+| [`office-scene-button.html`](office-scene-button.html) | Sonoff wireless button (SNZB-01P, "Button 2") in the office | [`packages/sonoff_button_office.yaml`](../packages/sonoff_button_office.yaml) | Office, next to the button; publishes to `http://pub.lan/cards/office-scene-button/` |
 
 ## Not yet
 
