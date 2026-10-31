@@ -116,6 +116,30 @@ run_with_diff() {
   [ ! -s "$CALLS_FILE" ]
 }
 
+@test "cards, tests, assets, agent tooling and CI-only files are no-ops" {
+  # None of these is read by HA Core at runtime (#550). cards/ was the trigger:
+  # a printable-card-only merge used to restart Core.
+  run_with_diff "$(printf '%s\n' \
+    "cards/office-wall-switch.html" \
+    "tests/apply_reload.bats" \
+    "assets/banner.svg" \
+    ".claude/settings.json" \
+    ".ha-version" \
+    "secrets.fake.yaml" \
+    "secrets.yaml.example")"
+  [ "$status" -eq 0 ]
+  [ ! -s "$CALLS_FILE" ]
+}
+
+@test "a card alongside a package change still restarts" {
+  # The no-op set must not mask a heavy file in the same diff.
+  run_with_diff "$(printf '%s\n' \
+    "cards/office-wall-switch.html" \
+    "packages/office_zen77.yaml")"
+  [ "$status" -eq 0 ]
+  [ "$(cat "$CALLS_FILE")" = "RESTART" ]
+}
+
 @test "mixed lightweight changes trigger each matching reload, no restart" {
   run_with_diff "$(printf '%s\n' \
     "dashboards/home.yaml" \
