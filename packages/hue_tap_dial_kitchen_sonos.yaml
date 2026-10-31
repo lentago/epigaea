@@ -28,18 +28,20 @@
 # The scheme (2026-10-31): the dial moves only the Kitchen. Button 1 is the
 # music, buttons 2-4 are volume; a single tap acts on the Kitchen speaker, a
 # double tap on everyone sharing the Kitchen's music on the first floor, and
-# a long press on button 1 moves the Kitchen in or out of another room's
-# music. Other rooms are within reach of their own controls, so the dial no
-# longer pulls them into the Kitchen's group.
+# a long press moves the Kitchen in or out of another room's music. Other
+# rooms are within reach of their own controls, so the dial no longer pulls
+# them into the Kitchen's group.
 #   1          short  → play / pause
 #   1          double → next track
-#   1          long   → Kitchen joins the music playing nearby, or leaves it
+#   1          long   → Kitchen joins the music playing nearby, or leaves
 #   2          short  → volume 20%
 #   3          short  → volume 30%
 #   4          short  → volume 40%
 #   2 / 3 / 4  double → the same preset on every first-floor room in the
 #                       Kitchen's group
-#   2 / 3 / 4  long   → nothing (unassigned)
+#   2          long   → Kitchen joins the Dining Room's music, or leaves it
+#   3          long   → Kitchen joins the Office's music, or leaves it
+#   4          long   → nothing (unassigned)
 #   No triple presses.
 #   A volume preset unmutes first. There is no mute button (it was button 4
 #   until 2026-10-31); turning the dial down to 0% is the quiet path. Preset
@@ -48,30 +50,37 @@
 #   with another room they control that room's music too; volume from the
 #   ring and from single taps stays on the Kitchen speaker alone.
 #
-#   Long 1 is a toggle on the Kitchen's group:
-#   - The Kitchen is grouped with anyone (following or leading): the Kitchen
-#     leaves. When it was following, it goes quiet and the room it followed
-#     keeps playing. Leading is covered below.
-#   - The Kitchen is on its own: it joins the first nearby room, in the order
-#     of `nearby_rooms` (Dining Room, then Office), whose group is playing.
-#     It joins that group's coordinator, so it takes the stream as a member
-#     and never interrupts it, and it keeps its own volume, as in the Sonos
-#     app. Playing means the coordinator's state is `playing`; a paused or
-#     idle room is passed over. When both rooms play different music the
-#     Dining Room wins, because the rule then reads in one line on the card
-#     and needs no knowledge of who else is in each group.
-#   - Nothing nearby is playing: nothing happens. The card says so.
+#   Long presses are toggles on the Kitchen's group. Joining always targets
+#   the coordinator of the chosen room's group, so the Kitchen takes the
+#   stream as a member and never interrupts it, and it keeps its own volume,
+#   as in the Sonos app. A room is joinable when its coordinator's state is
+#   `playing`; a paused or idle room is passed over and nothing happens. The
+#   card says so.
+#   - Long 1 picks the room. The Kitchen grouped with anyone (following or
+#     leading): the Kitchen leaves. The Kitchen on its own: it joins the first
+#     room in its trigger's `rooms` list (Dining Room, then Office) whose
+#     group is playing. When both rooms play different music the Dining
+#     Room wins; long 2 and long 3 are how to choose the other.
+#   - Long 2 / long 3 name the room (Dining Room / Office). The Kitchen
+#     already in that room's group: the Kitchen leaves. Otherwise, when that
+#     room's group is playing, the Kitchen joins it, moving out of any group
+#     it was following.
+#   When the Kitchen leaves a group it was following, it goes quiet and the
+#   room it joined keeps playing. Leading is covered below.
 #   The coordinator the Kitchen joins can be a room off the dial (the Office
 #   following the Basement, say). The Kitchen follows; the dial still never
 #   joins, leaves or sets the volume of the Basement, the bedroom or the
 #   Roam. Group them from the Sonos app.
 #   Leading is only possible when a room was added to the Kitchen from the
-#   Sonos app. Leaving then unjoins the Kitchen, and Sonos decides who
-#   coordinates the rest; the dial does not unjoin the other rooms.
+#   Sonos app. Leaving, or joining another room, then moves only the Kitchen,
+#   and Sonos decides who coordinates the rest; the dial does not unjoin the
+#   other rooms.
 #   The double/triple 1 group presets (Kitchen + Dining Room, the first floor,
-#   with the Kitchen as coordinator) and the long 2 / long 3 room toggles
-#   were retired with this scheme: they made the Kitchen lead, and the
-#   household groups those rooms from the rooms themselves.
+#   with the Kitchen as coordinator) and the long 2 / long 3 toggles that
+#   pulled the Dining Room or Office into the Kitchen's group were retired
+#   with this scheme: they made the Kitchen lead, and the household groups
+#   those rooms from the rooms themselves. Long 2 and 3 keep their rooms but
+#   now point the other way: the Kitchen goes to the room.
 #
 #   Entity-id caveat (lentago/epigaea#544): `media_player.office_office` is the
 #   Office Playbar, a room the Kitchen can follow, and `media_player.office`
@@ -330,20 +339,52 @@ automation:
 
   # ───────────────────────── GROUPING ─────────────────────────
   - id: hue_tap_dial_grouping_kitchen_sonos
-    alias: 'Hue Tap Dial: long 1 and double 2-4 → Kitchen Sonos join / leave, group volume'
+    alias: 'Hue Tap Dial: long 1-3 and double 2-4 → Kitchen Sonos join / leave, group volume'
     description: >-
-      Long 1 is a toggle: when the Kitchen is grouped it leaves; when it is on
-      its own it joins the first playing group among the nearby rooms (Dining
-      Room, then Office), as a member. Double on 2, 3 and 4 applies the 20 /
-      30 / 40% preset to every first-floor room in the Kitchen's group. See the
-      header for the full table and the #544 entity-id caveat.
+      Long presses are toggles that move only the Kitchen. Long 1: when the
+      Kitchen is grouped it leaves; on its own it joins the first playing
+      group among the nearby rooms (Dining Room, then Office). Long 2 / 3:
+      the Kitchen joins the Dining Room's / Office's playing group, or leaves
+      it when already there. Double on 2, 3 and 4 applies the 20 / 30 / 40%
+      preset to every first-floor room in the Kitchen's group. See the header
+      for the full table and the #544 entity-id caveat.
     triggers:
+      # ── buttons 1-3 long: join / leave (long 4 is unassigned) ──
+      # rooms: where to look for playing music, in priority order.
+      # any_group: leave whenever the Kitchen is grouped (long 1), rather
+      # than only when it is in the named room's group (long 2 / 3).
       - trigger: event
         id: join_leave
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_1_long_release
+        variables:
+          # media_player.office_office IS the Office Playbar (#544).
+          rooms:
+            - media_player.dining_room
+            - media_player.office_office
+          any_group: true
+      - trigger: event
+        id: join_leave
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_2_long_release
+        variables:
+          rooms:
+            - media_player.dining_room
+          any_group: false
+      - trigger: event
+        id: join_leave
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_3_long_release
+        variables:
+          rooms:
+            - media_player.office_office   # Office Playbar (#544)
+          any_group: false
       # ── buttons 2-4 double: group volume presets ──
       - trigger: event
         id: group_volume
@@ -379,12 +420,6 @@ automation:
               - unknown
     variables:
       kitchen: media_player.kitchen
-      # Rooms the Kitchen may follow, in priority order: when both are playing
-      # different music, the first one wins. media_player.office_office IS the
-      # Office Playbar (#544).
-      nearby_rooms:
-        - media_player.dining_room
-        - media_player.office_office
       # The rooms a group volume preset may touch. Off-floor rooms in the
       # Kitchen's group (the Basement, the bedroom, the Roam) keep theirs.
       first_floor:
@@ -403,20 +438,23 @@ automation:
                 id: join_leave
             sequence:
               - if:
-                  - "{{ group | count > 1 }}"
+                  # Long 1: grouped at all. Long 2 / 3: already with that room.
+                  - >-
+                    {{ (any_group and group | count > 1)
+                       or (group | select('in', rooms) | list | count > 0) }}
                 then:
-                  # Grouped, as follower or leader: only the Kitchen leaves.
+                  # Only the Kitchen leaves, whether it followed or led.
                   - action: media_player.unjoin
                     target:
                       entity_id: "{{ kitchen }}"
                 else:
                   - variables:
-                      # The coordinator of the first nearby room whose group
+                      # The coordinator of the first listed room whose group
                       # is playing, or '' when none is. HA lists a Sonos
                       # group's coordinator first in group_members.
                       host: >-
                         {%- set ns = namespace(host='') -%}
-                        {%- for room in nearby_rooms -%}
+                        {%- for room in rooms -%}
                           {%- set lead = (state_attr(room, 'group_members') or [room])[0] -%}
                           {%- if not ns.host and lead != kitchen and is_state(lead, 'playing') -%}
                             {%- set ns.host = lead -%}
@@ -428,7 +466,8 @@ automation:
                     then:
                       # Join the coordinator, not the room itself: joining a
                       # room that follows someone else would pull that room
-                      # out of its group first.
+                      # out of its group first. A Kitchen following another
+                      # room moves straight across.
                       - action: media_player.join
                         target:
                           entity_id: "{{ host }}"
