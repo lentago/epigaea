@@ -198,6 +198,19 @@ defaulting to `/mnt/lentago/web` (the NAS share as the workstation mounts it;
 fleet hosts see it at `/mnt/neptune-lentago/web`). Runs on the workstation, not
 on HAOS. Card contract and index: `cards/README.md`.
 
+## `check-card-size.sh`
+
+Checks that each instruction card fits the 7 by 5 inch card contract. It opens
+`cards/<slug>.html` in headless Chrome, waits for the Google Fonts, and reads
+the height of the `.card` element. That height is the printed height, because
+the card is 7 inches wide on screen and on paper and the print stylesheet's
+`min-height: 5in` only pads a short card. It prints `<slug>: <height>in, fits`
+or `too tall` per card and exits 1 if any card is over `CARD_MAX_IN` (default
+5.0). No arguments checks every card; slugs check just those. Exit 3 means it
+could not measure: no Chrome or Chromium on `PATH` (`CHROME` names the binary),
+or the web fonts did not load, which would change the line breaks. The `Bats`
+suite runs it in CI (`tests/card_size.bats`). Added for #560.
+
 ## Script auth conventions
 
 Three conventions learned the hard way during context-sync work. Future scripts

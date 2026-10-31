@@ -38,6 +38,16 @@ bats tests/
   missing card, missing web root, a web root that is not on a network share, CLI usage), since the refusals are what
   keep a typo off the live `pub.lan` share.
 
+- **`card_size.bats`**: runs `scripts/check-card-size.sh` over every card and
+  fails if one prints taller than 5 inches (the card contract in
+  `cards/README.md`, #560). It also checks that an over-limit card is named and
+  that an unknown card or a browser that returns nothing is reported as such.
+  The measurement needs headless Chrome (preinstalled on the Ubuntu runner)
+  and the cards' Google Fonts. Without either, the script exits 3 rather than
+  judge a height measured with fallback fonts. The size tests then skip on a
+  workstation and fail in CI (`CI` is set), so the limit is never skipped
+  silently where it is enforced.
+
 - **`context_dump.bats`** — the snapshot transforms in
   `scripts/ha-context-dump.sh` (`build_entities`, `build_areas`,
   `build_devices`, `build_helpers`, `build_dashboards_storage`,
