@@ -68,13 +68,6 @@
   .head p { margin: 0; color: var(--ink-soft); font-size: 10pt; }
   .head b { color: var(--ink); }
 
-  .ring {
-    display: flex; gap: 0.14in; align-items: baseline; flex-wrap: wrap;
-    padding: 5pt 8pt; background: var(--tint); border-radius: 4px; font-size: 10pt;
-  }
-  .ring .lbl { font-family: var(--display); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; font-size: 8.5pt; }
-  .ring span.sep { color: var(--rule); }
-
   .tbl { width: 100%; overflow-x: auto; min-width: 0; }
   table { width: 100%; border-collapse: collapse; font-size: 10pt; }
   th {
@@ -82,13 +75,13 @@
     text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
     padding: 0 6pt 3pt 0; border-bottom: 1.5pt solid var(--ink);
   }
-  td { padding: 4.5pt 6pt 4.5pt 0; border-bottom: 0.75pt solid var(--rule); vertical-align: top; }
+  td { padding: 3pt 6pt 3pt 0; border-bottom: 0.75pt solid var(--rule); vertical-align: middle; }
   tr:last-child td { border-bottom: 1.5pt solid var(--ink); }
-  td.dots, th.dots { width: 0.62in; white-space: nowrap; }
+  td.dots, th.dots { width: 0.5in; white-space: nowrap; }
   /* td.dots holds a small dial with that button's quarter filled in. */
-  .btn { display: block; width: 0.38in; height: 0.38in; }
+  .btn { display: block; width: 0.3in; height: 0.3in; }
   .btn-i { display: inline-block; width: 1.5em; height: 1.5em; vertical-align: -0.42em; }
-  td.first { font-weight: 700; }
+  td.first { font-weight: 700; white-space: nowrap; }
   .muted { color: var(--ink-soft); }
 
   .extra { font-size: 10pt; margin: 0; }
@@ -106,6 +99,7 @@
     .head h1 { font-size: 18pt; }
     .head > svg { width: 0.7in; height: 0.7in; }
     td, th { padding-right: 4pt; }
+    td.first { white-space: normal; }
     .foot { flex-direction: column; gap: 2pt; }
   }
 
@@ -181,16 +175,9 @@
     </svg>
     <div>
       <h1>Kitchen Speaker Dial</h1>
-      <p>The round Hue dial runs the <b>kitchen Sonos</b>. Each of its four buttons is marked with one to four dots.</p>
+      <p>The round Hue dial runs the <b>kitchen Sonos</b>. <b>Turn the ring</b> for the kitchen's volume: clockwise is louder, a fast spin jumps more, and all the way down is silent. There is no mute button.</p>
     </div>
   </header>
-
-  <div class="ring">
-    <span class="lbl">Turn the ring</span>
-    <span>Clockwise is louder, back the other way is quieter. A fast spin jumps more.</span>
-    <span class="sep">|</span>
-    <span>All the way down is silent. There is no mute button.</span>
-  </div>
 
   <div class="tbl">
     <table>
@@ -207,7 +194,7 @@
           <td class="dots"><svg class="btn" role="img" aria-label="one-dot button"><use href="#btn1"/></svg></td>
           <td class="first">Play / pause</td>
           <td>Kitchen only <span class="muted">(every other room drops off)</span></td>
-          <td>Just the kitchen and dining room together, both at 25%. Anyone else drops off.</td>
+          <td>Kitchen and dining room together at 25%. Anyone else drops off.</td>
         </tr>
         <tr>
           <td class="dots"><svg class="btn" role="img" aria-label="two-dot button"><use href="#btn2"/></svg></td>
@@ -234,11 +221,9 @@
   <p class="extra"><svg class="btn-i" role="img" aria-label="one-dot button"><use href="#btn1"/></svg> &nbsp;tapped <b>three times</b> is the first floor at 25%: the kitchen, dining room and office, nobody else.</p>
 
   <ul class="tips">
-    <li><b>Joins</b> means that room starts playing whatever the kitchen is playing. Hold the same button again and it drops off.</li>
+    <li><b>Joins</b> means that room plays whatever the kitchen is playing. Hold the same button again and it drops off.</li>
     <li><b>Hold</b> happens when you let go, not while you press. <b>Tap twice</b> is quick, like a double-click.</li>
-    <li>The ring only changes the kitchen. To set every room in the group at once, tap <svg class="btn-i" role="img" aria-label="two-dot button"><use href="#btn2"/></svg>, <svg class="btn-i" role="img" aria-label="three-dot button"><use href="#btn3"/></svg> or <svg class="btn-i" role="img" aria-label="four-dot button"><use href="#btn4"/></svg> twice.</li>
-    <li>The basement, bedroom and Roam are not on this dial. Use the Sonos app for those.</li>
-    <li>Speakers that are unplugged are skipped. Nothing here touches the lights.</li>
+    <li>The basement, bedroom and Roam are not on this dial; use the Sonos app. Unplugged speakers are skipped.</li>
   </ul>
 
   <footer class="foot">

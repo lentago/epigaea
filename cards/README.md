@@ -35,7 +35,7 @@ one can read the next, and a future check can verify them mechanically.
 | Standalone HTML, one file, no build step, nothing required to read it but a browser | Anyone can open, print or copy it; nothing to install, nothing to break |
 | Refers to controls by their physical markings (the dots on the Tap Dial's buttons, an engraved label), never by entity id, and never assumes an orientation the hardware does not print | The reader has the device in front of them, not the registry |
 | Plain words for the people who live or work there; no HA vocabulary | "Dining room joins" beats `media_player.join` |
-| Prints as a 7 by 5 inch card on US Letter with a dashed cut line (`@page { size: letter; margin: 0.5in }`, `.card { width: 7in; min-height: 5in }`) | Fits a fridge or a wall plate; any letter printer, no special stock |
+| Prints as a 7 by 5 inch card on US Letter with a dashed cut line (`@page { size: letter; margin: 0.5in }`, `.card { width: 7in; min-height: 5in }`). `min-height` only pads a short card, so the content itself must fit in 5 inches; `scripts/check-card-size.sh` measures every card and CI runs it | Fits a fridge or a wall plate; any letter printer, no special stock |
 | Reads correctly in greyscale: one accent colour, structure carries the meaning | Most office printers are black and white |
 | Fonts from Google Fonts with real fallback stacks | Looks the same on screen and paper, still prints offline |
 | Footer carries provenance: repo, package file, date of the mapping it reflects | A reader can tell a stale card from a current one |
@@ -51,7 +51,9 @@ scale and tone. Copy it rather than starting from a blank page.
    the footer to the file the card documents. Rewrite the title, the table and
    the tips for that control.
 3. Open the file in a browser. Check it at 7 inches wide and in the print preview;
-   the dashed outline is the cut line.
+   the dashed outline is the cut line. Run `scripts/check-card-size.sh <slug>`
+   to confirm the card is no taller than 5 inches. In print preview, a
+   too-tall card just shows a taller dashed outline, which is easy to miss.
 4. Link the card from the header comment of each file it names, and from that
    directory's README (`packages/README.md` or `automations/README.md`).
 5. Add a row to the index below.
