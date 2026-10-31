@@ -84,7 +84,8 @@
   td.first { font-weight: 700; white-space: nowrap; }
   .muted { color: var(--ink-soft); }
 
-  .extra { font-size: 10pt; margin: 0; }
+  .hold { margin: 0; padding: 4pt 0 4pt 9pt; border-left: 3pt solid var(--accent); background: var(--tint); font-size: 10pt; }
+  .hold b { font-weight: 700; }
 
   .tips { margin: 0; padding: 0; list-style: none; display: grid; gap: 2pt; font-size: 9.5pt; color: var(--ink-soft); }
   .tips li { padding-left: 10pt; text-indent: -10pt; }
@@ -185,7 +186,6 @@
         <tr>
           <th class="dots">Button</th>
           <th>Tap once</th>
-          <th>Hold a second, let go</th>
           <th>Tap twice</th>
         </tr>
       </thead>
@@ -193,41 +193,37 @@
         <tr>
           <td class="dots"><svg class="btn" role="img" aria-label="one-dot button"><use href="#btn1"/></svg></td>
           <td class="first">Play / pause</td>
-          <td>Kitchen only <span class="muted">(every other room drops off)</span></td>
-          <td>Kitchen and dining room together at 25%. Anyone else drops off.</td>
+          <td>Next song</td>
         </tr>
         <tr>
           <td class="dots"><svg class="btn" role="img" aria-label="two-dot button"><use href="#btn2"/></svg></td>
           <td class="first">Volume 20%</td>
-          <td>Dining room joins <span class="muted">or leaves</span></td>
-          <td>Everyone in the group to 20%</td>
+          <td>20% for every room on this floor playing along</td>
         </tr>
         <tr>
           <td class="dots"><svg class="btn" role="img" aria-label="three-dot button"><use href="#btn3"/></svg></td>
           <td class="first">Volume 30%</td>
-          <td>Office joins <span class="muted">or leaves</span></td>
-          <td>Everyone in the group to 30%</td>
+          <td>30% for every room on this floor playing along</td>
         </tr>
         <tr>
           <td class="dots"><svg class="btn" role="img" aria-label="four-dot button"><use href="#btn4"/></svg></td>
           <td class="first">Volume 40%</td>
-          <td class="muted">Nothing</td>
-          <td>Everyone in the group to 40%</td>
+          <td>40% for every room on this floor playing along</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <p class="extra"><svg class="btn-i" role="img" aria-label="one-dot button"><use href="#btn1"/></svg> &nbsp;tapped <b>three times</b> is the first floor at 25%: the kitchen, dining room and office, nobody else.</p>
+  <p class="hold"><b>Hold</b> <svg class="btn-i" role="img" aria-label="one-dot button"><use href="#btn1"/></svg> a second, then let go: the kitchen <b>joins the music</b> already playing in the dining room or the office. <b>Hold it again</b> and the kitchen leaves; that room plays on.</p>
 
   <ul class="tips">
-    <li><b>Joins</b> means that room plays whatever the kitchen is playing. Hold the same button again and it drops off.</li>
+    <li><b>Nothing playing</b> there? Holding does nothing. <b>Both</b> rooms playing? The kitchen joins the dining room.</li>
+    <li>Playing along, <b>play / pause</b> and <b>next song</b> reach that room too. The ring and single taps stay in the kitchen.</li>
     <li><b>Hold</b> happens when you let go, not while you press. <b>Tap twice</b> is quick, like a double-click.</li>
-    <li>The basement, bedroom and Roam are not on this dial; use the Sonos app. Unplugged speakers are skipped.</li>
   </ul>
 
   <footer class="foot">
-    <span>Two or three taps on <svg class="btn-i" role="img" aria-label="one-dot button"><use href="#btn1"/></svg> rebuild the group around the kitchen.</span>
+    <span>This dial moves only the kitchen. Group other rooms in the Sonos app.</span>
     <span>epigaea &middot; hue_tap_dial_kitchen_sonos.yaml &middot; 2026-10-31</span>
   </footer>
 </article>
