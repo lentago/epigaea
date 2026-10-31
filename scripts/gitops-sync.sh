@@ -88,14 +88,22 @@ apply_reload() {
     if [[ -z "$f" ]]; then
       continue
     fi
-    # No-op: files that don't affect HA Core runtime
+    # No-op: files that don't affect HA Core runtime. cards/ is printed signage,
+    # tests/ and assets/ are CI and README material, .claude/ is agent tooling,
+    # and .ha-version plus the two secrets templates are read only by CI.
     if   [[ "$f" =~ ^context/ ]] || \
          [[ "$f" =~ ^\.github/ ]] || \
          [[ "$f" =~ ^esphome/ ]] || \
          [[ "$f" =~ ^scripts/.*\.sh$ ]] || \
+         [[ "$f" =~ ^cards/ ]] || \
+         [[ "$f" =~ ^tests/ ]] || \
+         [[ "$f" =~ ^assets/ ]] || \
+         [[ "$f" =~ ^\.claude/ ]] || \
          [[ "$f" =~ \.md$ ]] || \
          [[ "$f" == ".gitignore" || "$f" == ".yamllint.yml" || \
-            "$f" == "LICENSE"    || "$f" == ".gitattributes" ]]; then
+            "$f" == "LICENSE"    || "$f" == ".gitattributes" || \
+            "$f" == ".ha-version" || "$f" == "secrets.fake.yaml" || \
+            "$f" == "secrets.yaml.example" ]]; then
       continue
     elif [[ "$f" =~ ^dashboards/.*\.yaml$ ]]; then
       reload_dashboard=true
