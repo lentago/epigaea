@@ -17,7 +17,7 @@ This partition prevents the GitOps pipeline from silently clobbering UI edits. T
 
 ### `sonoff_button_kitchen_family.yaml` — Sonoff Button 1
 
-Three automations: single press → Downstairs + Hallways on; double press → off; long press → all lights to 25%.
+Three automations: single press → Downstairs + Hallways on; double press → off; long press → all lights to 25%. The printed card posted by the button is [`cards/downstairs-lights-button.html`](../cards/downstairs-lights-button.html), published with `scripts/publish-card.sh downstairs-lights-button`; it changes in the same PR as the presses ([`cards/README.md`](../cards/README.md)).
 
 The **meeting indicator** used to live here as `meeting.yaml`. It moved to `packages/meeting_indicator.yaml` once it grew helper scripts and cross-cutting logic with the office scene controller — packages are the home for automations bundled with scripts or helpers.
 

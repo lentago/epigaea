@@ -1,4 +1,8 @@
 # device_ieee f0:44:d3:ff:fe:f6:94:01 = Sonoff Button 1 (downstairs)
+#
+# Instruction card: cards/downstairs-lights-button.html is the printed card
+# posted by this button (contract in cards/README.md). Any change to the
+# presses below updates the card in the same PR.
 - id: sonoff_button_1_kitchen_family_on
   alias: 'Sonoff Button 1: Single press → Downstairs + Hallways ON'
   triggers:
