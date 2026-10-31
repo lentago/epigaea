@@ -43,15 +43,20 @@ find_chrome() {
 }
 
 # Print "<height-in> <loaded-fonts>" for one card, or "none" without a .card.
+# Prints nothing, and still returns 0, when the browser crashes, times out or
+# gives no measurement, so the caller can report it as "cannot measure".
 # Args: <chrome> <card-file> <work-dir>
 measure_card() {
-  local chrome="$1" card="$2" work="$3" page
+  local chrome="$1" card="$2" work="$3" page dom
   page="${work}/$(basename "$card")"
   awk -v js="$MEASURE_JS" '{ sub(/<\/body>/, js "</body>") } 1' "$card" > "$page"
-  "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
+  dom="$(timeout 60 "$chrome" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
     --user-data-dir="${work}/profile" --window-size=1000,2000 \
-    --virtual-time-budget=10000 --dump-dom "file://${page}" 2>/dev/null \
-    | grep -o 'data-card-size="[^"]*"' | head -n 1 | cut -d'"' -f2
+    --virtual-time-budget=10000 --dump-dom "file://${page}" 2>/dev/null)" || true
+  if [[ "$dom" =~ data-card-size=\"([^\"]*)\" ]]; then
+    printf '%s\n' "${BASH_REMATCH[1]}"
+  fi
+  return 0
 }
 
 main() {
