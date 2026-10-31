@@ -39,13 +39,19 @@
 #                       group (or the Kitchen leaves, when it is following
 #                       another room's music)
 #   2          long   → toggle Dining Room in / out of the Kitchen's group
-#   3          long   → toggle Basement (the Arc) in / out
-#   4          long   → toggle Office (the Playbar) in / out
-#   1          double → "downstairs" preset: Kitchen + Dining Room + Basement,
-#                       every player set to `preset_group_volume` (25%)
-#   1          triple → whole house: all six players, same volume preset
+#   3          long   → toggle Office (the Playbar) in / out
+#   4          long   → nothing (unassigned)
+#   1          double → Kitchen + Dining Room, both set to
+#                       `preset_group_volume` (25%)
+#   1          triple → the first floor: Kitchen + Dining Room + Office, same
+#                       volume preset
 #   2 / 3 / 4  double → the 20 / 30 / 40% preset applied to the whole group
 #                       the Kitchen is in, not just the Kitchen
+#   The dial groups only the first-floor rooms within earshot of it: Kitchen,
+#   Dining Room and Office. The Basement, the bedroom and the Roam are not on
+#   the dial (2026-10-31, when the Basement toggle and the whole-house preset
+#   came off and Office moved from long 4 to long 3 so the toggles sit on
+#   adjacent buttons). They are still Sonos players; group them from the app.
 #   The Kitchen is always the coordinator of a preset group. Toggling a room
 #   in joins it to whatever the Kitchen is currently listening to (the
 #   group's coordinator), so it never interrupts playback. Unavailable rooms
@@ -53,10 +59,10 @@
 #   as in the Sonos app. The preset group volume is a tuning knob:
 #   `preset_group_volume` in the grouping automation.
 #
-#   Entity-id caveat (lentago/epigaea#544): `media_player.office` is the
-#   Basement Arc and `media_player.office_office` is the Office Playbar. The
-#   room lists in the grouping automation are written by room, with the
-#   inverted ids called out inline. Update the lists when #544 renames them.
+#   Entity-id caveat (lentago/epigaea#544): `media_player.office_office` is the
+#   Office Playbar, the room this dial groups, and `media_player.office` is
+#   the Basement Arc, which the dial must not touch. Do not "fix"
+#   office_office to office here. Update the ids when #544 renames them.
 #
 # ZHA event signatures (PhilipsRDM002 quirk, zha-device-handlers):
 #   Buttons fire on cluster 0xFC00 (64512) with commands of the form
@@ -295,9 +301,10 @@ automation:
     alias: 'Hue Tap Dial: long and multi-presses → Kitchen Sonos grouping'
     description: >-
       Long presses toggle one room in or out of the Kitchen's Sonos group
-      (2 Dining Room, 3 Basement, 4 Office) or leave the Kitchen solo (1).
-      Double and triple on button 1 build the downstairs and whole-house
-      presets with the Kitchen as coordinator. Double on 2, 3 and 4 applies
+      (2 Dining Room, 3 Office) or leave the Kitchen solo (1); long 4 is
+      unassigned. Double and triple on button 1 build the Kitchen + Dining
+      Room and first-floor (Kitchen + Dining Room + Office) presets with the
+      Kitchen as coordinator. Double on 2, 3 and 4 applies
       the 20 / 30 / 40% preset to the whole group. See the header for the
       full table and the #544 entity-id caveat.
     triggers:
@@ -315,11 +322,9 @@ automation:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_1_double_press
         variables:
-          # Downstairs: Dining Room + Basement. media_player.office IS the
-          # Basement Arc (#544).
+          # Kitchen + Dining Room (the Kitchen is added by the preset itself).
           wanted:
             - media_player.dining_room
-            - media_player.office
       - trigger: event
         id: preset
         event_type: zha_event
@@ -327,15 +332,13 @@ automation:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_1_triple_press
         variables:
-          # Whole house. media_player.office_office IS the Office Playbar
-          # (#544). Trim this list to drop a room from the triple press.
+          # The first floor. media_player.office_office IS the Office Playbar
+          # (#544). Only rooms within earshot of the kitchen belong here; the
+          # Basement, bedroom and Roam stay off the list.
           wanted:
             - media_player.dining_room
-            - media_player.office
             - media_player.office_office
-            - media_player.master_bedroom
-            - media_player.roam_2
-      # ── buttons 2-4 long: toggle one room ──
+      # ── buttons 2-3 long: toggle one room (long 4 is unassigned) ──
       - trigger: event
         id: toggle_room
         event_type: zha_event
@@ -350,14 +353,6 @@ automation:
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_3_long_release
-        variables:
-          room: media_player.office          # Basement Arc (#544)
-      - trigger: event
-        id: toggle_room
-        event_type: zha_event
-        event_data:
-          device_ieee: '00:17:88:01:0d:35:c4:85'
-          command: button_4_long_release
         variables:
           room: media_player.office_office   # Office Playbar (#544)
       # ── buttons 2-4 double: group volume presets ──
@@ -446,7 +441,7 @@ automation:
                         data:
                           group_members:
                             - "{{ room }}"
-          # ── Presets: downstairs / whole house ──
+          # ── Presets: Kitchen + Dining Room / first floor ──
           - conditions:
               - condition: trigger
                 id: preset
