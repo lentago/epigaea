@@ -6,6 +6,11 @@
 #                           active it is turned red as an in-room indicator;
 #                           when the meeting ends it rejoins the office scene.
 #
+# Instruction card: cards/meeting-button.html is the printed card posted by the
+# button (contract in cards/README.md). Any change to what a press does, or to
+# the lights it drives, updates the card in the same PR. The hallway light gets
+# a sheet later, not a card (#548).
+#
 # corner_lamp ownership
 # ---------------------
 # corner_lamp is normally one of the lamps driven by the office scene controller

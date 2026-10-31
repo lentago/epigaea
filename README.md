@@ -328,7 +328,8 @@ Portfolio-grade infrastructure status page surfacing NAS health, Proxmox VM metr
 │   ├── kitchen-speaker-dial.html  Fridge card for the Tap Dial → Kitchen Sonos mapping
 │   ├── office-wall-switch.html    Card for the office ZEN77 paddle and the office scene list
 │   ├── office-scene-button.html   Card for the office Sonoff scene button
-│   └── downstairs-lights-button.html  Card for the downstairs and hallway lights button
+│   ├── downstairs-lights-button.html  Card for the downstairs and hallway lights button
+│   └── meeting-button.html        Card for the office meeting button
 ├── scripts/
 │   ├── gitops-sync.sh        GitOps deploy: fetch → validate → smart reload or rollback
 │   ├── ha-context-dump.sh    Perception loop: snapshot .storage/ registries to context/
