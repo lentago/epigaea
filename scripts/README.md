@@ -183,6 +183,18 @@ reconcile in seconds — see `docs/cross-layer-changes.md` (rename recipe,
 steps 3–4). Runs inside the HA Core container; uses `SUPERVISOR_TOKEN` like
 `gitops-sync.sh`.
 
+## `publish-card.sh`
+
+Copies an instruction card from `cards/<slug>.html` to the LAN web drop as
+`<web-root>/cards/<slug>/index.html`, so Caddy on `pub.lan` serves it at
+`http://pub.lan/cards/<slug>/` with no deploy step. Write-then-rename, so a
+reader never sees a half-copied page. Refuses a slug that is not
+lowercase-hyphenated, a card that does not exist, or a web root that is not a
+mounted directory. The web root is the second argument or `CARDS_WEB_ROOT`,
+defaulting to `/mnt/lentago/web` (the NAS share as the workstation mounts it;
+fleet hosts see it at `/mnt/neptune-lentago/web`). Runs on the workstation, not
+on HAOS. Card contract and index: `cards/README.md`.
+
 ## Script auth conventions
 
 Three conventions learned the hard way during context-sync work. Future scripts

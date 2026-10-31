@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="epigaea-card-package" content="packages/hue_tap_dial_kitchen_sonos.yaml">
+<title>Kitchen Speaker Dial</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap">
+<style>
+  /* Layout: one paper card, 7in x 5in, centered on the screen; prints on US Letter with a dashed cut line. */
+  :root {
+    --surround: #e8ecef;
+    --surround-fg: #4a5560;
+    --paper: #ffffff;
+    --ink: #10181f;
+    --ink-soft: #4a5560;
+    --rule: #c9d1d8;
+    --tint: #edf3f4;
+    --accent: #0e6b76;
+    --display: "Bricolage Grotesque", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --surround: #1a1f25; --surround-fg: #a3adb8; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --surround: #1a1f25; --surround-fg: #a3adb8; color-scheme: dark; }
+
+  body {
+    background: var(--surround);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 10.5pt;
+    line-height: 1.3;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .hint { color: var(--surround-fg); font-size: 13px; text-align: center; max-width: 7in; text-wrap: balance; }
+  .cutnote { display: none; }
+
+  .card {
+    background: var(--paper);
+    color: var(--ink);
+    width: min(7in, 100%);
+    box-sizing: border-box;
+    padding: 0.28in 0.3in 0.22in;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    display: grid;
+    gap: 0.1in;
+  }
+
+  .head { display: flex; align-items: center; gap: 0.18in; }
+  .head svg { flex: none; width: 0.9in; height: 0.9in; }
+  .head h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 21pt;
+    line-height: 1;
+    margin: 0 0 4pt;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .head p { margin: 0; color: var(--ink-soft); font-size: 10pt; }
+  .head b { color: var(--ink); }
+
+  .ring {
+    display: flex; gap: 0.14in; align-items: baseline; flex-wrap: wrap;
+    padding: 5pt 8pt; background: var(--tint); border-radius: 4px; font-size: 10pt;
+  }
+  .ring .lbl { font-family: var(--display); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; font-size: 8.5pt; }
+  .ring span.sep { color: var(--rule); }
+
+  .tbl { width: 100%; overflow-x: auto; min-width: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  th {
+    text-align: left; font-family: var(--display); font-weight: 700; font-size: 8.5pt;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
+    padding: 0 6pt 3pt 0; border-bottom: 1.5pt solid var(--ink);
+  }
+  td { padding: 4.5pt 6pt 4.5pt 0; border-bottom: 0.75pt solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: 1.5pt solid var(--ink); }
+  td.dots, th.dots { width: 0.62in; white-space: nowrap; }
+  .dots span { font-size: 12pt; letter-spacing: -1pt; line-height: 1; }
+  td.first { font-weight: 700; }
+  .muted { color: var(--ink-soft); }
+
+  .extra { font-size: 10pt; margin: 0; }
+  .extra .dots span { font-size: 12pt; letter-spacing: -1pt; }
+
+  .tips { margin: 0; padding: 0; list-style: none; display: grid; gap: 2pt; font-size: 9.5pt; color: var(--ink-soft); }
+  .tips li { padding-left: 10pt; text-indent: -10pt; }
+  .tips li::before { content: "– "; color: var(--accent); }
+  .tips b { color: var(--ink); font-weight: 700; }
+
+  .foot { display: flex; justify-content: space-between; gap: 12pt; font-size: 7.5pt; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 480px) {
+    body { font-size: 10pt; }
+    .card { padding: 14px; }
+    .head h1 { font-size: 18pt; }
+    .head svg { width: 0.7in; height: 0.7in; }
+    td, th { padding-right: 4pt; }
+    .foot { flex-direction: column; gap: 2pt; }
+  }
+
+  @media print {
+    @page { size: letter; margin: 0.5in; }
+    body { background: #fff; padding: 0; display: block; }
+    .hint { display: none; }
+    .cutnote { display: block; text-align: center; font-size: 8pt; color: #6b7680; margin: 0 0 0.2in; }
+    .card {
+      width: 7in; min-height: 5in; margin: 0 auto;
+      box-shadow: none; border-radius: 0;
+      outline: 1px dashed #9aa4b2; outline-offset: 0.1in;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<p class="hint">Print this page from your browser menu. The card comes out 7 by 5 inches on letter paper with a dashed cut line.</p>
+<p class="cutnote">Cut along the dashed line.</p>
+
+<article class="card" aria-label="Kitchen speaker dial cheat sheet">
+  <header class="head">
+    <svg viewBox="0 0 100 100" role="img" aria-label="Round dial with a turning ring">
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#10181f" stroke-width="7"/>
+      <circle cx="50" cy="50" r="30" fill="#10181f"/>
+      <circle cx="40" cy="41" r="3" fill="#fff"/>
+      <circle cx="58" cy="41" r="3" fill="#fff"/><circle cx="64" cy="41" r="3" fill="#fff"/>
+      <circle cx="37" cy="59" r="3" fill="#fff"/><circle cx="43" cy="59" r="3" fill="#fff"/><circle cx="49" cy="59" r="3" fill="#fff"/>
+      <circle cx="56" cy="59" r="3" fill="#fff"/><circle cx="61" cy="59" r="3" fill="#fff"/><circle cx="66" cy="59" r="3" fill="#fff"/><circle cx="71" cy="59" r="3" fill="#fff"/>
+      <path d="M 50 4 A 46 46 0 0 1 88 28" fill="none" stroke="#0e6b76" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 82 20 L 90 30 L 78 32 Z" fill="#0e6b76"/>
+      <path d="M 50 96 A 46 46 0 0 1 12 72" fill="none" stroke="#0e6b76" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 18 80 L 10 70 L 22 68 Z" fill="#0e6b76"/>
+    </svg>
+    <div>
+      <h1>Kitchen Speaker Dial</h1>
+      <p>The round Hue dial runs the <b>kitchen Sonos</b>. The four buttons are marked with dots: <b>&#9679;</b> <b>&#9679;&#9679;</b> <b>&#9679;&#9679;&#9679;</b> <b>&#9679;&#9679;&#9679;&#9679;</b></p>
+    </div>
+  </header>
+
+  <div class="ring">
+    <span class="lbl">Turn the ring</span>
+    <span>Right is louder, left is quieter. A fast spin jumps more.</span>
+    <span class="sep">|</span>
+    <span>All the way down is silent. There is no mute button.</span>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead>
+        <tr>
+          <th class="dots">Button</th>
+          <th>Tap once</th>
+          <th>Hold a second, let go</th>
+          <th>Tap twice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dots"><span>&#9679;</span></td>
+          <td class="first">Play / pause</td>
+          <td>Kitchen only <span class="muted">(every other room drops off)</span></td>
+          <td>Downstairs together: kitchen, dining room, basement, all at 25%</td>
+        </tr>
+        <tr>
+          <td class="dots"><span>&#9679;&#9679;</span></td>
+          <td class="first">Volume 20%</td>
+          <td>Dining room joins <span class="muted">or leaves</span></td>
+          <td>Everyone in the group to 20%</td>
+        </tr>
+        <tr>
+          <td class="dots"><span>&#9679;&#9679;&#9679;</span></td>
+          <td class="first">Volume 30%</td>
+          <td>Basement joins <span class="muted">or leaves</span></td>
+          <td>Everyone in the group to 30%</td>
+        </tr>
+        <tr>
+          <td class="dots"><span>&#9679;&#9679;&#9679;&#9679;</span></td>
+          <td class="first">Volume 40%</td>
+          <td>Office joins <span class="muted">or leaves</span></td>
+          <td>Everyone in the group to 40%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="extra"><span class="dots"><span>&#9679;</span></span> &nbsp;tapped <b>three times</b> is the whole house at 25%: every speaker, including the bedroom and the Roam.</p>
+
+  <ul class="tips">
+    <li><b>Joins</b> means that room starts playing whatever the kitchen is playing. Hold the same button again and it drops off.</li>
+    <li><b>Hold</b> happens when you let go, not while you press. <b>Tap twice</b> is quick, like a double-click.</li>
+    <li>The ring only changes the kitchen. To set every room at once, tap <b>&#9679;&#9679;</b>, <b>&#9679;&#9679;&#9679;</b> or <b>&#9679;&#9679;&#9679;&#9679;</b> twice.</li>
+    <li>Speakers that are unplugged are skipped. Nothing here touches the lights.</li>
+  </ul>
+
+  <footer class="foot">
+    <span>Kitchen Sonos is always the lead speaker of a group.</span>
+    <span>epigaea &middot; hue_tap_dial_kitchen_sonos.yaml &middot; 2026-10-31</span>
+  </footer>
+</article>
+</body>
+</html>
