@@ -32,6 +32,12 @@ bats tests/
   suite sources the script and stubs its side-effecting helpers
   (`log` / `ha_call_service` / `ha_core_restart` / `ha_notify`) and `git diff`.
 
+- **`publish_card.bats`** — `scripts/publish-card.sh`, the instruction-card
+  publisher. Publishes the first card into a temp web root and checks the
+  copy, the printed URL, the in-place overwrite, and every refusal (bad slug,
+  missing card, missing web root, a web root that is not on a network share, CLI usage), since the refusals are what
+  keep a typo off the live `pub.lan` share.
+
 - **`context_dump.bats`** — the snapshot transforms in
   `scripts/ha-context-dump.sh` (`build_entities`, `build_areas`,
   `build_devices`, `build_helpers`, `build_dashboards_storage`,

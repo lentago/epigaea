@@ -8,6 +8,10 @@
 # automations were retired and the remaining playroom scripts and guard moved
 # to packages/playroom_lights.yaml.
 #
+# Instruction card: cards/kitchen-speaker-dial.html is the printed fridge card
+# for this mapping (contract in cards/README.md). Any change to the button or
+# dial behaviour below updates the card in the same PR.
+#
 # Dial rotation → Kitchen volume, relative steps, clamped to 0-100%.
 #   Clockwise          → louder
 #   Counter-clockwise  → quieter

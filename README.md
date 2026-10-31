@@ -92,6 +92,7 @@ A production smart home run as declarative YAML — real CI gates, event-driven 
 | Governance partition prevents bidirectional sync conflicts | The [Config Governance table](#config-governance) partitions `automations.yaml` (UI-authored) from `automations/` (git-authored, PR-only) — without this split, a `git reset --hard` would silently clobber UI edits |
 | Fake-secrets for full CI without real credentials | [`secrets.fake.yaml`](secrets.fake.yaml) is copied to `secrets.yaml` in CI so `!secret` references resolve without exposing real values — full config validation on every PR |
 | PR dispatch with no issue-tracker step | Changes are dispatched by talking to Claude Code directly; the PR is the canonical record of intent — a deliberate deviation from the fleet norm that reduces round-trips |
+| The human half of an automation is versioned too | [`cards/`](cards/) holds one printable instruction card per physical control, posted next to the device; the card changes in the same PR as the mapping it describes, so the paper on the fridge never disagrees with the YAML |
 
 ## 🛠️ Make a change yourself
 
@@ -125,6 +126,8 @@ Org membership is not required to read or fork this repo. PRs from a fork follow
 **A Lentago Lab Status dashboard** providing an at-a-glance infrastructure overview: NAS health (Neptune UGREEN DXP2800 — pool status, disk temps, SMART hours, LAN throughput), Proxmox node and VM metrics, smart home coordinator firmware/signal status, battery health grid with amber/red color coding, CMYK toner levels, GitHub repo activity, and the custom-built ESP32 meeting indicator device.
 
 **Template sensors** that solve real UX problems. Sonos group coordinator detection prevents duplicate media cards when speakers are grouped. Per-room light activity sensors drive the mobile view's "all off" indicators. Both patterns are documented in `configuration.yaml` with clear rationale.
+
+**Instruction cards** for the physical controls, printed and posted where the control is. [`cards/`](cards/) holds one standalone HTML card per repurposed device, written in the household's words and versioned with the package that implements the behaviour; the first is the fridge card for the Hue Tap Dial that runs the Kitchen Sonos. The same pattern is the staff-facing surface of the facilities kit this repo is the base for ([lentago/.github#129](https://github.com/lentago/.github/issues/129)).
 
 ## Architecture
 
@@ -318,10 +321,15 @@ Portfolio-grade infrastructure status page surfacing NAS health, Proxmox VM metr
 ├── automations/
 │   └── meeting.yaml          Git-managed automations (PR-only; never HA UI)
 ├── packages/
-│   └── ha_version_sync.yaml  HA version dispatch to GitHub on startup
+│   ├── ha_version_sync.yaml  HA version dispatch to GitHub on startup
+│   └── hue_tap_dial_kitchen_sonos.yaml  Hue Tap Dial → Kitchen Sonos volume, presets, grouping
+├── cards/
+│   ├── README.md             Instruction-card contract and index: one printable card per physical control
+│   └── kitchen-speaker-dial.html  Fridge card for the Tap Dial → Kitchen Sonos mapping
 ├── scripts/
 │   ├── gitops-sync.sh        GitOps deploy: fetch → validate → smart reload or rollback
-│   └── ha-context-dump.sh    Perception loop: snapshot .storage/ registries to context/
+│   ├── ha-context-dump.sh    Perception loop: snapshot .storage/ registries to context/
+│   └── publish-card.sh       Copy a card to the pub.lan web drop (cards/<slug>.html → /cards/<slug>/)
 ├── context/                  Auto-generated HA runtime state (read-only, never edit)
 │   ├── entities.json         Entity registry (entity_id → area/device/platform)
 │   ├── areas.json            Area registry

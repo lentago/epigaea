@@ -32,6 +32,7 @@ to them when implementing:
 | `themes/README.md` | Noctis Home theme, home_polish tokens |
 | `scripts/README.md` | gitops-sync.sh, ha-context-dump.sh, Script auth conventions |
 | `context/README.md` | What each `context/*.json` file is |
+| `cards/README.md` | Printable instruction cards for physical controls: the contract, how to make one, the index. Read before changing any package that maps a button or dial |
 | `docs/` | Long-form design notes, migration write-ups |
 
 ---
@@ -97,6 +98,11 @@ helper — is in `docs/cross-layer-changes.md`.
 
 - **Git is source of truth.** All YAML config is committed. `.storage/` is
   runtime state excluded from git.
+- **Instruction cards ship with the control they describe.** A package that
+  maps a physical control (a dial, a wall button) has a printable card in
+  `cards/<slug>.html`, the staff-facing half of the automation. The card
+  changes in the same PR as the mapping. Contract and index: `cards/README.md`;
+  publish with `scripts/publish-card.sh <slug>`.
 - **Secrets pattern.** Real values in `secrets.yaml` (gitignored), documented
   keys in `secrets.yaml.example` (committed). Same pattern in `esphome/`.
   `secrets.fake.yaml` provides safe dummy values for CI `check_config`.
