@@ -65,6 +65,10 @@ The Hue Tap Dial (RDM002, ZHA, `device_ieee 00:17:88:01:0d:35:c4:85`) is the phy
 
 Until 2026-10-30 the dial drove the Play Room lights. Those automations were retired; what the playroom still uses lives in `playroom_lights.yaml`.
 
+## `office_zen77.yaml` — Office wall switch
+
+The Zooz ZEN77 in-wall paddle (Z-Wave, Central Scene) is the office's wall control for the six office lamps; it replaced the Signify RDM001. Up tap turns the lamps on at scene 1 (Bright) or, when they are already on, steps to the next scene; down tap turns them off; holding up or down ramps the current scene's brightness until the paddle is released (floored at 10%). It shares the scene counter and the apply script with `sonoff_button_office.yaml`, so the two controls cycle from the same scene. An automation in the file re-applies the two Z-Wave parameters (Scene Control, Smart Switch Mode) the paddle needs on every start. The printed card posted by the switch is [`cards/office-wall-switch.html`](../cards/office-wall-switch.html), published with `scripts/publish-card.sh office-wall-switch`; it changes in the same PR as the paddle mapping or the scene catalog ([`cards/README.md`](../cards/README.md)).
+
 ## `playroom_lights.yaml` — Play Room lights helpers
 
 `script.playroom_lights_power_on` (turns on the Wemo wall switch that feeds the four Hue bulbs and waits for them to rejoin), `script.playroom_color_loop` (software four-colour wash), and the `playroom_color_loop_external_off_guard` automation that lets a plain `light.turn_off` stop the loop. No controller drives them right now; they are kept so the playroom scenes can be rebuilt on another button without re-deriving the wiring.

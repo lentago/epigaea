@@ -20,6 +20,10 @@
 # in-wall switch (packages/office_zen77.yaml) so both controllers cycle from the
 # same scene index. Single source of truth.
 #
+# Instruction cards: cards/office-wall-switch.html (the ZEN77 paddle) prints
+# the scene catalog below, so a change to the catalog updates that card in the
+# same PR (contract in cards/README.md).
+#
 # Static scenes (1-3) apply uniform values to all six lamps simultaneously.
 # Flicker scenes (4-9) all share one parallel driver loop in
 # `script.office_sonoff_candle_loop`. The loop's per-lamp branches call

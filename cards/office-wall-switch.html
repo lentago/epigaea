@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="epigaea-card-package" content="packages/office_zen77.yaml">
+<meta name="epigaea-card-package" content="packages/sonoff_button_office.yaml">
+<title>Office Wall Switch</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap">
+<style>
+  /* Layout: one paper card, 7in x 5in, centered on the screen; prints on US Letter with a dashed cut line. */
+  :root {
+    --surround: #e8ecef;
+    --surround-fg: #4a5560;
+    --paper: #ffffff;
+    --ink: #10181f;
+    --ink-soft: #4a5560;
+    --rule: #c9d1d8;
+    --tint: #edf3f4;
+    --accent: #0e6b76;
+    --display: "Bricolage Grotesque", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --surround: #1a1f25; --surround-fg: #a3adb8; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --surround: #1a1f25; --surround-fg: #a3adb8; color-scheme: dark; }
+
+  body {
+    background: var(--surround);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 10.5pt;
+    line-height: 1.3;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .hint { color: var(--surround-fg); font-size: 13px; text-align: center; max-width: 7in; text-wrap: balance; }
+  .cutnote { display: none; }
+
+  .card {
+    background: var(--paper);
+    color: var(--ink);
+    width: min(7in, 100%);
+    box-sizing: border-box;
+    padding: 0.28in 0.3in 0.22in;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    display: grid;
+    gap: 0.1in;
+  }
+
+  .head { display: flex; align-items: center; gap: 0.18in; }
+  .head svg { flex: none; width: 0.9in; height: 0.9in; }
+  .head h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 21pt;
+    line-height: 1;
+    margin: 0 0 4pt;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .head p { margin: 0; color: var(--ink-soft); font-size: 10pt; }
+  .head b { color: var(--ink); }
+
+  .tbl { width: 100%; overflow-x: auto; min-width: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  th {
+    text-align: left; font-family: var(--display); font-weight: 700; font-size: 8.5pt;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent);
+    padding: 0 6pt 3pt 0; border-bottom: 1.5pt solid var(--ink);
+  }
+  td { padding: 4.5pt 6pt 4.5pt 0; border-bottom: 0.75pt solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: 1.5pt solid var(--ink); }
+  td.part, th.part { width: 0.85in; white-space: nowrap; }
+  td.part { font-weight: 700; }
+  td.part span { font-size: 10pt; color: var(--accent); }
+  td.first { font-weight: 700; }
+  .muted { color: var(--ink-soft); }
+
+  .scenes {
+    padding: 5pt 8pt; background: var(--tint); border-radius: 4px; font-size: 9.5pt;
+    display: grid; gap: 3pt;
+  }
+  .scenes .lbl { font-family: var(--display); font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; font-size: 8.5pt; }
+  .scenes ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1pt 10pt; }
+  .scenes li b { font-family: var(--display); color: var(--accent); margin-right: 3pt; }
+  .scenes .muted { font-size: 9pt; }
+
+  .tips { margin: 0; padding: 0; list-style: none; display: grid; gap: 2pt; font-size: 9.5pt; color: var(--ink-soft); }
+  .tips li { padding-left: 10pt; text-indent: -10pt; }
+  .tips li::before { content: "– "; color: var(--accent); }
+  .tips b { color: var(--ink); font-weight: 700; }
+
+  .foot { display: flex; justify-content: space-between; gap: 12pt; font-size: 7.5pt; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 480px) {
+    body { font-size: 10pt; }
+    .card { padding: 14px; }
+    .head h1 { font-size: 18pt; }
+    .head svg { width: 0.7in; height: 0.7in; }
+    td, th { padding-right: 4pt; }
+    .scenes ol { grid-template-columns: 1fr 1fr; }
+    .foot { flex-direction: column; gap: 2pt; }
+  }
+
+  @media print {
+    @page { size: letter; margin: 0.5in; }
+    body { background: #fff; padding: 0; display: block; }
+    .hint { display: none; }
+    .cutnote { display: block; text-align: center; font-size: 8pt; color: #6b7680; margin: 0 0 0.2in; }
+    .card {
+      width: 7in; min-height: 5in; margin: 0 auto;
+      box-shadow: none; border-radius: 0;
+      outline: 1px dashed #9aa4b2; outline-offset: 0.1in;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<p class="hint">Print this page from your browser menu. The card comes out 7 by 5 inches on letter paper with a dashed cut line.</p>
+<p class="cutnote">Cut along the dashed line.</p>
+
+<article class="card" aria-label="Office wall switch cheat sheet">
+  <header class="head">
+    <svg viewBox="0 0 100 100" role="img" aria-label="Wall plate with a flat paddle, pressed at the top or the bottom">
+      <rect x="22" y="4" width="56" height="92" rx="6" fill="none" stroke="#10181f" stroke-width="5"/>
+      <rect x="34" y="16" width="32" height="68" rx="3" fill="#10181f"/>
+      <line x1="38" y1="50" x2="62" y2="50" stroke="#fff" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <path d="M 50 22 L 59 36 L 41 36 Z" fill="#fff"/>
+      <path d="M 50 78 L 59 64 L 41 64 Z" fill="#fff"/>
+      <path d="M 86 40 L 86 14" stroke="#0e6b76" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 80 20 L 86 10 L 92 20 Z" fill="#0e6b76"/>
+      <path d="M 86 60 L 86 86" stroke="#0e6b76" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 80 80 L 86 90 L 92 80 Z" fill="#0e6b76"/>
+    </svg>
+    <div>
+      <h1>Office Wall Switch</h1>
+      <p>The flat paddle on the wall runs all <b>six office lamps</b>. Press the <b>top</b> of it or the <b>bottom</b> of it.</p>
+    </div>
+  </header>
+
+  <div class="tbl">
+    <table>
+      <thead>
+        <tr>
+          <th class="part">Paddle</th>
+          <th>Tap</th>
+          <th>Press and hold</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="part"><span>&#9650;</span> Top</td>
+          <td class="first">Lamps on, at Bright. Tap again for the next scene.</td>
+          <td>Brighter, until you let go</td>
+        </tr>
+        <tr>
+          <td class="part"><span>&#9660;</span> Bottom</td>
+          <td class="first">All the lamps off</td>
+          <td>Dimmer, until you let go. Stops low, never off.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scenes">
+    <span class="lbl">Scenes, in tap order</span>
+    <ol>
+      <li><b>1</b>Bright <span class="muted">warm, full</span></li>
+      <li><b>2</b>Relax <span class="muted">warm, low</span></li>
+      <li><b>3</b>Focus <span class="muted">cool white, full</span></li>
+      <li><b>4</b>Amber candle</li>
+      <li><b>5</b>Red candle</li>
+      <li><b>6</b>Blue candle</li>
+      <li><b>7</b>Red desk, blue room</li>
+      <li><b>8</b>Rainbow <span class="muted">all together</span></li>
+      <li><b>9</b>Rainbow wave</li>
+    </ol>
+    <span class="muted">4 to 9 flicker like a flame or drift through colours. After 9 the next tap is Bright again.</span>
+  </div>
+
+  <ul class="tips">
+    <li>Turning the lamps on always starts at <b>Bright</b>. To get back to Bright from a flickering scene, tap the bottom, then the top.</li>
+    <li><b>Hold</b> only works while the lamps are on. Each new scene starts at its own brightness.</li>
+    <li>The wireless office button steps through the <b>same scenes</b>. Either one picks up where the other left off.</li>
+    <li>During a meeting the <b>corner lamp</b> stays red and the switch leaves it alone. It rejoins the room when the meeting ends.</li>
+  </ul>
+
+  <footer class="foot">
+    <span>Quick double taps do nothing.</span>
+    <span>epigaea &middot; office_zen77.yaml + sonoff_button_office.yaml &middot; 2026-07-25</span>
+  </footer>
+</article>
+</body>
+</html>

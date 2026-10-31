@@ -10,6 +10,11 @@
 #
 # Replaces the retired Signify RDM001 in-wall rocker (recycled).
 #
+# Instruction card: cards/office-wall-switch.html is the printed card posted
+# by this switch (contract in cards/README.md). It also lists the scene catalog
+# from packages/sonoff_button_office.yaml. Any change to the paddle behaviour
+# below, or to that catalog, updates the card in the same PR.
+#
 # Z-Wave Central Scene events fire as `zwave_js_value_notification`:
 #   property_key_name: '001'    = up paddle
 #   property_key_name: '002'    = down paddle
