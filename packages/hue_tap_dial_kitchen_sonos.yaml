@@ -12,7 +12,7 @@
 #   Clockwise          → louder
 #   Counter-clockwise  → quieter
 #   Each rotation event moves the volume by STEP_PCT (2%) times a speed
-#   multiplier of 1-3, derived from the event's step_size (args[1]): a slow
+#   multiplier of 1-3, derived from the event's step_size: a slow
 #   turn moves 2% per event, a fast spin up to 6%. The divisor (50) and cap (3)
 #   are the tuning knobs in the `points` variable below. Automation traces
 #   leave out trigger-derived variables, so real step sizes from this dial
@@ -39,9 +39,9 @@
 #   The dial fires `step` / `step_with_on_off` (and possibly `move` /
 #   `move_with_on_off`) on cluster 8 (Level Control). args[0] = direction
 #   (0 = up, 1 = down) per Zigbee spec, args[1] = step size (or rate for move).
-#   The same values arrive by name in `params` (step_mode, step_size). Both
-#   carry zigpy enum objects (StepMode.Down), not plain ints; see the note on
-#   the rotation automation's variables.
+#   The same values arrive by name in `params` (step_mode, step_size), which
+#   the rotation automation reads first, falling back to args. Both carry
+#   zigpy enum objects (StepMode.Down), not plain ints.
 #   Triggers use `device_ieee` (persistent across device re-add) instead of
 #   `device_id` (changes if device is removed/re-paired).
 #
@@ -54,7 +54,8 @@ automation:
     alias: 'Hue Tap Dial: dial rotation → Kitchen Sonos volume'
     description: >-
       Relative volume steps on media_player.kitchen from the Hue Tap Dial.
-      Direction from args[0], speed from args[1], clamped to 0-100%.
+      Direction from step_mode, speed from step_size (event params, with
+      args as the fallback), clamped to 0-100%.
     triggers:
       - trigger: event
         event_type: zha_event
@@ -92,9 +93,9 @@ automation:
       # Each template reads the raw event itself. Do not pass
       # trigger.event.data.args through a variable of its own: ZHA's args hold
       # zigpy enums, and HA renders a variable to text before parsing it back,
-      # so "[<StepMode.Down: 1>, 25, 4]" fails to parse and stays a string.
-      # args[0] was then "[" and every turn read as clockwise with step size
-      # 0 (fixed 2026-10-31). params is preferred; args is the fallback.
+      # so "[<StepMode.Down: 1>, 25, 4]" fails to parse and stays a string,
+      # and indexing it reads characters, not values. params is preferred;
+      # args is the fallback.
       step_size: >-
         {% set d = trigger.event.data %}
         {% set p = d.params if d.params is mapping else {} %}
