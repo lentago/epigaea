@@ -61,7 +61,7 @@ A physical "in a meeting" signal for Rachel's office. An ESP32 button (`switch.m
 
 ## `hue_tap_dial_kitchen_sonos.yaml` — Hue Tap Dial → Kitchen Sonos
 
-The Hue Tap Dial (RDM002, ZHA, `device_ieee 00:17:88:01:0d:35:c4:85`) is the physical volume knob for `media_player.kitchen`. Turning it steps the volume 2% per event, up to 6% on a fast spin, clamped to 0-100%; turning up while muted unmutes first. Short presses: 1 play/pause, 2 next track, 3 previous track, 4 mute toggle. Long presses are unmapped. The file header documents the ZHA event shapes and the speed-tuning knobs.
+The Hue Tap Dial (RDM002, ZHA, `device_ieee 00:17:88:01:0d:35:c4:85`) is the physical volume knob for `media_player.kitchen`. Turning it steps the volume 2% per event, up to 6% on a fast spin, clamped to 0-100%; turning up while muted unmutes first. Short presses: 1 play/pause; 2, 3 and 4 set the volume to 20%, 30% and 40% (unmuting first). Long presses are unmapped. The file header documents the ZHA event shapes and the speed-tuning knobs.
 
 Until 2026-10-30 the dial drove the Play Room lights. Those automations were retired; what the playroom still uses lives in `playroom_lights.yaml`.
 

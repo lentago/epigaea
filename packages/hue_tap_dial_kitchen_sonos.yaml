@@ -21,11 +21,14 @@
 #
 # Buttons (short press). Long presses are deliberately unmapped.
 #   1 (top)    → play / pause
-#   2          → next track
-#   3          → previous track
-#   4 (bottom) → mute toggle
-#   Play/pause and track commands follow the Sonos group coordinator when the
-#   Kitchen is grouped; volume and mute stay on the Kitchen speaker alone.
+#   2          → volume 20%
+#   3          → volume 30%
+#   4 (bottom) → volume 40%
+#   A preset unmutes first. There is no mute button (it was button 4 until
+#   2026-10-31); turning the dial down to 0% is the quiet path. Preset levels
+#   are the `preset_volume` trigger variables in the buttons automation.
+#   Play/pause follows the Sonos group coordinator when the Kitchen is
+#   grouped; volume stays on the Kitchen speaker alone.
 #
 # ZHA event signatures (PhilipsRDM002 quirk, zha-device-handlers):
 #   Buttons fire on cluster 0xFC00 (64512) with commands of the form
@@ -111,17 +114,19 @@ automation:
           entity_id: media_player.kitchen
         data:
           volume_level: "{{ target_volume }}"
-    # queued: every detent is a separate relative step, so none may be dropped
-    # (restart would lose steps mid-spin) and each run must read the volume
-    # the previous run left behind.
+    # queued: every rotation event is a separate relative step, applied in
+    # order, and each run reads the volume the previous run left behind
+    # (restart would lose steps mid-spin). Events beyond max: 10 queued runs
+    # are dropped, so a very long fast spin can lose a few steps.
     mode: queued
     max: 10
 
   # ───────────────────────── BUTTONS ─────────────────────────
   - id: hue_tap_dial_buttons_kitchen_sonos
-    alias: 'Hue Tap Dial: buttons → Kitchen Sonos transport and mute'
+    alias: 'Hue Tap Dial: buttons → Kitchen Sonos play/pause and volume presets'
     description: >-
-      1 play/pause, 2 next, 3 previous, 4 mute toggle (short presses).
+      1 play/pause; 2, 3 and 4 set the volume to 20%, 30% and 40% (short
+      presses). A preset unmutes first so it is never silent.
     triggers:
       - trigger: event
         id: play_pause
@@ -136,41 +141,53 @@ automation:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: '1_short_release'
       - trigger: event
-        id: next_track
+        id: volume_preset
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_2_short_release
+        variables:
+          preset_volume: 0.2
       - trigger: event
-        id: next_track
+        id: volume_preset
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: '2_short_release'
+        variables:
+          preset_volume: 0.2
       - trigger: event
-        id: previous_track
+        id: volume_preset
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_3_short_release
+        variables:
+          preset_volume: 0.3
       - trigger: event
-        id: previous_track
+        id: volume_preset
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: '3_short_release'
+        variables:
+          preset_volume: 0.3
       - trigger: event
-        id: mute_toggle
+        id: volume_preset
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_4_short_release
+        variables:
+          preset_volume: 0.4
       - trigger: event
-        id: mute_toggle
+        id: volume_preset
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: '4_short_release'
+        variables:
+          preset_volume: 0.4
     conditions:
       - condition: not
         conditions:
@@ -190,28 +207,25 @@ automation:
                   entity_id: media_player.kitchen
           - conditions:
               - condition: trigger
-                id: next_track
+                id: volume_preset
             sequence:
-              - action: media_player.media_next_track
-                target:
-                  entity_id: media_player.kitchen
-          - conditions:
-              - condition: trigger
-                id: previous_track
-            sequence:
-              - action: media_player.media_previous_track
-                target:
-                  entity_id: media_player.kitchen
-          - conditions:
-              - condition: trigger
-                id: mute_toggle
-            sequence:
-              - action: media_player.volume_mute
+              - if:
+                  - condition: state
+                    entity_id: media_player.kitchen
+                    attribute: is_volume_muted
+                    state: true
+                then:
+                  - action: media_player.volume_mute
+                    target:
+                      entity_id: media_player.kitchen
+                    data:
+                      is_volume_muted: false
+              - action: media_player.volume_set
                 target:
                   entity_id: media_player.kitchen
                 data:
-                  is_volume_muted: "{{ not (state_attr('media_player.kitchen', 'is_volume_muted') | default(false, true)) }}"
-    # queued: presses are short and ordered; a quick double press of 2 should
-    # skip two tracks rather than drop the second.
+                  volume_level: "{{ preset_volume }}"
+    # queued: presses are short and ordered; a quick 2-then-4 should land on
+    # 40%, not drop the second press.
     mode: queued
     max: 5
