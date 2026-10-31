@@ -75,6 +75,7 @@ for that publish. The file in this directory stays the canonical standalone copy
 | [`office-wall-switch.html`](office-wall-switch.html) | Zooz ZEN77 paddle on the office wall | [`packages/office_zen77.yaml`](../packages/office_zen77.yaml); scene list from [`packages/sonoff_button_office.yaml`](../packages/sonoff_button_office.yaml) | Office wall, beside the switch; publishes to `http://pub.lan/cards/office-wall-switch/` |
 | [`office-scene-button.html`](office-scene-button.html) | Sonoff wireless button (SNZB-01P, "Button 2") in the office | [`packages/sonoff_button_office.yaml`](../packages/sonoff_button_office.yaml) | Office, next to the button; publishes to `http://pub.lan/cards/office-scene-button/` |
 | [`downstairs-lights-button.html`](downstairs-lights-button.html) | Sonoff wireless button (SNZB-01P, "Button 1") for the downstairs and hallway lights | [`automations/sonoff_button_kitchen_family.yaml`](../automations/sonoff_button_kitchen_family.yaml) | Kitchen and family room (the main first-floor open space), next to the button; publishes to `http://pub.lan/cards/downstairs-lights-button/` |
+| [`meeting-button.html`](meeting-button.html) | Meeting button (ESP32, ESPHome) in the office | [`packages/meeting_indicator.yaml`](../packages/meeting_indicator.yaml) | Office, next to the button; publishes to `http://pub.lan/cards/meeting-button/` |
 
 ## Not yet
 
