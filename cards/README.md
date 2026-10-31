@@ -30,7 +30,7 @@ one can read the next, and a future check can verify them mechanically.
 
 | Rule | Why |
 |---|---|
-| One card documents one physical control, and declares the package that implements it in `<meta name="epigaea-card-package" content="packages/<file>.yaml">`, repeated in plain text in the card footer. A card that also prints behaviour defined in a second package (a shared scene list, say) carries one meta tag per package | The card is part of the package's deliverable; the meta tag makes the link checkable |
+| One card documents one physical control, and declares the repo-relative path of the file that implements it, a package or an automations file, in `<meta name="epigaea-card-package" content="packages/<file>.yaml">`, repeated in plain text in the card footer. A card that also prints behaviour defined in a second file (a shared scene list, say) carries one meta tag per file | The card is part of the mapping's deliverable; the meta tag makes the link checkable |
 | A card changes in the same PR as the mapping it describes | A printed card that disagrees with the automation is worse than no card |
 | Standalone HTML, one file, no build step, nothing required to read it but a browser | Anyone can open, print or copy it; nothing to install, nothing to break |
 | Refers to controls by their physical markings (the dots on the Tap Dial's buttons, an engraved label), never by entity id, and never assumes an orientation the hardware does not print | The reader has the device in front of them, not the registry |
@@ -47,13 +47,13 @@ scale and tone. Copy it rather than starting from a blank page.
 
 1. Copy `kitchen-speaker-dial.html` to `cards/<slug>.html`. The slug is lowercase
    words joined by hyphens and names the control, not the room alone.
-2. Set the `epigaea-card-package` meta tag (one per package the card reflects)
-   and the footer to the package the card documents. Rewrite the title, the
-   table and the tips for that control.
+2. Set the `epigaea-card-package` meta tag (one per file the card reflects) and
+   the footer to the file the card documents. Rewrite the title, the table and
+   the tips for that control.
 3. Open the file in a browser. Check it at 7 inches wide and in the print preview;
    the dashed outline is the cut line.
-4. Link the card from the header comment of each package it names and from
-   `packages/README.md`.
+4. Link the card from the header comment of each file it names, and from that
+   directory's README (`packages/README.md` or `automations/README.md`).
 5. Add a row to the index below.
 6. Publish: `scripts/publish-card.sh <slug>` copies the card to the LAN web drop
    so it serves at `http://pub.lan/cards/<slug>/`. The script takes the web root
@@ -74,11 +74,12 @@ for that publish. The file in this directory stays the canonical standalone copy
 | [`kitchen-speaker-dial.html`](kitchen-speaker-dial.html) | Hue Tap Dial (RDM002) in the kitchen | [`packages/hue_tap_dial_kitchen_sonos.yaml`](../packages/hue_tap_dial_kitchen_sonos.yaml) | Fridge, next to the dial; publishes to `http://pub.lan/cards/kitchen-speaker-dial/` |
 | [`office-wall-switch.html`](office-wall-switch.html) | Zooz ZEN77 paddle on the office wall | [`packages/office_zen77.yaml`](../packages/office_zen77.yaml); scene list from [`packages/sonoff_button_office.yaml`](../packages/sonoff_button_office.yaml) | Office wall, beside the switch; publishes to `http://pub.lan/cards/office-wall-switch/` |
 | [`office-scene-button.html`](office-scene-button.html) | Sonoff wireless button (SNZB-01P, "Button 2") in the office | [`packages/sonoff_button_office.yaml`](../packages/sonoff_button_office.yaml) | Office, next to the button; publishes to `http://pub.lan/cards/office-scene-button/` |
+| [`downstairs-lights-button.html`](downstairs-lights-button.html) | Sonoff wireless button (SNZB-01P, "Button 1") for the downstairs and hallway lights | [`automations/sonoff_button_kitchen_family.yaml`](../automations/sonoff_button_kitchen_family.yaml) | Next to the button; publishes to `http://pub.lan/cards/downstairs-lights-button/` |
 
 ## Not yet
 
 The rest of the signage work is tracked in
 [#548](https://github.com/lentago/epigaea/issues/548): cards for the remaining
 controls, an index page at `http://pub.lan/cards/`, PDF export in CI, and a
-check that each card's meta tags name packages that exist and that a changed
-package has a changed card.
+check that each card's meta tags name files that exist and that a changed
+mapping has a changed card.
