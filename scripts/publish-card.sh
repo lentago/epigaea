@@ -11,6 +11,7 @@
 # Usage: publish-card.sh <slug> [web-root]
 #   web-root defaults to $CARDS_WEB_ROOT, else /mnt/lentago/web.
 #   CARDS_URL_BASE overrides the printed URL prefix (default http://pub.lan/cards).
+#   CARDS_ALLOW_LOCAL=1 accepts a web root that is not on a network share (tests).
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -34,9 +35,23 @@ publish_card() {
     return 2
   fi
   if [[ ! -d "$web_root" ]]; then
-    echo "publish-card: web root is not a directory (share not mounted?): ${web_root}" >&2
+    echo "publish-card: web root is not a directory: ${web_root}" >&2
     return 2
   fi
+  # A plain local folder at the web root path (share not mounted, automount
+  # failed) would take the copy silently. Require a network filesystem unless
+  # the caller says a local directory is intended.
+  local fstype
+  fstype="$(stat -f -c '%T' "$web_root" 2>/dev/null || echo unknown)"
+  case "$fstype" in
+    smb2|cifs|nfs|nfs4) ;;
+    *)
+      if [[ "${CARDS_ALLOW_LOCAL:-0}" != "1" ]]; then
+        echo "publish-card: web root is not on a network share (filesystem: ${fstype}); is the NAS mounted? Set CARDS_ALLOW_LOCAL=1 to publish to a local directory on purpose: ${web_root}" >&2
+        return 2
+      fi
+      ;;
+  esac
 
   mkdir -p "$dst_dir"
   # Write-then-rename so a reader never sees a half-copied page.

@@ -56,7 +56,9 @@ scale and tone. Copy it rather than starting from a blank page.
 6. Publish: `scripts/publish-card.sh <slug>` copies the card to the LAN web drop
    so it serves at `http://pub.lan/cards/<slug>/`. The script takes the web root
    as an optional second argument (or `CARDS_WEB_ROOT`); it defaults to the NAS
-   share as mounted on the workstation, `/mnt/lentago/web`.
+   share as mounted on the workstation, `/mnt/lentago/web`. It refuses a web root
+   that is not on a network share, so an unmounted NAS cannot take the copy onto
+   local disk.
 
 A card can also be published as a claude.ai artifact for sharing off the LAN.
 The artifact viewer supplies its own document skeleton, so paste the contents of
@@ -67,7 +69,7 @@ for that publish. The file in this directory stays the canonical standalone copy
 
 | Card | Control | Package | Posted |
 |---|---|---|---|
-| [`kitchen-speaker-dial.html`](kitchen-speaker-dial.html) | Hue Tap Dial (RDM002) in the kitchen | [`packages/hue_tap_dial_kitchen_sonos.yaml`](../packages/hue_tap_dial_kitchen_sonos.yaml) | Fridge, next to the dial; `http://pub.lan/cards/kitchen-speaker-dial/` |
+| [`kitchen-speaker-dial.html`](kitchen-speaker-dial.html) | Hue Tap Dial (RDM002) in the kitchen | [`packages/hue_tap_dial_kitchen_sonos.yaml`](../packages/hue_tap_dial_kitchen_sonos.yaml) | Fridge, next to the dial; publishes to `http://pub.lan/cards/kitchen-speaker-dial/` |
 
 ## Not yet
 

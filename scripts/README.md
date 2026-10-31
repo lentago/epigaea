@@ -189,8 +189,11 @@ Copies an instruction card from `cards/<slug>.html` to the LAN web drop as
 `<web-root>/cards/<slug>/index.html`, so Caddy on `pub.lan` serves it at
 `http://pub.lan/cards/<slug>/` with no deploy step. Write-then-rename, so a
 reader never sees a half-copied page. Refuses a slug that is not
-lowercase-hyphenated, a card that does not exist, or a web root that is not a
-mounted directory. The web root is the second argument or `CARDS_WEB_ROOT`,
+lowercase-hyphenated, a card that does not exist, a web root that does not
+exist, and a web root that is not on a network filesystem (`smb2`, `cifs`,
+`nfs`), which is what an unmounted NAS looks like from the workstation;
+`CARDS_ALLOW_LOCAL=1` publishes to a local directory on purpose (the tests use
+it). The web root is the second argument or `CARDS_WEB_ROOT`,
 defaulting to `/mnt/lentago/web` (the NAS share as the workstation mounts it;
 fleet hosts see it at `/mnt/neptune-lentago/web`). Runs on the workstation, not
 on HAOS. Card contract and index: `cards/README.md`.

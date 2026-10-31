@@ -14,6 +14,8 @@ setup() {
   WEB_ROOT="${BATS_TEST_TMPDIR}/web"
   mkdir -p "$WEB_ROOT"
   export WEB_ROOT
+  # The temp web root is local disk, not the NAS share; say so on purpose.
+  export CARDS_ALLOW_LOCAL=1
 }
 
 @test "publishes the first card under cards/<slug>/index.html and prints its URL" {
@@ -50,10 +52,17 @@ setup() {
   [ ! -e "$WEB_ROOT/cards" ]
 }
 
-@test "refuses a web root that is not a directory (share not mounted)" {
+@test "refuses a web root that does not exist" {
   run publish_card kitchen-speaker-dial "${BATS_TEST_TMPDIR}/not-mounted"
   [ "$status" -eq 2 ]
   [[ "$output" == *"not a directory"* ]]
+}
+
+@test "refuses a local directory as web root unless CARDS_ALLOW_LOCAL=1 (share not mounted)" {
+  run env -u CARDS_ALLOW_LOCAL bash -c "source '$SCRIPT'; publish_card kitchen-speaker-dial '$WEB_ROOT'"
+  [ "$status" -eq 2 ]
+  [[ "$output" == *"not on a network share"* ]]
+  [ ! -e "$WEB_ROOT/cards" ]
 }
 
 @test "CLI usage error without a slug" {
