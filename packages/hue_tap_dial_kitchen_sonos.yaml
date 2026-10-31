@@ -24,11 +24,13 @@
 #   Turning up while the speaker is muted unmutes it first.
 #
 # Buttons. Short presses are the everyday controls; long presses and
-# multi-presses drive Sonos grouping (added 2026-10-31).
-#   1 (top)    short  → play / pause
+# multi-presses drive Sonos grouping (added 2026-10-31). The face is four
+# quarter buttons, numbered by the dots printed on them: 1 one dot, 2 two
+# stacked, 3 three in a triangle, 4 four in a square.
+#   1          short  → play / pause
 #   2          short  → volume 20%
 #   3          short  → volume 30%
-#   4 (bottom) short  → volume 40%
+#   4          short  → volume 40%
 #   A preset unmutes first. There is no mute button (it was button 4 until
 #   2026-10-31); turning the dial down to 0% is the quiet path. Preset levels
 #   are the `preset_volume` trigger variables in the buttons automation.
