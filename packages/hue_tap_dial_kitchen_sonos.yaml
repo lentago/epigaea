@@ -14,9 +14,9 @@
 #   Each rotation event moves the volume by STEP_PCT (2%) times a speed
 #   multiplier of 1-3, derived from the event's step_size (args[1]): a slow
 #   turn moves 2% per event, a fast spin up to 6%. The divisor (50) and cap (3)
-#   are the tuning knobs in the `points` variable below. The automation's
-#   trace shows `step_size` for every event, so real values from this dial can
-#   be read there when tuning.
+#   are the tuning knobs in the `points` variable below. Automation traces
+#   leave out trigger-derived variables, so real step sizes from this dial
+#   have to be read from a zha_event listener (Developer Tools → Events).
 #   Turning up while the speaker is muted unmutes it first.
 #
 # Buttons (short press). Long presses are deliberately unmapped.
@@ -39,6 +39,9 @@
 #   The dial fires `step` / `step_with_on_off` (and possibly `move` /
 #   `move_with_on_off`) on cluster 8 (Level Control). args[0] = direction
 #   (0 = up, 1 = down) per Zigbee spec, args[1] = step size (or rate for move).
+#   The same values arrive by name in `params` (step_mode, step_size). Both
+#   carry zigpy enum objects (StepMode.Down), not plain ints; see the note on
+#   the rotation automation's variables.
 #   Triggers use `device_ieee` (persistent across device re-add) instead of
 #   `device_id` (changes if device is removed/re-paired).
 #
@@ -86,9 +89,28 @@ automation:
               - unavailable
               - unknown
     variables:
-      args: "{{ trigger.event.data.args | default([], true) }}"
-      step_size: "{{ (args[1] | int(0)) if args | length > 1 else 0 }}"
-      turning_down: "{{ ((args[0] | int(0)) == 1) if args | length > 0 else false }}"
+      # Each template reads the raw event itself. Do not pass
+      # trigger.event.data.args through a variable of its own: ZHA's args hold
+      # zigpy enums, and HA renders a variable to text before parsing it back,
+      # so "[<StepMode.Down: 1>, 25, 4]" fails to parse and stays a string.
+      # args[0] was then "[" and every turn read as clockwise with step size
+      # 0 (fixed 2026-10-31). params is preferred; args is the fallback.
+      step_size: >-
+        {% set d = trigger.event.data %}
+        {% set p = d.params if d.params is mapping else {} %}
+        {% set a = d.args if d.args is iterable and d.args is not string else [] %}
+        {% set raw = p.step_size if p.step_size is defined
+           else (p.rate if p.rate is defined
+           else (a[1] if a | length > 1 else 0)) %}
+        {{ raw | int(0) }}
+      turning_down: >-
+        {% set d = trigger.event.data %}
+        {% set p = d.params if d.params is mapping else {} %}
+        {% set a = d.args if d.args is iterable and d.args is not string else [] %}
+        {% set mode = p.step_mode if p.step_mode is defined
+           else (p.move_mode if p.move_mode is defined
+           else (a[0] if a | length > 0 else 0)) %}
+        {{ (mode | int(-1)) == 1 or 'down' in (mode | string | lower) }}
       # Speed multiplier 1-3. Tuning knobs: the divisor and the cap.
       points: "{{ [[ (step_size / 50) | round(0, 'ceil') | int(1), 1 ] | max, 3 ] | min }}"
       step_pct: 2
