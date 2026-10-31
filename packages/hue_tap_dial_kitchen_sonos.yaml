@@ -23,47 +23,68 @@
 #   have to be read from a zha_event listener (Developer Tools → Events).
 #   Turning up while the speaker is muted unmutes it first.
 #
-# Buttons. Short presses are the everyday controls; long presses and
-# multi-presses drive Sonos grouping (added 2026-10-31). The face is four
-# quarter buttons, numbered by the dots printed on them: 1 one dot, 2 two
-# stacked, 3 three in a triangle, 4 four in a square.
+# Buttons. The face is four quarter buttons, numbered by the dots printed on
+# them: 1 one dot, 2 two stacked, 3 three in a triangle, 4 four in a square.
+# The scheme (2026-10-31): the dial moves only the Kitchen. Button 1 is the
+# music, buttons 2-4 are volume; a single tap acts on the Kitchen speaker, a
+# double tap on everyone sharing the Kitchen's music on the first floor, and
+# a long press moves the Kitchen in or out of another room's music. Other
+# rooms are within reach of their own controls, so the dial no longer pulls
+# them into the Kitchen's group.
 #   1          short  → play / pause
+#   1          double → next track
+#   1          long   → Kitchen joins the music playing nearby, or leaves
 #   2          short  → volume 20%
 #   3          short  → volume 30%
 #   4          short  → volume 40%
-#   A preset unmutes first. There is no mute button (it was button 4 until
-#   2026-10-31); turning the dial down to 0% is the quiet path. Preset levels
-#   are the `preset_volume` trigger variables in the buttons automation.
-#   Play/pause follows the Sonos group coordinator when the Kitchen is
-#   grouped; volume stays on the Kitchen speaker alone.
-#
-#   1          long   → Kitchen solo: every other room leaves the Kitchen's
-#                       group (or the Kitchen leaves, when it is following
-#                       another room's music)
-#   2          long   → toggle Dining Room in / out of the Kitchen's group
-#   3          long   → toggle Office (the Playbar) in / out
+#   2 / 3 / 4  double → the same preset on every first-floor room in the
+#                       Kitchen's group
+#   2          long   → Kitchen joins the Dining Room's music, or leaves it
+#   3          long   → Kitchen joins the Office's music, or leaves it
 #   4          long   → nothing (unassigned)
-#   1          double → Kitchen + Dining Room, both set to
-#                       `preset_group_volume` (25%)
-#   1          triple → the first floor: Kitchen + Dining Room + Office, same
-#                       volume preset
-#   2 / 3 / 4  double → the 20 / 30 / 40% preset applied to the whole group
-#                       the Kitchen is in, not just the Kitchen
-#   The dial groups only the first-floor rooms within earshot of it: Kitchen,
-#   Dining Room and Office. The Basement, the bedroom and the Roam are not on
-#   the dial (2026-10-31, when the Basement toggle and the whole-house preset
-#   came off and Office moved from long 4 to long 3 so the toggles sit on
-#   adjacent buttons). They are still Sonos players; group them from the app.
-#   The Kitchen is always the coordinator of a preset group. Toggling a room
-#   in joins it to whatever the Kitchen is currently listening to (the
-#   group's coordinator), so it never interrupts playback. Unavailable rooms
-#   are skipped, never joined. A toggled-in room keeps its own last volume,
-#   as in the Sonos app. The preset group volume is a tuning knob:
-#   `preset_group_volume` in the grouping automation.
+#   No triple presses.
+#   A volume preset unmutes first. There is no mute button (it was button 4
+#   until 2026-10-31); turning the dial down to 0% is the quiet path. Preset
+#   levels are the `preset_volume` trigger variables. Play/pause and next
+#   track follow the Sonos group coordinator, so while the Kitchen plays along
+#   with another room they control that room's music too; volume from the
+#   ring and from single taps stays on the Kitchen speaker alone.
+#
+#   Long presses are toggles on the Kitchen's group. Joining always targets
+#   the coordinator of the chosen room's group, so the Kitchen takes the
+#   stream as a member and never interrupts it, and it keeps its own volume,
+#   as in the Sonos app. A room is joinable when its coordinator's state is
+#   `playing`; a paused or idle room is passed over and nothing happens. The
+#   card says so.
+#   - Long 1 picks the room. The Kitchen grouped with anyone (following or
+#     leading): the Kitchen leaves. The Kitchen on its own: it joins the first
+#     room in its trigger's `rooms` list (Dining Room, then Office) whose
+#     group is playing. When both rooms play different music the Dining
+#     Room wins; long 2 and long 3 are how to choose the other.
+#   - Long 2 / long 3 name the room (Dining Room / Office). The Kitchen
+#     already in that room's group: the Kitchen leaves. Otherwise, when that
+#     room's group is playing, the Kitchen joins it, moving out of any group
+#     it was following.
+#   When the Kitchen leaves a group it was following, it goes quiet and the
+#   room it joined keeps playing. Leading is covered below.
+#   The coordinator the Kitchen joins can be a room off the dial (the Office
+#   following the Basement, say). The Kitchen follows; the dial still never
+#   joins, leaves or sets the volume of the Basement, the bedroom or the
+#   Roam. Group them from the Sonos app.
+#   Leading is only possible when a room was added to the Kitchen from the
+#   Sonos app. Leaving, or joining another room, then moves only the Kitchen,
+#   and Sonos decides who coordinates the rest; the dial does not unjoin the
+#   other rooms.
+#   The double/triple 1 group presets (Kitchen + Dining Room, the first floor,
+#   with the Kitchen as coordinator) and the long 2 / long 3 toggles that
+#   pulled the Dining Room or Office into the Kitchen's group were retired
+#   with this scheme: they made the Kitchen lead, and the household groups
+#   those rooms from the rooms themselves. Long 2 and 3 keep their rooms but
+#   now point the other way: the Kitchen goes to the room.
 #
 #   Entity-id caveat (lentago/epigaea#544): `media_player.office_office` is the
-#   Office Playbar, the room this dial groups, and `media_player.office` is
-#   the Basement Arc, which the dial must not touch. Do not "fix"
+#   Office Playbar, a room the Kitchen can follow, and `media_player.office`
+#   is the Basement Arc, which the dial must not touch. Do not "fix"
 #   office_office to office here. Update the ids when #544 renames them.
 #
 # ZHA event signatures (PhilipsRDM002 quirk, zha-device-handlers):
@@ -191,10 +212,11 @@ automation:
 
   # ───────────────────────── BUTTONS ─────────────────────────
   - id: hue_tap_dial_buttons_kitchen_sonos
-    alias: 'Hue Tap Dial: buttons → Kitchen Sonos play/pause and volume presets'
+    alias: 'Hue Tap Dial: buttons → Kitchen Sonos play/pause, next track, volume presets'
     description: >-
-      1 play/pause; 2, 3 and 4 set the volume to 20%, 30% and 40% (short
-      presses). A preset unmutes first so it is never silent.
+      1 play/pause (short) and next track (double); 2, 3 and 4 set the
+      Kitchen's volume to 20%, 30% and 40% (short presses). A preset unmutes
+      first so it is never silent.
     triggers:
       - trigger: event
         id: play_pause
@@ -208,6 +230,13 @@ automation:
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: '1_short_release'
+      # Double 1 only exists in the button_N_ shape (the 300 ms press queue).
+      - trigger: event
+        id: next_track
+        event_type: zha_event
+        event_data:
+          device_ieee: '00:17:88:01:0d:35:c4:85'
+          command: button_1_double_press
       - trigger: event
         id: volume_preset
         event_type: zha_event
@@ -275,6 +304,16 @@ automation:
                   entity_id: media_player.kitchen
           - conditions:
               - condition: trigger
+                id: next_track
+            sequence:
+              # A radio station or TV input has no next track; Sonos refuses
+              # the skip. Nothing else follows in this run, so carry on.
+              - action: media_player.media_next_track
+                target:
+                  entity_id: media_player.kitchen
+                continue_on_error: true
+          - conditions:
+              - condition: trigger
                 id: volume_preset
             sequence:
               - if:
@@ -300,63 +339,52 @@ automation:
 
   # ───────────────────────── GROUPING ─────────────────────────
   - id: hue_tap_dial_grouping_kitchen_sonos
-    alias: 'Hue Tap Dial: long and multi-presses → Kitchen Sonos grouping'
+    alias: 'Hue Tap Dial: long 1-3 and double 2-4 → Kitchen Sonos join / leave, group volume'
     description: >-
-      Long presses toggle one room in or out of the Kitchen's Sonos group
-      (2 Dining Room, 3 Office) or leave the Kitchen solo (1); long 4 is
-      unassigned. Double and triple on button 1 build the Kitchen + Dining
-      Room and first-floor (Kitchen + Dining Room + Office) presets with the
-      Kitchen as coordinator. Double on 2, 3 and 4 applies
-      the 20 / 30 / 40% preset to the whole group. See the header for the
-      full table and the #544 entity-id caveat.
+      Long presses are toggles that move only the Kitchen. Long 1: when the
+      Kitchen is grouped it leaves; on its own it joins the first playing
+      group among the nearby rooms (Dining Room, then Office). Long 2 / 3:
+      the Kitchen joins the Dining Room's / Office's playing group, or leaves
+      it when already there. Double on 2, 3 and 4 applies the 20 / 30 / 40%
+      preset to every first-floor room in the Kitchen's group. See the header
+      for the full table and the #544 entity-id caveat.
     triggers:
-      # ── button 1: solo / presets ──
+      # ── buttons 1-3 long: join / leave (long 4 is unassigned) ──
+      # rooms: where to look for playing music, in priority order.
+      # any_group: leave whenever the Kitchen is grouped (long 1), rather
+      # than only when it is in the named room's group (long 2 / 3).
       - trigger: event
-        id: kitchen_solo
+        id: join_leave
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_1_long_release
-      - trigger: event
-        id: preset
-        event_type: zha_event
-        event_data:
-          device_ieee: '00:17:88:01:0d:35:c4:85'
-          command: button_1_double_press
         variables:
-          # Kitchen + Dining Room (the Kitchen is added by the preset itself).
-          wanted:
-            - media_player.dining_room
-      - trigger: event
-        id: preset
-        event_type: zha_event
-        event_data:
-          device_ieee: '00:17:88:01:0d:35:c4:85'
-          command: button_1_triple_press
-        variables:
-          # The first floor. media_player.office_office IS the Office Playbar
-          # (#544). Only rooms within earshot of the kitchen belong here; the
-          # Basement, bedroom and Roam stay off the list.
-          wanted:
+          # media_player.office_office IS the Office Playbar (#544).
+          rooms:
             - media_player.dining_room
             - media_player.office_office
-      # ── buttons 2-3 long: toggle one room (long 4 is unassigned) ──
+          any_group: true
       - trigger: event
-        id: toggle_room
+        id: join_leave
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_2_long_release
         variables:
-          room: media_player.dining_room
+          rooms:
+            - media_player.dining_room
+          any_group: false
       - trigger: event
-        id: toggle_room
+        id: join_leave
         event_type: zha_event
         event_data:
           device_ieee: '00:17:88:01:0d:35:c4:85'
           command: button_3_long_release
         variables:
-          room: media_player.office_office   # Office Playbar (#544)
+          rooms:
+            - media_player.office_office   # Office Playbar (#544)
+          any_group: false
       # ── buttons 2-4 double: group volume presets ──
       - trigger: event
         id: group_volume
@@ -392,115 +420,78 @@ automation:
               - unknown
     variables:
       kitchen: media_player.kitchen
-      # Volume every player gets when a preset forms the group. Tuning knob.
-      preset_group_volume: 0.25
+      # The rooms a group volume preset may touch. Off-floor rooms in the
+      # Kitchen's group (the Basement, the bedroom, the Roam) keep theirs.
+      first_floor:
+        - media_player.kitchen
+        - media_player.dining_room
+        - media_player.office_office
     actions:
       # Read the group when the run actually starts, not when it was queued,
       # so a second gesture right behind a join sees the joined topology.
       - variables:
           group: "{{ state_attr(kitchen, 'group_members') or [kitchen] }}"
       - choose:
-          # ── Kitchen solo ──
+          # ── Join / leave ──
           - conditions:
               - condition: trigger
-                id: kitchen_solo
+                id: join_leave
             sequence:
-              - variables:
-                  # Kitchen coordinating: the others leave. Kitchen following
-                  # another room: the Kitchen leaves and that group plays on.
-                  leavers: >-
-                    {%- if group[0] == kitchen -%}
-                      {{ group | reject('eq', kitchen) | list }}
-                    {%- else -%}
-                      {{ [kitchen] }}
-                    {%- endif -%}
               - if:
-                  - "{{ leavers | count > 0 }}"
+                  # Long 1: grouped at all. Long 2 / 3: already with that room.
+                  - >-
+                    {{ (any_group and group | count > 1)
+                       or (group | select('in', rooms) | list | count > 0) }}
                 then:
+                  # Only the Kitchen leaves, whether it followed or led.
                   - action: media_player.unjoin
                     target:
-                      entity_id: "{{ leavers }}"
-          # ── Toggle one room ──
-          - conditions:
-              - condition: trigger
-                id: toggle_room
-            sequence:
-              - choose:
-                  - conditions:
-                      - "{{ room in group }}"
-                    sequence:
-                      - action: media_player.unjoin
-                        target:
-                          entity_id: "{{ room }}"
-                  - conditions:
-                      - "{{ states(room) not in ['unavailable', 'unknown'] }}"
-                    sequence:
-                      # Join the group's coordinator, not the Kitchen itself,
-                      # so the room picks up whatever the Kitchen is hearing.
+                      entity_id: "{{ kitchen }}"
+                else:
+                  - variables:
+                      # The coordinator of the first listed room whose group
+                      # is playing, or '' when none is. HA lists a Sonos
+                      # group's coordinator first in group_members.
+                      host: >-
+                        {%- set ns = namespace(host='') -%}
+                        {%- for room in rooms -%}
+                          {%- set lead = (state_attr(room, 'group_members') or [room])[0] -%}
+                          {%- if not ns.host and lead != kitchen and is_state(lead, 'playing') -%}
+                            {%- set ns.host = lead -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                        {{ ns.host }}
+                  - if:
+                      - "{{ host != '' }}"
+                    then:
+                      # Join the coordinator, not the room itself: joining a
+                      # room that follows someone else would pull that room
+                      # out of its group first. A Kitchen following another
+                      # room moves straight across.
                       - action: media_player.join
                         target:
-                          entity_id: "{{ group[0] }}"
+                          entity_id: "{{ host }}"
                         data:
                           group_members:
-                            - "{{ room }}"
-          # ── Presets: Kitchen + Dining Room / first floor ──
-          - conditions:
-              - condition: trigger
-                id: preset
-            sequence:
-              - variables:
-                  members: >-
-                    {{ expand(wanted)
-                       | rejectattr('state', 'in', ['unavailable', 'unknown'])
-                       | map(attribute='entity_id')
-                       | reject('eq', kitchen) | list }}
-                  # Rooms in the Kitchen's group that the preset does not name.
-                  extras: "{{ group | reject('eq', kitchen) | reject('in', members) | list }}"
-              # Exact set when the Kitchen coordinates: the extras leave first.
-              # When the Kitchen follows another room, the join below pulls the
-              # Kitchen out of that group and makes it the coordinator, so the
-              # old group is left alone.
-              - if:
-                  - "{{ group[0] == kitchen and extras | count > 0 }}"
-                then:
-                  - action: media_player.unjoin
-                    target:
-                      entity_id: "{{ extras }}"
-              # Level everyone before the join so nobody blasts at an old volume.
-              - action: media_player.volume_mute
-                target:
-                  entity_id: "{{ [kitchen] + members }}"
-                data:
-                  is_volume_muted: false
-              - action: media_player.volume_set
-                target:
-                  entity_id: "{{ [kitchen] + members }}"
-                data:
-                  volume_level: "{{ preset_group_volume }}"
-              - if:
-                  - "{{ members | count > 0 }}"
-                then:
-                  - action: media_player.join
-                    target:
-                      entity_id: media_player.kitchen
-                    data:
-                      group_members: "{{ members }}"
+                            - "{{ kitchen }}"
           # ── Group volume preset ──
           - conditions:
               - condition: trigger
                 id: group_volume
             sequence:
+              - variables:
+                  targets: "{{ group | select('in', first_floor) | list }}"
               - action: media_player.volume_mute
                 target:
-                  entity_id: "{{ group }}"
+                  entity_id: "{{ targets }}"
                 data:
                   is_volume_muted: false
               - action: media_player.volume_set
                 target:
-                  entity_id: "{{ group }}"
+                  entity_id: "{{ targets }}"
                 data:
                   volume_level: "{{ preset_volume }}"
-    # queued: a long press right after a double press should both land, in
-    # order, each reading the topology the previous one left behind.
+    # queued: a double press right after a join should both land, in order,
+    # each reading the topology the previous one left behind.
     mode: queued
     max: 5
