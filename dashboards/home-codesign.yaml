@@ -104,13 +104,37 @@ views:
           - type: heading
             heading: Weather
             heading_style: title
+          # clock-weather-card v3 config. The header rows mirror v3's
+          # default header, with the v2 12-hour time and date pattern set
+          # explicitly. The v3 hourly forecast strip is hidden to keep the
+          # v2 layout; set forecast_strip.hide: false to try it.
           - type: custom:clock-weather-card
             entity: weather.forecast_home
-            forecast_rows: 5
-            time_format: "12"
-            date_pattern: "EEEE, MMM d"
-            hide_today_section: false
-            hide_forecast_section: false
+            sections:
+              header:
+                rows:
+                  - segments:
+                      - type: icon
+                        icon: mdi:thermometer
+                      - type: weather
+                        attribute: temperature
+                      - type: spacer
+                      - type: weather
+                  - font_size: 4rem
+                    alignment: center
+                    segments:
+                      - type: time
+                        time_pattern: "h:mm a"
+                  - alignment: center
+                    segments:
+                      - type: icon
+                        icon: mdi:calendar
+                      - type: date
+                        date_pattern: "EEEE, MMM d"
+              forecast_strip:
+                hide: true
+              forecast_list:
+                count: 5
 
           - type: heading
             heading: Openings
