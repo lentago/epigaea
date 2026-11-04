@@ -18,6 +18,8 @@ setup() {
   export WEB_ROOT
   # The temp web root is local disk, not the NAS share; say so on purpose.
   export SIGNAGE_ALLOW_LOCAL=1
+  # Most tests check the page copy alone; the PDF tests turn this back on.
+  export SIGNAGE_PDF=0
 }
 
 @test "publishes a card under signage/cards/<slug>/index.html and prints its URL" {
@@ -143,4 +145,51 @@ setup() {
   run bash "$SCRIPT" index "$WEB_ROOT" extra
   [ "$status" -eq 2 ]
   [[ "$output" == *"Usage:"* ]]
+}
+
+@test "SIGNAGE_PDF=0 publishes the page only, with no PDF and a single URL line" {
+  run env SIGNAGE_PDF=0 bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [ "$output" = "http://pub.lan/signage/cards/kitchen-speaker-dial/" ]
+  [ ! -e "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf" ]
+}
+
+@test "the PDF lands beside the page and its URL is printed on a second line" {
+  run env SIGNAGE_PDF=1 bash "$SCRIPT" sheets meeting-light "$WEB_ROOT"
+  if [[ "$output" == *"warning: no PDF"* ]] && [ -z "${CI:-}" ]; then
+    skip "cannot render signage here: $output"
+  fi
+  echo "$output"
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" = "http://pub.lan/signage/sheets/meeting-light/" ]
+  [ "${lines[1]}" = "http://pub.lan/signage/sheets/meeting-light/meeting-light.pdf" ]
+  [ -f "$WEB_ROOT/signage/sheets/meeting-light/index.html" ]
+  [ -s "$WEB_ROOT/signage/sheets/meeting-light/meeting-light.pdf" ]
+  [ ! -e "$WEB_ROOT/signage/sheets/meeting-light/meeting-light.pdf.partial" ]
+  pdfinfo "$WEB_ROOT/signage/sheets/meeting-light/meeting-light.pdf" | grep -Eq '^Pages: +1$'
+}
+
+@test "a republish without a new PDF takes down the old one rather than serve it beside the new page" {
+  mkdir -p "$WEB_ROOT/signage/cards/kitchen-speaker-dial"
+  echo old > "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf"
+  run env SIGNAGE_PDF=0 bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"removed the previous kitchen-speaker-dial.pdf"* ]]
+  [ ! -e "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf" ]
+  echo old > "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf"
+  # CHROME=true writes no PDF, so the render cannot run here (exit 3).
+  run env SIGNAGE_PDF=1 CHROME=true bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [ ! -e "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf" ]
+  [ -f "$WEB_ROOT/signage/cards/kitchen-speaker-dial/index.html" ]
+}
+
+@test "a PDF that cannot be rendered here warns and still publishes the page" {
+  # CHROME=true is an executable that exits 0 and writes no PDF: exit 3.
+  run env SIGNAGE_PDF=1 CHROME=true bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"warning: no PDF for cards/kitchen-speaker-dial"* ]]
+  [[ "$output" == *"http://pub.lan/signage/cards/kitchen-speaker-dial/"* ]]
+  [ -f "$WEB_ROOT/signage/cards/kitchen-speaker-dial/index.html" ]
+  [ ! -e "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf" ]
 }

@@ -17,6 +17,11 @@
 #   web-root defaults to $SIGNAGE_WEB_ROOT, else /mnt/lentago/web.
 #   SIGNAGE_URL_BASE overrides the printed URL prefix (default http://pub.lan/signage).
 #   SIGNAGE_ALLOW_LOCAL=1 accepts a web root that is not on a network share (tests).
+#   SIGNAGE_PDF=0 skips the PDF. Otherwise scripts/render-signage-pdf.sh renders
+#   the piece and the PDF is written beside the page as <slug>.pdf, with its URL
+#   printed on a second line. If the PDF cannot be rendered here (no browser,
+#   no pdfinfo, no fonts) the page is still published and a warning is printed;
+#   a PDF that renders but is not one Letter page fails the publish.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -91,15 +96,56 @@ publish_signage() {
   fi
   check_web_root "$web_root" || return $?
 
+  # Render the PDF first, so a piece that spills past a page publishes nothing.
+  local pdf_dir="" pdf_rc=0
+  if [[ "${SIGNAGE_PDF:-1}" != "0" ]]; then
+    pdf_dir="$(mktemp -d)"
+    local render_out
+    render_out="$("${REPO_ROOT}/scripts/render-signage-pdf.sh" --out "$pdf_dir" "${type}/${slug}")" || pdf_rc=$?
+    case "$pdf_rc" in
+      0) ;;
+      3)
+        echo "publish-signage: warning: no PDF for ${type}/${slug}; publishing the page only" >&2
+        rm -rf "$pdf_dir"
+        pdf_dir=""
+        ;;
+      *)
+        rm -rf "$pdf_dir"
+        echo "$render_out" >&2
+        echo "publish-signage: PDF render failed for ${type}/${slug}; nothing published" >&2
+        return 1
+        ;;
+    esac
+  fi
+
   mkdir -p "$dst_dir"
-  # Write-then-rename so a reader never sees a half-copied page.
+  # Stage both files first, then rename them into place: a reader never sees a
+  # half-copied file, and a failed copy leaves the published pair as it was.
   cp "$src" "${dst_dir}/index.html.partial"
+  if [[ -n "$pdf_dir" ]]; then
+    cp "${pdf_dir}/${type}/${slug}.pdf" "${dst_dir}/${slug}.pdf.partial"
+    rm -rf "$pdf_dir"
+  fi
   mv -f "${dst_dir}/index.html.partial" "${dst_dir}/index.html"
+  local wrote_pdf=0
+  if [[ -n "$pdf_dir" ]]; then
+    mv -f "${dst_dir}/${slug}.pdf.partial" "${dst_dir}/${slug}.pdf"
+    wrote_pdf=1
+  elif [[ -e "${dst_dir}/${slug}.pdf" ]]; then
+    # No new PDF this time. An old one beside the new page would print the
+    # old layout from the same URL, so take it down.
+    rm -f "${dst_dir}/${slug}.pdf"
+    echo "publish-signage: removed the previous ${slug}.pdf, which no longer matches the page" >&2
+  fi
   # Modes are advisory on the SMB mount (the server decides); best effort.
   chmod 755 "$dst_dir" 2>/dev/null || true
   chmod 644 "${dst_dir}/index.html" 2>/dev/null || true
 
   echo "${SIGNAGE_URL_BASE}/${type}/${slug}/"
+  if [[ "$wrote_pdf" == 1 ]]; then
+    chmod 644 "${dst_dir}/${slug}.pdf" 2>/dev/null || true
+    echo "${SIGNAGE_URL_BASE}/${type}/${slug}/${slug}.pdf"
+  fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then

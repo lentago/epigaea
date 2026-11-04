@@ -120,6 +120,19 @@ relative (`cards/<slug>/`), so the page works on any host name. It is not
 committed. Run the `index` form after you publish a piece or change a row. The
 build fails if a row names a piece file that does not exist.
 
+Each piece is published with its PDF. The script renders the piece with
+`scripts/render-signage-pdf.sh` and writes the PDF beside the page, at
+`http://pub.lan/signage/<type>/<slug>/<slug>.pdf`, and prints that URL on a
+second line. A facility with no browser on the printer PC can print the PDF.
+`SIGNAGE_PDF=0` skips it. If this machine cannot render (no Chrome or
+`poppler-utils`, or the fonts did not load) the script warns and publishes the
+page only, and takes down any PDF from an earlier publish so the old layout is
+not printed from the new page's address. A piece that renders to more than one
+Letter page fails the publish.
+
+CI also renders every piece on each pull request and attaches the PDFs to the
+run as the `signage-pdfs` artifact, so a reviewer can open the printed output.
+
 A piece can also be published as a claude.ai artifact for sharing off the LAN.
 The artifact viewer supplies its own document skeleton, so paste the contents
 of `<head>` after the meta tags and the contents of `<body>` into a body-only
@@ -151,4 +164,4 @@ Cards published before the move to `signage/` served at
 
 The rest of the signage work is tracked in
 [#548](https://github.com/lentago/epigaea/issues/548): the label type, QR codes
-on the pieces, PDF export in CI, and one shared stylesheet.
+on the pieces, and one shared stylesheet.
