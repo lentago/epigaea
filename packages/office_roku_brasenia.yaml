@@ -1,0 +1,100 @@
+# Office Roku → brasenia channel watchdog
+#
+# Device:
+#   Roku Streaming Stick Plus in the office, the brasenia wall display.
+#   192.168.139.21, a static Firewalla DHCP reservation (Wi-Fi MAC
+#   d4:be:dc:ec:86:16). Not in any HA integration: this package talks to it
+#   over ECP (External Control Protocol, port 8060) directly.
+#
+# Why (lentago/brasenia#140): when the stick reboots, or the brasenia channel
+# exits, the stick sits on the Roku home screen and the wall stays dark until
+# someone relaunches the channel by hand. Chris decided on 2026-11-04 that the
+# office stick is only for the wall, so the channel comes back on its own.
+# Roku-side automation goes through Home Assistant, which is why it lives here
+# and not in the brasenia repo.
+#
+# How:
+#   sensor.office_roku_active_app polls ECP `query/active-app` every 30 s and
+#   holds the name of the app in the foreground: `brasenia` (the sideloaded
+#   dev channel, app id `dev`) when the wall is up, `Roku Dynamic Menu` on the
+#   home screen (older Roku OS releases report the home screen as `Roku`). It
+#   reads unavailable while the stick is off the network, e.g. mid-reboot. HA's
+#   rest integration turns the text/xml reply into JSON, so the `app` element
+#   arrives as {"@id": ..., "#text": <name>}, or as a bare string when the
+#   element has no attributes.
+#
+#   automation.office_roku_relaunch_brasenia fires once the stick has sat on
+#   the home screen for 30 s (and on HA start, in case it was already there),
+#   POSTs ECP `launch/dev`, and checks again 15 s later. It keeps trying while
+#   the stick stays on the home screen: three quick tries, then one every
+#   5 minutes, so a launch that keeps failing never leaves the wall dark for
+#   good. It never acts while another app is in the foreground, so a person
+#   who opens something else on the stick is left alone. To pause it for work
+#   on the stick, turn the automation off in the HA UI; no deploy needed.
+#
+# The sensor's history is also the record of when the wall was not showing
+# brasenia.
+
+rest:
+  - resource: http://192.168.139.21:8060/query/active-app
+    scan_interval: 30
+    timeout: 5
+    sensor:
+      - name: Office Roku active app
+        unique_id: office_roku_active_app
+        icon: mdi:television-play
+        value_template: >-
+          {%- set app = value_json['active-app']['app'] -%}
+          {{ app['#text'] if app is mapping else app }}
+
+rest_command:
+  office_roku_launch_brasenia:
+    url: http://192.168.139.21:8060/launch/dev
+    method: POST
+    timeout: 10
+
+automation:
+  - id: office_roku_relaunch_brasenia
+    alias: "Office Roku: relaunch brasenia from the home screen"
+    description: >-
+      Relaunches the brasenia channel (ECP launch/dev) when the office Roku
+      sits on its home screen. The stick is only for the wall
+      (lentago/brasenia#140).
+    mode: single
+    max_exceeded: silent
+    triggers:
+      - trigger: state
+        entity_id: sensor.office_roku_active_app
+        to:
+          - Roku Dynamic Menu
+          - Roku
+        for: "00:00:30"
+      - trigger: homeassistant
+        event: start
+    conditions:
+      - condition: state
+        entity_id: sensor.office_roku_active_app
+        state:
+          - Roku Dynamic Menu
+          - Roku
+    actions:
+      # Keeps trying for as long as the stick stays on the home screen: three
+      # quick tries 15 s apart, then one every 5 minutes. The run ends when the
+      # sensor reads anything else (brasenia, another app, or unavailable while
+      # the stick reboots); the next home-screen reading starts a new run.
+      - repeat:
+          sequence:
+            - action: rest_command.office_roku_launch_brasenia
+              continue_on_error: true
+            - delay: "{{ '00:00:15' if repeat.index < 3 else '00:05:00' }}"
+            - action: homeassistant.update_entity
+              target:
+                entity_id: sensor.office_roku_active_app
+          until:
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: sensor.office_roku_active_app
+                  state:
+                    - Roku Dynamic Menu
+                    - Roku

@@ -78,3 +78,13 @@ Sonoff Button 2 (SNZB-01P, ZHA, `device_ieee 18:69:0a:ff:fe:13:a1:01`) is the of
 ## `playroom_lights.yaml` — Play Room lights helpers
 
 `script.playroom_lights_power_on` (turns on the Wemo wall switch that feeds the four Hue bulbs and waits for them to rejoin), `script.playroom_color_loop` (software four-colour wash), and the `playroom_color_loop_external_off_guard` automation that lets a plain `light.turn_off` stop the loop. No controller drives them right now; they are kept so the playroom scenes can be rebuilt on another button without re-deriving the wiring.
+
+## `office_roku_brasenia.yaml` — Office Roku brasenia watchdog
+
+The office Roku Streaming Stick Plus (192.168.139.21, a static DHCP reservation) is the brasenia wall display, and it is only for the wall (Chris, 2026-11-04, lentago/brasenia#140). When the stick reboots or the channel exits, it lands on the Roku home screen, and nothing on the brasenia side brings it back. This package does, over ECP on port 8060. No HA integration is involved.
+
+**`sensor.office_roku_active_app`** — `rest` sensor polling `query/active-app` every 30 s. Its state is the foreground app's name: `brasenia` (the sideloaded dev channel) when the wall is up, `Roku Dynamic Menu` on the home screen (`Roku` on older Roku OS), unavailable while the stick is off the network. Its history is the record of when the wall was not on brasenia.
+
+**`rest_command.office_roku_launch_brasenia`** — POSTs `launch/dev`, which starts the sideloaded channel.
+
+**`automation.office_roku_relaunch_brasenia`** — fires once the sensor has read the home screen for 30 s, and on HA start if it already does. It launches the channel and refreshes the sensor to check. While the stick stays on the home screen it keeps trying, three times 15 s apart and then every 5 minutes, so a failing launch never leaves the wall dark for good. It never acts while another app is in the foreground. To pause it for work on the stick, turn the automation off in the HA UI. Changes to the brasenia channel itself belong in the brasenia repo, not here.
