@@ -200,6 +200,34 @@ fleet hosts see it at `/mnt/neptune-lentago/web`). Runs on the workstation, not
 on HAOS. Signage contract and index: `signage/README.md`. It was
 `publish-card.sh` until signage gained a second type (#548).
 
+`publish-signage.sh index [web-root]` publishes the index page instead of a
+piece. It runs `build-signage-index.py` and writes the result to
+`<web-root>/signage/index.html` (served at `http://pub.lan/signage/`), with the
+same write-then-rename, the same web root rules and the same network-share
+guard. A failed build leaves the live page alone.
+
+## `build-signage-index.py`
+
+Builds the signage index page: every piece, grouped by room, so a phone can
+find a piece by where it is or what it controls. Python 3, stdlib only. It
+reads the `### Cards`, `### Sheets` and `### Labels` tables in
+`signage/README.md` (Piece | Room | Control or Signal | Files | Posted), takes
+each piece's name from its file's `<title>`, and writes one standalone HTML page
+with the pieces' fonts, colour tokens and dark-mode surround. Each entry shows
+the name, the type, the control or signal, and the Posted cell up to the first
+`;`. Links are relative (`cards/<slug>/`), never a host name. The footer says
+which file it was generated from and on what date.
+
+```
+build-signage-index.py [--readme FILE] [--out FILE]
+```
+
+The page goes to stdout unless `--out` is given. `--readme` points at another
+README (the tests use a fixture); piece paths resolve relative to it. Exit 1
+means a table is malformed or a row's piece file is missing or has no
+`<title>`. Exit 2 is a usage error. The page is not committed: use
+`publish-signage.sh index` to build and publish it (#548).
+
 ## `check-signage-size.sh`
 
 Checks that each piece of signage fits its type's printed size: a card's

@@ -10,6 +10,10 @@
 # signage/README.md for the signage contract.
 #
 # Usage: publish-signage.sh <type> <slug> [web-root]
+#        publish-signage.sh index [web-root]
+#   `index` builds the index page with scripts/build-signage-index.py and writes
+#   it to <web-root>/signage/index.html (http://pub.lan/signage/). The page is
+#   generated, not committed.
 #   web-root defaults to $SIGNAGE_WEB_ROOT, else /mnt/lentago/web.
 #   SIGNAGE_URL_BASE overrides the printed URL prefix (default http://pub.lan/signage).
 #   SIGNAGE_ALLOW_LOCAL=1 accepts a web root that is not on a network share (tests).
@@ -20,6 +24,51 @@ readonly REPO_ROOT
 readonly SIGNAGE_DIR="${REPO_ROOT}/signage"
 readonly SIGNAGE_URL_BASE="${SIGNAGE_URL_BASE:-http://pub.lan/signage}"
 readonly SIGNAGE_TYPES="cards sheets labels"
+
+# Validate the web root: it must exist and be on a network share.
+# Args: <web-root>
+check_web_root() {
+  local web_root="$1"
+  if [[ ! -d "$web_root" ]]; then
+    echo "publish-signage: web root is not a directory: ${web_root}" >&2
+    return 2
+  fi
+  # A plain local folder at the web root path (share not mounted, automount
+  # failed) would take the copy silently. Require a network filesystem unless
+  # the caller says a local directory is intended.
+  local fstype
+  fstype="$(stat -f -c '%T' "$web_root" 2>/dev/null || echo unknown)"
+  case "$fstype" in
+    smb2|cifs|nfs|nfs4) ;;
+    *)
+      if [[ "${SIGNAGE_ALLOW_LOCAL:-0}" != "1" ]]; then
+        echo "publish-signage: web root is not on a network share (filesystem: ${fstype}); is the NAS mounted? Set SIGNAGE_ALLOW_LOCAL=1 to publish to a local directory on purpose: ${web_root}" >&2
+        return 2
+      fi
+      ;;
+  esac
+}
+
+# Build the index page and write it to <web-root>/signage/index.html.
+# Args: <web-root>
+publish_index() {
+  local web_root="$1" rc=0
+  check_web_root "$web_root" || return $?
+  local dst_dir="${web_root}/signage"
+  mkdir -p "$dst_dir"
+  # Build to the .partial file, then rename, so a reader never sees half a page
+  # and a failed build leaves the live page alone.
+  python3 "${REPO_ROOT}/scripts/build-signage-index.py" --out "${dst_dir}/index.html.partial" || rc=$?
+  if [[ $rc -ne 0 ]]; then
+    rm -f "${dst_dir}/index.html.partial"
+    return "$rc"
+  fi
+  mv -f "${dst_dir}/index.html.partial" "${dst_dir}/index.html"
+  chmod 755 "$dst_dir" 2>/dev/null || true
+  chmod 644 "${dst_dir}/index.html" 2>/dev/null || true
+
+  echo "${SIGNAGE_URL_BASE}/"
+}
 
 # Copy one piece into the web root and print its URL.
 # Args: <type> <slug> <web-root>
@@ -40,24 +89,7 @@ publish_signage() {
     echo "publish-signage: no such piece: ${src}" >&2
     return 2
   fi
-  if [[ ! -d "$web_root" ]]; then
-    echo "publish-signage: web root is not a directory: ${web_root}" >&2
-    return 2
-  fi
-  # A plain local folder at the web root path (share not mounted, automount
-  # failed) would take the copy silently. Require a network filesystem unless
-  # the caller says a local directory is intended.
-  local fstype
-  fstype="$(stat -f -c '%T' "$web_root" 2>/dev/null || echo unknown)"
-  case "$fstype" in
-    smb2|cifs|nfs|nfs4) ;;
-    *)
-      if [[ "${SIGNAGE_ALLOW_LOCAL:-0}" != "1" ]]; then
-        echo "publish-signage: web root is not on a network share (filesystem: ${fstype}); is the NAS mounted? Set SIGNAGE_ALLOW_LOCAL=1 to publish to a local directory on purpose: ${web_root}" >&2
-        return 2
-      fi
-      ;;
-  esac
+  check_web_root "$web_root" || return $?
 
   mkdir -p "$dst_dir"
   # Write-then-rename so a reader never sees a half-copied page.
@@ -71,9 +103,19 @@ publish_signage() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  if [[ $# -lt 2 || $# -gt 3 ]]; then
-    echo "Usage: $(basename "$0") <type> <slug> [web-root]   (type: ${SIGNAGE_TYPES})" >&2
-    exit 2
+  default_root="${SIGNAGE_WEB_ROOT:-/mnt/lentago/web}"
+  if [[ "${1:-}" == "index" ]]; then
+    if [[ $# -gt 2 ]]; then
+      echo "Usage: $(basename "$0") index [web-root]" >&2
+      exit 2
+    fi
+    publish_index "${2:-$default_root}"
+  else
+    if [[ $# -lt 2 || $# -gt 3 ]]; then
+      echo "Usage: $(basename "$0") <type> <slug> [web-root]   (type: ${SIGNAGE_TYPES})" >&2
+      echo "       $(basename "$0") index [web-root]" >&2
+      exit 2
+    fi
+    publish_signage "$1" "$2" "${3:-$default_root}"
   fi
-  publish_signage "$1" "$2" "${3:-${SIGNAGE_WEB_ROOT:-/mnt/lentago/web}}"
 fi
