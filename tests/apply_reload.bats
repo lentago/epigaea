@@ -123,6 +123,7 @@ run_with_diff() {
   run_with_diff "$(printf '%s\n' \
     "signage/cards/office-wall-switch.html" \
     "signage/sheets/meeting-light.html" \
+    "scripts/check-signage-packages.py" \
     "cards/README.md" \
     "tests/apply_reload.bats" \
     "assets/banner.svg" \
