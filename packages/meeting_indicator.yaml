@@ -6,10 +6,13 @@
 #                           active it is turned red as an in-room indicator;
 #                           when the meeting ends it rejoins the office scene.
 #
-# Instruction card: cards/meeting-button.html is the printed card posted by the
-# button (contract in cards/README.md). Any change to what a press does, or to
-# the lights it drives, updates the card in the same PR. The hallway light gets
-# a sheet later, not a card (#548).
+# Signage (contract in signage/README.md):
+#   signage/cards/meeting-button.html   the card posted by the button
+#   signage/sheets/meeting-light.html   the sheet posted by the hallway light,
+#                                       saying what the red means
+# Any change to what a press does, or to the lights it drives, updates the
+# card in the same PR; any change to what the hallway light shows updates the
+# sheet in the same PR.
 #
 # corner_lamp ownership
 # ---------------------

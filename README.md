@@ -92,7 +92,7 @@ A production smart home run as declarative YAML — real CI gates, event-driven 
 | Governance partition prevents bidirectional sync conflicts | The [Config Governance table](#config-governance) partitions `automations.yaml` (UI-authored) from `automations/` (git-authored, PR-only) — without this split, a `git reset --hard` would silently clobber UI edits |
 | Fake-secrets for full CI without real credentials | [`secrets.fake.yaml`](secrets.fake.yaml) is copied to `secrets.yaml` in CI so `!secret` references resolve without exposing real values — full config validation on every PR |
 | PR dispatch with no issue-tracker step | Changes are dispatched by talking to Claude Code directly; the PR is the canonical record of intent — a deliberate deviation from the fleet norm that reduces round-trips |
-| The human half of an automation is versioned too | Signage, the printed pieces posted at the point of use, changes in the same PR as the behaviour it describes, so the paper on the fridge never disagrees with the YAML; [`cards/`](cards/) holds the first type, one instruction card per physical control, with labels and sheets tracked in [#548](https://github.com/lentago/epigaea/issues/548) |
+| The human half of an automation is versioned too | Signage, the printed pieces posted at the point of use, changes in the same PR as the behaviour it describes, so the paper on the fridge never disagrees with the YAML; [`signage/`](signage/) holds instruction cards, one per physical control, and sheets for the signals, with labels tracked in [#548](https://github.com/lentago/epigaea/issues/548) |
 
 ## 🛠️ Make a change yourself
 
@@ -127,7 +127,7 @@ Org membership is not required to read or fork this repo. PRs from a fork follow
 
 **Template sensors** that solve real UX problems. Sonos group coordinator detection prevents duplicate media cards when speakers are grouped. Per-room light activity sensors drive the mobile view's "all off" indicators. Both patterns are documented in `configuration.yaml` with clear rationale.
 
-**Signage** for the physical controls and signals, printed and posted at the point of use for someone who doesn't have the app. Every piece is standalone HTML, written in the household's words and versioned with the package that implements the behaviour. The first type is the instruction card: [`cards/`](cards/) holds one per repurposed device, starting with the fridge card for the Hue Tap Dial that runs the Kitchen Sonos. Labels for the devices and sheets for the signals follow, tracked in [#548](https://github.com/lentago/epigaea/issues/548). Signage is the staff-facing surface of the facilities kit this repo is the base for ([lentago/.github#129](https://github.com/lentago/.github/issues/129)).
+**Signage** for the physical controls and signals, printed and posted at the point of use for someone who doesn't have the app. Every piece is standalone HTML, written in the household's words and versioned with the package that implements the behaviour. It lives in [`signage/`](signage/): instruction cards, one per repurposed device, starting with the fridge card for the Hue Tap Dial that runs the Kitchen Sonos; and sheets for the signals, starting with the placard by the hallway meeting light. Labels for the devices follow, tracked in [#548](https://github.com/lentago/epigaea/issues/548). Signage is the staff-facing surface of the facilities kit this repo is the base for ([lentago/.github#129](https://github.com/lentago/.github/issues/129)).
 
 ## Architecture
 
@@ -323,17 +323,22 @@ Portfolio-grade infrastructure status page surfacing NAS health, Proxmox VM metr
 ├── packages/
 │   ├── ha_version_sync.yaml  HA version dispatch to GitHub on startup
 │   └── hue_tap_dial_kitchen_sonos.yaml  Hue Tap Dial → Kitchen Sonos volume, presets, grouping
+├── signage/
+│   ├── README.md             Signage contract and index: cards for controls, sheets for signals, labels for devices
+│   ├── cards/
+│   │   ├── kitchen-speaker-dial.html  Fridge card for the Tap Dial → Kitchen Sonos mapping
+│   │   ├── office-wall-switch.html    Card for the office ZEN77 paddle and the office scene list
+│   │   ├── office-scene-button.html   Card for the office Sonoff scene button
+│   │   ├── downstairs-lights-button.html  Card for the downstairs and hallway lights button
+│   │   └── meeting-button.html        Card for the office meeting button
+│   └── sheets/
+│       └── meeting-light.html         Sheet by the hallway meeting light: red means a meeting is on
 ├── cards/
-│   ├── README.md             Instruction-card contract and index: one printable card per physical control
-│   ├── kitchen-speaker-dial.html  Fridge card for the Tap Dial → Kitchen Sonos mapping
-│   ├── office-wall-switch.html    Card for the office ZEN77 paddle and the office scene list
-│   ├── office-scene-button.html   Card for the office Sonoff scene button
-│   ├── downstairs-lights-button.html  Card for the downstairs and hallway lights button
-│   └── meeting-button.html        Card for the office meeting button
+│   └── README.md             Pointer: cards moved to signage/cards/
 ├── scripts/
 │   ├── gitops-sync.sh        GitOps deploy: fetch → validate → smart reload or rollback
 │   ├── ha-context-dump.sh    Perception loop: snapshot .storage/ registries to context/
-│   └── publish-card.sh       Copy a card to the pub.lan web drop (cards/<slug>.html → /cards/<slug>/)
+│   └── publish-signage.sh    Copy a piece to the pub.lan web drop (signage/<type>/<slug>.html → /signage/<type>/<slug>/)
 ├── context/                  Auto-generated HA runtime state (read-only, never edit)
 │   ├── entities.json         Entity registry (entity_id → area/device/platform)
 │   ├── areas.json            Area registry

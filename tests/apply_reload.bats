@@ -116,11 +116,14 @@ run_with_diff() {
   [ ! -s "$CALLS_FILE" ]
 }
 
-@test "cards, tests, assets, agent tooling and CI-only files are no-ops" {
+@test "signage, tests, assets, agent tooling and CI-only files are no-ops" {
   # None of these is read by HA Core at runtime (#550). cards/ was the trigger:
-  # a printable-card-only merge used to restart Core.
+  # a printable-card-only merge used to restart Core. Signage now lives in
+  # signage/ (#548); cards/ keeps a pointer README.
   run_with_diff "$(printf '%s\n' \
-    "cards/office-wall-switch.html" \
+    "signage/cards/office-wall-switch.html" \
+    "signage/sheets/meeting-light.html" \
+    "cards/README.md" \
     "tests/apply_reload.bats" \
     "assets/banner.svg" \
     ".claude/settings.json" \
@@ -131,10 +134,10 @@ run_with_diff() {
   [ ! -s "$CALLS_FILE" ]
 }
 
-@test "a card alongside a package change still restarts" {
+@test "a piece of signage alongside a package change still restarts" {
   # The no-op set must not mask a heavy file in the same diff.
   run_with_diff "$(printf '%s\n' \
-    "cards/office-wall-switch.html" \
+    "signage/cards/office-wall-switch.html" \
     "packages/office_zen77.yaml")"
   [ "$status" -eq 0 ]
   [ "$(cat "$CALLS_FILE")" = "RESTART" ]
