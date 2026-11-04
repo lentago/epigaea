@@ -5,14 +5,17 @@
 # Opens signage/<type>/<slug>.html in headless Chrome, waits for its web
 # fonts, and reads the height of the piece's root element: .card for a card
 # (limit 5 in, the 7 by 5 inch card), .sheet for a sheet (limit 10 in, one
-# Letter page inside half-inch margins). The print stylesheet pads a short
+# Letter page inside half-inch margins), .label for a label's sheet form
+# (limit 1.5 in, the 3.5 by 1.5 inch sheet label; the label-maker strip is
+# typed, not printed, so it is not measured here). The print stylesheet pads a short
 # piece out with min-height but never shrinks a tall one, and a piece is the
 # same width on screen and on paper, so this height is the printed height.
 # Prints one line per piece and exits 1 if any piece is too tall.
 # See signage/README.md for the contract (lentago/epigaea#560, #548).
 #
 # Usage: check-signage-size.sh [<type>/<slug>...]
-#   No arguments checks every piece in signage/cards and signage/sheets.
+#   No arguments checks every piece in signage/cards, signage/sheets and
+#   signage/labels.
 #   SIGNAGE_MAX_IN  height limit in inches for every piece checked (default:
 #                   the type's own limit)
 #   CHROME          browser binary (default: google-chrome, chromium or
@@ -32,6 +35,7 @@ root_selector() {
   case "$1" in
     cards) echo ".card" ;;
     sheets) echo ".sheet" ;;
+    labels) echo ".label" ;;
     *) return 1 ;;
   esac
 }
@@ -39,6 +43,7 @@ type_limit() {
   case "$1" in
     cards) echo "5.0" ;;
     sheets) echo "10.0" ;;
+    labels) echo "1.5" ;;
     *) return 1 ;;
   esac
 }
@@ -90,7 +95,7 @@ main() {
   local -a pieces=("$@")
   if [[ ${#pieces[@]} -eq 0 ]]; then
     local f type
-    for type in cards sheets; do
+    for type in cards sheets labels; do
       for f in "${SIGNAGE_DIR}/${type}"/*.html; do
         [[ -e "$f" ]] && pieces+=("${type}/$(basename "$f" .html)")
       done
@@ -106,7 +111,7 @@ main() {
   for piece in "${pieces[@]}"; do
     type="${piece%%/*}"
     if [[ "$piece" != */* ]] || ! selector="$(root_selector "$type")"; then
-      echo "check-signage-size: name a piece as <type>/<slug> with type cards or sheets, got '${piece}'" >&2
+      echo "check-signage-size: name a piece as <type>/<slug> with type cards, sheets or labels, got '${piece}'" >&2
       return 2
     fi
     limit="${SIGNAGE_MAX_IN:-$(type_limit "$type")}"

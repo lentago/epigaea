@@ -58,6 +58,12 @@ bats tests/
   workstation and fail in CI (`CI=true`), the same as `signage_size.bats`. `publish_signage.bats` also covers the PDF the
   publisher writes beside the page (#548).
 
+- **`signage_labels.bats`**: the parts of the label contract a browser can't
+  measure (#548). Each label's strip is one or two lines of at most 24
+  characters (12 mm label-maker tape), its on-screen preview shows the same
+  lines the reader is told to type, and it names exactly one card that exists
+  for its QR code to open.
+
 - **`signage_qr.bats`**: runs `scripts/signage-qr.py --check` over every
   piece and fails if a QR code is missing or points anywhere but the piece's
   own `pub.lan` page (#548). It also checks that `--check` writes nothing when

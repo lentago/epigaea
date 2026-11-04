@@ -12,11 +12,13 @@ Each piece marks where its code goes with a slot:
 
 This script fills the slot with a link to the piece's URL,
 http://pub.lan/signage/<type>/<slug>/ (the address publish-signage.sh serves
-it at), around the QR code for that URL. With --check it changes nothing and
+it at), around the QR code for that URL. A label is the exception: its job is
+to say where the device's card is, so its code opens that card, named in the
+label's <meta name="epigaea-label-card" content="cards/<slug>">. With --check it changes nothing and
 exits 1 when a slot is missing or out of date, for CI. See signage/README.md.
 
 Usage: signage-qr.py [--check] [<type>/<slug> ...]
-  No pieces names every piece in signage/cards and signage/sheets.
+  No pieces names every piece in signage/cards, signage/sheets and signage/labels.
   SIGNAGE_URL_BASE overrides the URL prefix (default http://pub.lan/signage).
 
 Needs segno (pip install segno). Exit: 0 ok; 1 --check found a stale or
@@ -31,26 +33,43 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SIGNAGE_DIR = REPO_ROOT / "signage"
-TYPES = ("cards", "sheets")
+TYPES = ("cards", "sheets", "labels")
 URL_BASE = os.environ.get("SIGNAGE_URL_BASE", "http://pub.lan/signage").rstrip("/")
 SLOT = re.compile(r"<!-- signage-qr -->.*?<!-- /signage-qr -->", re.DOTALL)
 NOUN = {"cards": "card", "sheets": "sheet"}
+LABEL_CARD = re.compile(r'<meta name="epigaea-label-card" content="([^"]*)">')
 
 
 def piece_url(piece_type: str, slug: str) -> str:
     return f"{URL_BASE}/{piece_type}/{slug}/"
 
 
-def slot_html(segno, piece_type: str, slug: str) -> str:
-    """The filled slot: the QR code as inline SVG inside a link to the piece."""
-    url = piece_url(piece_type, slug)
+def target(piece_type: str, slug: str, html: str) -> tuple[str, str]:
+    """The page a piece's code opens, and how to describe it.
+
+    A card or sheet opens its own page. A label opens the card it names.
+    Raises ValueError when a label names no card, or one that does not exist.
+    """
+    if piece_type != "labels":
+        return piece_url(piece_type, slug), f"The current version of this {NOUN[piece_type]}"
+    found = LABEL_CARD.findall(html)
+    if len(found) != 1:
+        raise ValueError(f"needs exactly one epigaea-label-card meta tag, found {len(found)}")
+    card_type, _, card_slug = found[0].partition("/")
+    if card_type != "cards" or not (SIGNAGE_DIR / "cards" / f"{card_slug}.html").is_file():
+        raise ValueError(f"epigaea-label-card names no card in signage/cards: '{found[0]}'")
+    return piece_url("cards", card_slug), "The card for this device"
+
+
+def slot_html(segno, url: str, label: str) -> str:
+    """The filled slot: the QR code as inline SVG inside a link to the page."""
     # Error correction M survives a scuffed or folded print; border 2 is the
     # quiet zone inside the SVG, and the white paper around it adds the rest.
     svg = segno.make(url, error="m", micro=False).svg_inline(
         scale=1, border=2, svgclass=None, lineclass=None, omitsize=True, dark="#000"
     )
     svg = svg.replace("<svg ", '<svg role="img" aria-hidden="true" shape-rendering="crispEdges" ', 1)
-    label = f"The current version of this {NOUN[piece_type]}: {url}"
+    label = f"{label}: {url}"
     return (
         "<!-- signage-qr -->"
         f'<a class="qr" href="{url}" aria-label="{label}">{svg}</a>'
@@ -100,16 +119,22 @@ def main(argv: list[str]) -> int:
             print(f"{piece}: needs exactly one <!-- signage-qr --> slot, found {len(slots)}")
             rc = 1
             continue
-        want = slot_html(segno, piece_type, slug)
+        try:
+            url, label = target(piece_type, slug, html)
+        except ValueError as err:
+            print(f"{piece}: {err}")
+            rc = 1
+            continue
+        want = slot_html(segno, url, label)
         if slots[0] == want:
-            print(f"{piece}: QR up to date ({piece_url(piece_type, slug)})")
+            print(f"{piece}: QR up to date ({url})")
             continue
         if args.check:
             print(f"{piece}: QR out of date; run scripts/signage-qr.py {piece}")
             rc = 1
             continue
         path.write_text(SLOT.sub(lambda _m: want, html, count=1), encoding="utf-8")
-        print(f"{piece}: QR written ({piece_url(piece_type, slug)})")
+        print(f"{piece}: QR written ({url})")
     return rc
 
 

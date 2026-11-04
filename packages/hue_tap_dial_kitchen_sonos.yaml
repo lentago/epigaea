@@ -10,7 +10,9 @@
 #
 # Instruction card: signage/cards/kitchen-speaker-dial.html is the printed
 # fridge card for this mapping (contract in signage/README.md). Any change to
-# the button or dial behaviour below updates the card in the same PR.
+# the button or dial behaviour below updates the card in the same PR. The
+# dial's label, signage/labels/kitchen-speaker-dial.html, names the device and
+# points at that card.
 #
 # Dial rotation → Kitchen volume, relative steps, clamped to 0-100%.
 #   Clockwise          → louder

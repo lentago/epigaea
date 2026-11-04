@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="epigaea-card-package" content="packages/hue_tap_dial_kitchen_sonos.yaml">
+<meta name="epigaea-label-card" content="cards/kitchen-speaker-dial">
+<title>Kitchen Speaker Dial label</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap">
+<style>
+  /* Layout: two forms of one label. The strip is typed into a label maker; the sheet label (3.5in x 1.5in) prints on Letter label stock with a dashed cut line. Only the sheet label prints. */
+  :root {
+    --surround: #e8ecef;
+    --surround-fg: #4a5560;
+    --paper: #ffffff;
+    --ink: #10181f;
+    --ink-soft: #4a5560;
+    --rule: #c9d1d8;
+    --accent: #0e6b76;
+    --tape: #f4f1e6;
+    --display: "Bricolage Grotesque", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --surround: #1a1f25; --surround-fg: #a3adb8; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --surround: #1a1f25; --surround-fg: #a3adb8; color-scheme: dark; }
+
+  body {
+    background: var(--surround);
+    color: var(--surround-fg);
+    font-family: var(--body);
+    font-size: 11pt;
+    line-height: 1.35;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .form { width: min(5in, 100%); display: grid; gap: 8px; justify-items: start; }
+  .form h2 {
+    margin: 0; font-family: var(--display); font-weight: 700; font-size: 10pt;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--surround-fg);
+  }
+  .form p { margin: 0; font-size: 13px; max-width: 5in; }
+  .cutnote { display: none; }
+
+  /* The strip: a preview at the size of 12 mm label-maker tape, and the exact text to type. */
+  .strip {
+    background: var(--tape);
+    color: #000;
+    height: 12mm;
+    box-sizing: border-box;
+    padding: 1.2mm 4mm;
+    border-radius: 1.5mm;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+    display: grid;
+    align-content: center;
+    font-family: Arial, "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    font-size: 9.5pt;
+    line-height: 1.05;
+    white-space: nowrap;
+  }
+  .type-this { margin: 0; padding: 0; list-style: none; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13px; color: var(--surround-fg); }
+
+  /* The sheet label. */
+  .label {
+    background: var(--paper);
+    color: var(--ink);
+    width: 3.5in;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0.14in 0.14in 0.1in 0.18in;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto;
+    column-gap: 0.12in;
+  }
+  .label h1 {
+    grid-column: 1; margin: 0;
+    font-family: var(--display); font-weight: 800; font-size: 15pt; line-height: 1.02;
+    letter-spacing: -0.01em; text-wrap: balance;
+  }
+  .label .line { grid-column: 1; margin: 4pt 0 0; font-size: 9.5pt; line-height: 1.2; }
+  .label .line b { color: var(--ink); }
+  .label .foot { grid-column: 1 / -1; align-self: end; margin-top: 3pt; font-size: 6pt; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .label .qr { grid-column: 2; grid-row: 1 / span 2; align-self: center; display: block; width: 0.95in; height: 0.95in; }
+  .label .qr svg { display: block; width: 100%; height: 100%; }
+
+  @media print {
+    @page { size: letter; margin: 0.5in; }
+    body { background: #fff; padding: 0; display: block; }
+    .form { width: auto; display: block; }
+    .form-strip, .form > h2, .form > p:not(.cutnote) { display: none; }
+    .form > .cutnote { display: block; font-size: 8pt; color: #6b7680; margin: 0 0 0.2in; }
+    .label {
+      width: 3.5in; min-height: 1.5in; margin: 0.1in;
+      box-shadow: none; border-radius: 0;
+      outline: 1px dashed #9aa4b2; outline-offset: 0.1in;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<section class="form form-strip" aria-label="Label-maker strip, for the device">
+  <h2>1 · On the dial: a label-maker strip</h2>
+  <div class="strip" aria-hidden="true"><span>Kitchen speaker dial</span><span>Card on the fridge</span></div>
+  <p>Type these two lines into the label maker, on 12 mm (½ in) tape, and stick the strip on the dial where it can be read without covering a button or the ring:</p>
+  <ul class="type-this">
+    <li>Kitchen speaker dial</li>
+    <li>Card on the fridge</li>
+  </ul>
+</section>
+
+<section class="form form-sheet" aria-label="Sheet label, beside the device">
+  <h2>2 · Beside it: a sheet label</h2>
+  <p>Print this page on full-sheet Letter label stock, or on plain paper and tape it up. Only the label prints. Cut along the dashed line and stick it on the fridge beside the dial.</p>
+  <p class="cutnote">Cut along the dashed line.</p>
+  <article class="label" aria-label="Kitchen speaker dial label">
+    <h1>Kitchen Speaker Dial</h1>
+    <p class="line">Runs the kitchen Sonos. The <b>card on the fridge</b> says what each button does, or scan the code.</p>
+    <span class="foot">epigaea &middot; hue_tap_dial_kitchen_sonos.yaml &middot; 2026-10-31</span>
+    <!-- signage-qr --><a class="qr" href="http://pub.lan/signage/cards/kitchen-speaker-dial/" aria-label="The card for this device: http://pub.lan/signage/cards/kitchen-speaker-dial/"><svg role="img" aria-hidden="true" shape-rendering="crispEdges" viewBox="0 0 37 37"><path stroke="#000" d="M2 2.5h7m1 0h5m3 0h1m1 0h3m2 0h1m2 0h7m-33 1h1m5 0h1m1 0h1m3 0h1m1 0h1m1 0h2m4 0h3m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m2 0h7m2 0h1m1 0h1m5 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h2m5 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h1m1 0h3m2 0h3m2 0h1m4 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m2 0h1m1 0h2m2 0h2m1 0h1m2 0h1m4 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h2m1 0h2m2 0h5m-20 1h1m1 0h2m1 0h3m1 0h1m2 0h1m1 0h4m3 0h2m3 0h1m2 0h1m1 0h2m-33 1h3m1 0h1m3 0h1m1 0h1m1 0h2m3 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-32 1h3m2 0h2m3 0h3m2 0h1m1 0h1m3 0h2m2 0h4m1 0h2m-31 1h1m1 0h2m1 0h5m3 0h3m1 0h1m2 0h1m1 0h2m1 0h1m1 0h1m2 0h1m-32 1h1m3 0h6m1 0h1m1 0h3m5 0h2m1 0h1m2 0h2m-28 1h2m1 0h1m1 0h4m2 0h2m5 0h2m2 0h1m2 0h1m1 0h3m-32 1h1m2 0h5m2 0h4m3 0h3m1 0h1m2 0h2m1 0h1m-21 1h2m2 0h2m1 0h2m5 0h2m4 0h1m1 0h2m-30 1h1m1 0h2m1 0h1m1 0h1m1 0h3m3 0h1m1 0h1m1 0h4m1 0h2m1 0h3m-31 1h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h3m4 0h2m1 0h2m1 0h1m1 0h2m1 0h2m-33 1h2m1 0h1m1 0h2m1 0h1m1 0h1m2 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h1m1 0h2m-31 1h4m2 0h1m1 0h1m1 0h1m1 0h2m1 0h4m2 0h1m1 0h5m3 0h1m-33 1h2m1 0h1m1 0h2m6 0h1m2 0h1m4 0h1m1 0h1m3 0h1m1 0h2m-31 1h6m2 0h4m1 0h4m4 0h1m1 0h1m2 0h1m2 0h2m1 0h1m-29 1h1m1 0h1m3 0h1m3 0h2m5 0h1m1 0h5m3 0h2m-32 1h1m2 0h2m1 0h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h1m2 0h1m3 0h1m1 0h1m1 0h2m-33 1h1m4 0h2m1 0h1m1 0h1m2 0h2m2 0h1m1 0h1m2 0h7m-21 1h4m2 0h3m2 0h1m3 0h2m3 0h2m1 0h1m-32 1h7m1 0h1m1 0h1m1 0h2m2 0h5m1 0h3m1 0h1m1 0h1m-29 1h1m5 0h1m1 0h3m2 0h1m3 0h6m1 0h1m3 0h1m1 0h2m-32 1h1m1 0h3m1 0h1m4 0h1m1 0h2m1 0h3m1 0h9m1 0h1m-31 1h1m1 0h3m1 0h1m1 0h1m1 0h3m1 0h1m1 0h1m4 0h2m1 0h1m4 0h2m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m4 0h2m1 0h1m2 0h1m2 0h1m1 0h2m-28 1h1m5 0h1m2 0h1m3 0h2m2 0h2m3 0h3m1 0h1m1 0h2m2 0h1m-33 1h7m1 0h2m2 0h2m3 0h2m2 0h1m1 0h1m6 0h1"/></svg></a><!-- /signage-qr -->
+  </article>
+</section>
+</body>
+</html>
