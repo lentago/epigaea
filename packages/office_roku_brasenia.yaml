@@ -25,9 +25,12 @@
 #
 #   automation.office_roku_relaunch_brasenia fires once the stick has sat on
 #   the home screen for 30 s (and on HA start, in case it was already there),
-#   POSTs ECP `launch/dev`, and checks again 15 s later. It tries up to three
-#   times per run. It never acts while another app is in the foreground, so a
-#   person who opens something else on the stick is left alone.
+#   POSTs ECP `launch/dev`, and checks again 15 s later. It keeps trying while
+#   the stick stays on the home screen: three quick tries, then one every
+#   5 minutes, so a launch that keeps failing never leaves the wall dark for
+#   good. It never acts while another app is in the foreground, so a person
+#   who opens something else on the stick is left alone. To pause it for work
+#   on the stick, turn the automation off in the HA UI; no deploy needed.
 #
 # The sensor's history is also the record of when the wall was not showing
 # brasenia.
@@ -75,21 +78,23 @@ automation:
           - Roku Dynamic Menu
           - Roku
     actions:
+      # Keeps trying for as long as the stick stays on the home screen: three
+      # quick tries 15 s apart, then one every 5 minutes. The run ends when the
+      # sensor reads anything else (brasenia, another app, or unavailable while
+      # the stick reboots); the next home-screen reading starts a new run.
       - repeat:
           sequence:
             - action: rest_command.office_roku_launch_brasenia
               continue_on_error: true
-            - delay: "00:00:15"
+            - delay: "{{ '00:00:15' if repeat.index < 3 else '00:05:00' }}"
             - action: homeassistant.update_entity
               target:
                 entity_id: sensor.office_roku_active_app
           until:
-            - or:
-                - condition: not
-                  conditions:
-                    - condition: state
-                      entity_id: sensor.office_roku_active_app
-                      state:
-                        - Roku Dynamic Menu
-                        - Roku
-                - "{{ repeat.index >= 3 }}"
+            - condition: not
+              conditions:
+                - condition: state
+                  entity_id: sensor.office_roku_active_app
+                  state:
+                    - Roku Dynamic Menu
+                    - Roku
