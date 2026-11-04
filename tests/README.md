@@ -71,6 +71,12 @@ bats tests/
   The script needs `segno`, which the Bats job installs. Without it the script
   exits 3, and the tests then skip on a workstation and fail in CI.
 
+- **`signage_css.bats`**: runs `scripts/sync-signage-css.py --check` over every
+  piece and fails if one's copy of `signage/signage.css` differs or is missing
+  (#548). It also checks, on a throwaway copy of the tree, that a drifted copy
+  is reported, that `--check` writes nothing, that a sync puts it right, and
+  that a piece without the shared block is named.
+
 - **`signage_size.bats`**: runs `scripts/check-signage-size.sh` over every
   card and sheet and fails if one prints taller than its type allows (5 inches
   for a card, 10 for a sheet; the contract in `signage/README.md`, #560,

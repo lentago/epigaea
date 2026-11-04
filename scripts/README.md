@@ -316,6 +316,18 @@ without it the script exits 3 (`uvx --with segno python scripts/signage-qr.py`
 runs it without installing anything). The `Bats` suite runs the check in CI
 (`tests/signage_qr.bats`). Added for #548.
 
+## `sync-signage-css.py`
+
+Copies `signage/signage.css`, the look every piece of signage shares, into each
+piece's first style block, `<style data-signage-css>`. A piece is one standalone
+HTML file, so the shared stylesheet can't be a link: a card opened from disk,
+printed, or pasted into an artifact would lose it. The copy travels inside the
+file instead, and the piece's own rules sit in a second `<style>` block after
+it. `--check` changes nothing and exits 1 when a piece's copy differs or the
+block is missing; the `Bats` suite runs it in CI (`tests/signage_css.bats`). No
+arguments covers every card, sheet and label; `<type>/<slug>` arguments cover
+just those. Python standard library only. Added for #548.
+
 ## Script auth conventions
 
 Three conventions learned the hard way during context-sync work. Future scripts
