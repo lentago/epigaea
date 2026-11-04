@@ -23,8 +23,10 @@ setup() {
   mkdir -p "$work/scripts" "$work/signage/cards"
   cp "$SCRIPT" "$work/scripts/"
   cp "${BATS_TEST_DIRNAME}/../signage/signage.css" "$work/signage/"
-  sed 's/--accent: #0e6b76;/--accent: #ff0000;/' \
+  # Drift: one extra line inside the shared block, whatever the palette is.
+  sed 's|^<style data-signage-css>$|<style data-signage-css>\n/* drift */|' \
     "${BATS_TEST_DIRNAME}/../signage/cards/meeting-button.html" > "$work/signage/cards/meeting-button.html"
+  grep -q '^/\* drift \*/$' "$work/signage/cards/meeting-button.html"
   before="$(cksum < "$work/signage/cards/meeting-button.html")"
   run python3 "$work/scripts/sync-signage-css.py" --check
   [ "$status" -eq 1 ]
