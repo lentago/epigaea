@@ -58,6 +58,13 @@ bats tests/
   workstation and fail in CI (`CI=true`), the same as `signage_size.bats`. `publish_signage.bats` also covers the PDF the
   publisher writes beside the page (#548).
 
+- **`signage_qr.bats`**: runs `scripts/signage-qr.py --check` over every
+  piece and fails if a QR code is missing or points anywhere but the piece's
+  own `pub.lan` page (#548). It also checks that `--check` writes nothing when
+  a code is stale, and that a piece named without its type is a usage error.
+  The script needs `segno`, which the Bats job installs. Without it the script
+  exits 3, and the tests then skip on a workstation and fail in CI.
+
 - **`signage_size.bats`**: runs `scripts/check-signage-size.sh` over every
   card and sheet and fails if one prints taller than its type allows (5 inches
   for a card, 10 for a sheet; the contract in `signage/README.md`, #560,

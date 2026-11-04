@@ -56,6 +56,7 @@ can read the next, and a check can verify them mechanically.
 | Fonts from Google Fonts with real fallback stacks | Looks the same on screen and paper, still prints offline |
 | Footer carries provenance: repo, the implementing file, the date of the behaviour it reflects | A reader can tell a stale piece from a current one |
 | Fits its type's printed size; `scripts/check-signage-size.sh` measures every piece in headless Chrome and CI runs it | A piece that spills past its size is cut off, or prints a second page |
+| Carries a QR code that opens its own page on pub.lan, `http://pub.lan/signage/<type>/<slug>/`, written into the HTML as inline SVG by `scripts/signage-qr.py`; CI fails when a code is missing or points anywhere else. On a card it sits at the right of the header, on a sheet at the right of the footer, and it is hidden on a phone screen | The paper goes stale the day the behaviour changes; the code lets whoever is standing there check it against the current version, with nothing to install |
 
 ### Cards
 
@@ -91,14 +92,20 @@ types read as one system.
 2. Set the `epigaea-card-package` meta tag (one per file the piece reflects)
    and the footer to the file it documents. Rewrite the title, the table and
    the text for that control or signal.
-3. Open the file in a browser. Check it in the print preview. Run
+3. Write its QR code: `scripts/signage-qr.py <type>/<slug>` fills the
+   `<!-- signage-qr --><!-- /signage-qr -->` slot the reference already has
+   with a code for the piece's own address. It needs the `segno` library
+   (`pip install segno`, or run it as
+   `uvx --with segno python scripts/signage-qr.py <type>/<slug>`). Rerun it if
+   the piece is renamed or moved.
+4. Open the file in a browser. Check it in the print preview. Run
    `scripts/check-signage-size.sh <type>/<slug>` to confirm it fits its size;
    in print preview, a too-tall card just shows a taller dashed outline, which
    is easy to miss.
-4. Link the piece from the header comment of each file it names, and from that
+5. Link the piece from the header comment of each file it names, and from that
    directory's README (`packages/README.md` or `automations/README.md`).
-5. Add a row to the index below.
-6. Publish the piece, then rebuild the index page (next section).
+6. Add a row to the index below.
+7. Publish the piece, then rebuild the index page (next section).
 
 ## Publishing
 
@@ -163,5 +170,5 @@ Cards published before the move to `signage/` served at
 ## Not yet
 
 The rest of the signage work is tracked in
-[#548](https://github.com/lentago/epigaea/issues/548): the label type, QR codes
-on the pieces, and one shared stylesheet.
+[#548](https://github.com/lentago/epigaea/issues/548): the label type and one
+shared stylesheet.
