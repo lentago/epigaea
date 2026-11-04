@@ -53,9 +53,9 @@ bats tests/
   script's report and by `pdfinfo` on the file. It also checks that an unknown
   piece, a piece named without its type, or a bad option is a usage error, and
   that a browser that writes no PDF is reported as exit 3. Rendering needs
-  headless Chrome, `poppler-utils` and the pieces' Google Fonts. Without them
-  the render tests skip on a workstation and fail in CI (`CI=true`), the same
-  as `signage_size.bats`. `publish_signage.bats` also covers the PDF the
+  headless Chrome, `poppler-utils` and the pieces' Google Fonts; the Bats job
+  installs `poppler-utils`. Without them the render tests skip on a
+  workstation and fail in CI (`CI=true`), the same as `signage_size.bats`. `publish_signage.bats` also covers the PDF the
   publisher writes beside the page (#548).
 
 - **`signage_size.bats`**: runs `scripts/check-signage-size.sh` over every
