@@ -61,3 +61,35 @@ jobs:
           python3 scripts/check-dashboard-entities.py --strict \
             --allowlist dashboards/entity-allowlist.txt \
             $(find dashboards -type f -name '*.yaml' ! -name 'entity-allowlist.txt')
+
+  signage-packages:
+    name: Signage Packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      # Every signage meta tag names a file that exists and that links back to
+      # the piece. On a PR, a file a piece names must not change unless one of
+      # its pieces changes too. A PR whose body has a line
+      # `Signage-unaffected: <reason>` passes that last check with the reason
+      # printed. The body comes in through an env var, never the shell text.
+      - name: Check signage meta tags against the files they name
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            python3 scripts/check-signage-packages.py
+            exit
+          fi
+          reason="$(printf '%s\n' "$PR_BODY" | tr -d '\r' \
+            | sed -n 's/^[[:space:]]*Signage-unaffected:[[:space:]]*//p' | head -n 1)"
+          if [ -n "$reason" ]; then
+            python3 scripts/check-signage-packages.py \
+              --base "origin/${BASE_REF}" --skip-changed-together "$reason"
+          else
+            python3 scripts/check-signage-packages.py --base "origin/${BASE_REF}"
+          fi
