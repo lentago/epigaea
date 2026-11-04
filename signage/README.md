@@ -54,6 +54,7 @@ can read the next, and a check can verify them mechanically.
 | Plain words for the people who live or work there; no HA vocabulary | "Dining room joins" beats `media_player.join` |
 | Reads correctly in greyscale: one accent colour, and structure carries the meaning. A sheet may draw a signal in its own colour (the red of the meeting light) as long as the words name the colour too | Most office printers are black and white |
 | Fonts from Google Fonts with real fallback stacks | Looks the same on screen and paper, still prints offline |
+| Carries [`signage.css`](signage.css), the shared look (colour tokens, fonts, type scale, the card, sheet and label layouts, the QR code's place, cut lines and print rules), as a verbatim copy in its first style block, `<style data-signage-css>`; its own rules go in a second `<style>` block after it. `scripts/sync-signage-css.py` writes the copies and CI fails when one differs | One source for the look, and each piece still one standalone file that prints without a link to anything |
 | Footer carries provenance: repo, the implementing file, the date of the behaviour it reflects | A reader can tell a stale piece from a current one |
 | Fits its type's printed size; `scripts/check-signage-size.sh` measures every piece in headless Chrome and CI runs it | A piece that spills past its size is cut off, or prints a second page |
 | Carries a QR code that opens its own page on pub.lan, `http://pub.lan/signage/<type>/<slug>/`, written into the HTML as inline SVG by `scripts/signage-qr.py`; CI fails when a code is missing or points anywhere else. A label's code opens the device's card instead. On a card it sits at the right of the header, on a sheet at the right of the footer, on a sheet label at its right, and it is hidden on a phone screen | The paper goes stale the day the behaviour changes; the code lets whoever is standing there check it against the current version, with nothing to install |
@@ -112,23 +113,30 @@ reference.
 1. Copy the reference for the type to `signage/<type>/<slug>.html`. The slug
    is lowercase words joined by hyphens, and it names the control or signal,
    not the room alone.
-2. Set the `epigaea-card-package` meta tag (one per file the piece reflects)
+2. Leave the copied `<style data-signage-css>` block alone; put anything the
+   piece needs that the shared look doesn't have in its second `<style>`
+   block, scoped like the shared rules (`.card td.part`, `.sheet td.state`). A
+   change that every piece of the type should get belongs in
+   `signage/signage.css` instead: edit it, run
+   `scripts/sync-signage-css.py`, and commit the pieces it rewrites. A label
+   page's `<body>` carries `class="label-page"`.
+3. Set the `epigaea-card-package` meta tag (one per file the piece reflects)
    and the footer to the file it documents. Rewrite the title, the table and
    the text for that control or signal.
-3. Write its QR code: `scripts/signage-qr.py <type>/<slug>` fills the
+4. Write its QR code: `scripts/signage-qr.py <type>/<slug>` fills the
    `<!-- signage-qr --><!-- /signage-qr -->` slot the reference already has
    with a code for the piece's own address. It needs the `segno` library
    (`pip install segno`, or run it as
    `uvx --with segno python scripts/signage-qr.py <type>/<slug>`). Rerun it if
    the piece is renamed or moved.
-4. Open the file in a browser. Check it in the print preview. Run
+5. Open the file in a browser. Check it in the print preview. Run
    `scripts/check-signage-size.sh <type>/<slug>` to confirm it fits its size;
    in print preview, a too-tall card just shows a taller dashed outline, which
    is easy to miss.
-5. Link the piece from the header comment of each file it names, and from that
+6. Link the piece from the header comment of each file it names, and from that
    directory's README (`packages/README.md` or `automations/README.md`).
-6. Add a row to the index below.
-7. Publish the piece, then rebuild the index page (next section).
+7. Add a row to the index below.
+8. Publish the piece, then rebuild the index page (next section).
 
 ## Publishing
 
@@ -198,5 +206,7 @@ Cards published before the move to `signage/` served at
 
 ## Not yet
 
-The rest of the signage work is tracked in
-[#548](https://github.com/lentago/epigaea/issues/548): one shared stylesheet.
+What remains of [#548](https://github.com/lentago/epigaea/issues/548) is the
+facilities-kit extraction decision on
+[lentago/.github#129](https://github.com/lentago/.github/issues/129), and
+printing and posting a label and a sheet beside the cards.
