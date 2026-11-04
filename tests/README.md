@@ -32,18 +32,21 @@ bats tests/
   suite sources the script and stubs its side-effecting helpers
   (`log` / `ha_call_service` / `ha_core_restart` / `ha_notify`) and `git diff`.
 
-- **`publish_card.bats`** — `scripts/publish-card.sh`, the instruction-card
-  publisher. Publishes the first card into a temp web root and checks the
-  copy, the printed URL, the in-place overwrite, and every refusal (bad slug,
-  missing card, missing web root, a web root that is not on a network share, CLI usage), since the refusals are what
-  keep a typo off the live `pub.lan` share.
+- **`publish_signage.bats`** — `scripts/publish-signage.sh`, the signage
+  publisher. Publishes a card and a sheet into a temp web root and checks the
+  copy, the printed URL, the in-place overwrite, and every refusal (bad type,
+  bad slug, missing piece, missing web root, a web root that is not on a
+  network share, CLI usage), since the refusals are what keep a typo off the
+  live `pub.lan` share.
 
-- **`card_size.bats`**: runs `scripts/check-card-size.sh` over every card and
-  fails if one prints taller than 5 inches (the card contract in
-  `cards/README.md`, #560). It also checks that an over-limit card is named and
-  that an unknown card or a browser that returns nothing is reported as such.
+- **`signage_size.bats`**: runs `scripts/check-signage-size.sh` over every
+  card and sheet and fails if one prints taller than its type allows (5 inches
+  for a card, 10 for a sheet; the contract in `signage/README.md`, #560,
+  #548). It also checks that an over-limit piece is named and that an unknown
+  piece, a piece named without its type, or a browser that returns nothing is
+  reported as such.
   The measurement needs headless Chrome (preinstalled on the Ubuntu runner)
-  and the cards' Google Fonts. Without either, the script exits 3 rather than
+  and the pieces' Google Fonts. Without either, the script exits 3 rather than
   judge a height measured with fallback fonts. The size tests then skip on a
   workstation and fail in CI (`CI` is set), so the limit is never skipped
   silently where it is enforced.

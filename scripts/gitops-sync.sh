@@ -88,13 +88,15 @@ apply_reload() {
     if [[ -z "$f" ]]; then
       continue
     fi
-    # No-op: files that don't affect HA Core runtime. cards/ is printed signage,
+    # No-op: files that don't affect HA Core runtime. signage/ is printed signage
+    # (cards/ is its old home, kept for the pointer README),
     # tests/ and assets/ are CI and README material, .claude/ is agent tooling,
     # and .ha-version plus the two secrets templates are read only by CI.
     if   [[ "$f" =~ ^context/ ]] || \
          [[ "$f" =~ ^\.github/ ]] || \
          [[ "$f" =~ ^esphome/ ]] || \
          [[ "$f" =~ ^scripts/.*\.sh$ ]] || \
+         [[ "$f" =~ ^signage/ ]] || \
          [[ "$f" =~ ^cards/ ]] || \
          [[ "$f" =~ ^tests/ ]] || \
          [[ "$f" =~ ^assets/ ]] || \

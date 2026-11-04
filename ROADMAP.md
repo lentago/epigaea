@@ -39,8 +39,9 @@ to a display. The work is tracked in
 [#548](https://github.com/lentago/epigaea/issues/548).
 
 - **Card**: what this control does, posted next to the control. Shipped in
-  [`cards/`](cards/).
-- **Label**: what this device is and where its card is, on the device or its
-  wall plate.
+  [`signage/cards/`](signage/cards/).
 - **Sheet**: what this signal means and what to do about it, one Letter page
-  posted by the thing that signals.
+  posted by the thing that signals. Shipped in
+  [`signage/sheets/`](signage/sheets/), starting with the hallway meeting light.
+- **Label**: what this device is and where its card is, a label-maker strip on
+  the device and a Letter sheet label with a QR code beside it.

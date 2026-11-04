@@ -183,33 +183,40 @@ reconcile in seconds — see `docs/cross-layer-changes.md` (rename recipe,
 steps 3–4). Runs inside the HA Core container; uses `SUPERVISOR_TOKEN` like
 `gitops-sync.sh`.
 
-## `publish-card.sh`
+## `publish-signage.sh`
 
-Copies an instruction card from `cards/<slug>.html` to the LAN web drop as
-`<web-root>/cards/<slug>/index.html`, so Caddy on `pub.lan` serves it at
-`http://pub.lan/cards/<slug>/` with no deploy step. Write-then-rename, so a
-reader never sees a half-copied page. Refuses a slug that is not
-lowercase-hyphenated, a card that does not exist, a web root that does not
-exist, and a web root that is not on a network filesystem (`smb2`, `cifs`,
-`nfs`), which is what an unmounted NAS looks like from the workstation;
-`CARDS_ALLOW_LOCAL=1` publishes to a local directory on purpose (the tests use
-it). The web root is the second argument or `CARDS_WEB_ROOT`,
+Copies a piece of signage from `signage/<type>/<slug>.html` to the LAN web drop
+as `<web-root>/signage/<type>/<slug>/index.html`, so Caddy on `pub.lan` serves
+it at `http://pub.lan/signage/<type>/<slug>/` with no deploy step. `<type>` is
+the signage directory: `cards`, `sheets` or `labels`. Write-then-rename, so a
+reader never sees a half-copied page. Refuses a type that is not one of those,
+a slug that is not lowercase-hyphenated, a piece that does not exist, a web
+root that does not exist, and a web root that is not on a network filesystem
+(`smb2`, `cifs`, `nfs`), which is what an unmounted NAS looks like from the
+workstation; `SIGNAGE_ALLOW_LOCAL=1` publishes to a local directory on purpose
+(the tests use it). The web root is the third argument or `SIGNAGE_WEB_ROOT`,
 defaulting to `/mnt/lentago/web` (the NAS share as the workstation mounts it;
 fleet hosts see it at `/mnt/neptune-lentago/web`). Runs on the workstation, not
-on HAOS. Card contract and index: `cards/README.md`.
+on HAOS. Signage contract and index: `signage/README.md`. It was
+`publish-card.sh` until signage gained a second type (#548).
 
-## `check-card-size.sh`
+## `check-signage-size.sh`
 
-Checks that each instruction card fits the 7 by 5 inch card contract. It opens
-`cards/<slug>.html` in headless Chrome, waits for the Google Fonts, and reads
-the height of the `.card` element. That height is the printed height, because
-the card is 7 inches wide on screen and on paper and the print stylesheet's
-`min-height: 5in` only pads a short card. It prints `<slug>: <height>in, fits`
-or `too tall` per card and exits 1 if any card is over `CARD_MAX_IN` (default
-5.0). No arguments checks every card; slugs check just those. Exit 3 means it
-could not measure: no Chrome or Chromium on `PATH` (`CHROME` names the binary),
-or the web fonts did not load, which would change the line breaks. The `Bats`
-suite runs it in CI (`tests/card_size.bats`). Added for #560.
+Checks that each piece of signage fits its type's printed size: a card's
+`.card` element no taller than 5 inches (the 7 by 5 inch card), a sheet's
+`.sheet` element no taller than 10 inches (one Letter page inside half-inch
+margins). It opens `signage/<type>/<slug>.html` in headless Chrome, waits for
+the Google Fonts, and reads the root element's height. That height is the
+printed height, because a piece is the same width on screen and on paper and
+the print stylesheet's `min-height` only pads a short piece. It prints
+`<type>/<slug>: <height>in, fits (limit …)` or `too tall` per piece and exits 1
+if any piece is over its limit; `SIGNAGE_MAX_IN` overrides the limit for every
+piece checked. No arguments checks every card and sheet; `<type>/<slug>`
+arguments check just those. Exit 3 means it could not measure: no Chrome or
+Chromium on `PATH` (`CHROME` names the binary), or the web fonts did not load,
+which would change the line breaks. The `Bats` suite runs it in CI
+(`tests/signage_size.bats`). Added for #560 as `check-card-size.sh`; covers
+every type since #548.
 
 ## Script auth conventions
 

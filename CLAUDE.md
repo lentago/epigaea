@@ -32,7 +32,7 @@ to them when implementing:
 | `themes/README.md` | Noctis Home theme, home_polish tokens |
 | `scripts/README.md` | gitops-sync.sh, ha-context-dump.sh, Script auth conventions |
 | `context/README.md` | What each `context/*.json` file is |
-| `cards/README.md` | Printable instruction cards for physical controls: the contract, how to make one, the index. Read before changing any package that maps a button or dial |
+| `signage/README.md` | Printable signage (cards for controls, sheets for signals, labels for devices): the contract, how to make a piece, the index. Read before changing any package that maps a button or dial or drives a signal |
 | `docs/` | Long-form design notes, migration write-ups |
 
 ---
@@ -98,11 +98,13 @@ helper — is in `docs/cross-layer-changes.md`.
 
 - **Git is source of truth.** All YAML config is committed. `.storage/` is
   runtime state excluded from git.
-- **Instruction cards ship with the control they describe.** A package that
-  maps a physical control (a dial, a wall button) has a printable card in
-  `cards/<slug>.html`, the staff-facing half of the automation. The card
-  changes in the same PR as the mapping. Contract and index: `cards/README.md`;
-  publish with `scripts/publish-card.sh <slug>`.
+- **Signage ships with the behaviour it describes.** A package that maps a
+  physical control (a dial, a wall button) has a printable card in
+  `signage/cards/<slug>.html`; one that drives a signal a visitor meets (the
+  meeting light) has a sheet in `signage/sheets/<slug>.html`. Signage is the
+  staff-facing half of the automation and changes in the same PR as the
+  behaviour. Contract and index: `signage/README.md`; publish with
+  `scripts/publish-signage.sh <type> <slug>`.
 - **Secrets pattern.** Real values in `secrets.yaml` (gitignored), documented
   keys in `secrets.yaml.example` (committed). Same pattern in `esphome/`.
   `secrets.fake.yaml` provides safe dummy values for CI `check_config`.

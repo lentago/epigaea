@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#
+# Publish a piece of signage to the LAN web drop folder.
+#
+# Copies signage/<type>/<slug>.html to <web-root>/signage/<type>/<slug>/index.html
+# so Caddy on pub.lan serves it at http://pub.lan/signage/<type>/<slug>/ with
+# no deploy step. <type> is the signage directory: cards, sheets or labels. The
+# web root is the Neptune NAS `lentago` share: /mnt/lentago/web as mounted on
+# the workstation, /mnt/neptune-lentago/web on the fleet hosts. See
+# signage/README.md for the signage contract.
+#
+# Usage: publish-signage.sh <type> <slug> [web-root]
+#   web-root defaults to $SIGNAGE_WEB_ROOT, else /mnt/lentago/web.
+#   SIGNAGE_URL_BASE overrides the printed URL prefix (default http://pub.lan/signage).
+#   SIGNAGE_ALLOW_LOCAL=1 accepts a web root that is not on a network share (tests).
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly REPO_ROOT
+readonly SIGNAGE_DIR="${REPO_ROOT}/signage"
+readonly SIGNAGE_URL_BASE="${SIGNAGE_URL_BASE:-http://pub.lan/signage}"
+readonly SIGNAGE_TYPES="cards sheets labels"
+
+# Copy one piece into the web root and print its URL.
+# Args: <type> <slug> <web-root>
+publish_signage() {
+  local type="$1" slug="$2" web_root="$3"
+
+  if [[ " ${SIGNAGE_TYPES} " != *" ${type} "* ]]; then
+    echo "publish-signage: type must be one of: ${SIGNAGE_TYPES}; got '${type}'" >&2
+    return 2
+  fi
+  if [[ ! "$slug" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+    echo "publish-signage: slug must be lowercase words joined by hyphens, got '${slug}'" >&2
+    return 2
+  fi
+  local src="${SIGNAGE_DIR}/${type}/${slug}.html"
+  local dst_dir="${web_root}/signage/${type}/${slug}"
+  if [[ ! -f "$src" ]]; then
+    echo "publish-signage: no such piece: ${src}" >&2
+    return 2
+  fi
+  if [[ ! -d "$web_root" ]]; then
+    echo "publish-signage: web root is not a directory: ${web_root}" >&2
+    return 2
+  fi
+  # A plain local folder at the web root path (share not mounted, automount
+  # failed) would take the copy silently. Require a network filesystem unless
+  # the caller says a local directory is intended.
+  local fstype
+  fstype="$(stat -f -c '%T' "$web_root" 2>/dev/null || echo unknown)"
+  case "$fstype" in
+    smb2|cifs|nfs|nfs4) ;;
+    *)
+      if [[ "${SIGNAGE_ALLOW_LOCAL:-0}" != "1" ]]; then
+        echo "publish-signage: web root is not on a network share (filesystem: ${fstype}); is the NAS mounted? Set SIGNAGE_ALLOW_LOCAL=1 to publish to a local directory on purpose: ${web_root}" >&2
+        return 2
+      fi
+      ;;
+  esac
+
+  mkdir -p "$dst_dir"
+  # Write-then-rename so a reader never sees a half-copied page.
+  cp "$src" "${dst_dir}/index.html.partial"
+  mv -f "${dst_dir}/index.html.partial" "${dst_dir}/index.html"
+  # Modes are advisory on the SMB mount (the server decides); best effort.
+  chmod 755 "$dst_dir" 2>/dev/null || true
+  chmod 644 "${dst_dir}/index.html" 2>/dev/null || true
+
+  echo "${SIGNAGE_URL_BASE}/${type}/${slug}/"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  if [[ $# -lt 2 || $# -gt 3 ]]; then
+    echo "Usage: $(basename "$0") <type> <slug> [web-root]   (type: ${SIGNAGE_TYPES})" >&2
+    exit 2
+  fi
+  publish_signage "$1" "$2" "${3:-${SIGNAGE_WEB_ROOT:-/mnt/lentago/web}}"
+fi
