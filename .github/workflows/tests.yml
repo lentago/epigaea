@@ -93,3 +93,25 @@ jobs:
           else
             python3 scripts/check-signage-packages.py --base "origin/${BASE_REF}"
           fi
+
+  signage-pdfs:
+    name: Signage PDFs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install poppler-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      # Renders every piece in signage/ to PDF and fails if one is not exactly
+      # one US Letter page. The PDFs are attached so a facility without a
+      # browser on the printer PC can print them (#548).
+      - name: Render signage to PDF
+        run: scripts/render-signage-pdf.sh --out signage-pdf
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: signage-pdfs
+          path: signage-pdf/
+          if-no-files-found: error

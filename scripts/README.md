@@ -194,7 +194,12 @@ a slug that is not lowercase-hyphenated, a piece that does not exist, a web
 root that does not exist, and a web root that is not on a network filesystem
 (`smb2`, `cifs`, `nfs`), which is what an unmounted NAS looks like from the
 workstation; `SIGNAGE_ALLOW_LOCAL=1` publishes to a local directory on purpose
-(the tests use it). The web root is the third argument or `SIGNAGE_WEB_ROOT`,
+(the tests use it). It also renders the piece's PDF with
+`render-signage-pdf.sh` and writes it beside the page as `<slug>.pdf`, printing
+its URL on a second line. `SIGNAGE_PDF=0` skips the PDF. If the PDF cannot be
+rendered here (exit 3) it warns on stderr, publishes the page and exits 0; a
+render that runs and fails (exit 1) fails the publish before anything is
+written. The web root is the third argument or `SIGNAGE_WEB_ROOT`,
 defaulting to `/mnt/lentago/web` (the NAS share as the workstation mounts it;
 fleet hosts see it at `/mnt/neptune-lentago/web`). Runs on the workstation, not
 on HAOS. Signage contract and index: `signage/README.md`. It was
@@ -266,6 +271,31 @@ and 2 on every push and PR, and check 3 against `origin/<base branch>` on a PR.
 A PR body line `Signage-unaffected: <reason>` makes the job pass the reason as
 `--skip-changed-together`. Tests: `tests/signage_packages.bats`. Contract:
 `signage/README.md` (#548).
+
+## `render-signage-pdf.sh`
+
+Renders each piece of signage to a PDF, so a facility with no browser on the
+printer PC gets the same output. Usage:
+`render-signage-pdf.sh [--out <dir>] [<type>/<slug>...]`. With no pieces it
+renders every piece in `signage/cards`, `signage/sheets` and `signage/labels`.
+It prints `signage/<type>/<slug>.html` in headless Chrome (`--print-to-pdf`,
+`--no-pdf-header-footer`, with virtual time for the Google Fonts) to
+`<out>/<type>/<slug>.pdf`, then checks each PDF with `pdfinfo`: exactly one
+page, 612 by 792 pts (US Letter). A piece that spills onto a second page fails
+and is named. `--out` defaults to `./signage-pdf`.
+
+Exit codes follow `check-signage-size.sh`: 0 every piece is one Letter page; 1 a
+piece has the wrong page count or size; 2 usage error or unknown piece; 3 cannot
+render here. Exit 3 means no Chrome or Chromium on `PATH` (`CHROME` names the
+binary), no `pdfinfo` or `pdffonts` (install `poppler-utils`), no PDF produced,
+or the web fonts did not load, which `pdffonts` shows by the Atkinson and
+Bricolage fonts missing from the PDF.
+
+Two callers use it. The `Signage PDFs` job in `.github/workflows/tests.yml` runs
+it on every pull request and push to main, and uploads `signage-pdf/` as the
+`signage-pdfs` artifact. `publish-signage.sh` runs it for one piece and writes
+the PDF beside the published page. Tests: `tests/signage_pdf.bats`. Added for
+#548.
 
 ## Script auth conventions
 

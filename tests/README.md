@@ -48,6 +48,16 @@ bats tests/
   README with no tables each exit 1. One case builds the real README and checks
   that every file under `signage/cards/` and `signage/sheets/` is linked.
 
+- **`signage_pdf.bats`**: runs `scripts/render-signage-pdf.sh` over every card
+  and sheet and checks each PDF is one US Letter page (612 by 792 pts), by the
+  script's report and by `pdfinfo` on the file. It also checks that an unknown
+  piece, a piece named without its type, or a bad option is a usage error, and
+  that a browser that writes no PDF is reported as exit 3. Rendering needs
+  headless Chrome, `poppler-utils` and the pieces' Google Fonts. Without them
+  the render tests skip on a workstation and fail in CI (`CI=true`), the same
+  as `signage_size.bats`. `publish_signage.bats` also covers the PDF the
+  publisher writes beside the page (#548).
+
 - **`signage_size.bats`**: runs `scripts/check-signage-size.sh` over every
   card and sheet and fails if one prints taller than its type allows (5 inches
   for a card, 10 for a sheet; the contract in `signage/README.md`, #560,
