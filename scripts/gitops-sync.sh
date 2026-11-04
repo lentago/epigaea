@@ -90,12 +90,15 @@ apply_reload() {
     fi
     # No-op: files that don't affect HA Core runtime. signage/ is printed signage
     # (cards/ is its old home, kept for the pointer README),
-    # tests/ and assets/ are CI and README material, .claude/ is agent tooling,
+    # tests/ and assets/ are CI and README material, scripts/*.sh and
+    # scripts/*.py are CI, workstation and shell_command tooling that HA Core
+    # never loads as config, .claude/ is agent tooling,
     # and .ha-version plus the two secrets templates are read only by CI.
     if   [[ "$f" =~ ^context/ ]] || \
          [[ "$f" =~ ^\.github/ ]] || \
          [[ "$f" =~ ^esphome/ ]] || \
          [[ "$f" =~ ^scripts/.*\.sh$ ]] || \
+         [[ "$f" =~ ^scripts/.*\.py$ ]] || \
          [[ "$f" =~ ^signage/ ]] || \
          [[ "$f" =~ ^cards/ ]] || \
          [[ "$f" =~ ^tests/ ]] || \
