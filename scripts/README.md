@@ -218,6 +218,27 @@ which would change the line breaks. The `Bats` suite runs it in CI
 (`tests/signage_size.bats`). Added for #560 as `check-card-size.sh`; covers
 every type since #548.
 
+## `check-signage-packages.py`
+
+Checks each piece of signage's `epigaea-card-package` meta tags against the
+files they name. Python 3, standard library only. Three checks:
+
+1. Every named file exists.
+2. Every named file mentions the piece's repo path (`signage/<type>/<slug>.html`).
+   Today that is the header comment.
+3. With `--base <ref>`: every file changed in `<ref>...HEAD` that a piece names
+   has at least one piece naming it changed in the same diff. It prints the
+   changed file and the pieces to review.
+
+It prints one line per finding. Exit 0 is clean, 1 is findings, 2 is a usage
+error. `--skip-changed-together "<reason>"` prints the reason and passes check 3;
+checks 1 and 2 still run. `--root <dir>` checks another tree (the tests use it).
+The `Signage Packages` job in `.github/workflows/tests.yml` runs it: checks 1
+and 2 on every push and PR, and check 3 against `origin/<base branch>` on a PR.
+A PR body line `Signage-unaffected: <reason>` makes the job pass the reason as
+`--skip-changed-together`. Tests: `tests/signage_packages.bats`. Contract:
+`signage/README.md` (#548).
+
 ## Script auth conventions
 
 Three conventions learned the hard way during context-sync work. Future scripts

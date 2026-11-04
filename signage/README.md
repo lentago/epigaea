@@ -48,6 +48,7 @@ can read the next, and a check can verify them mechanically.
 |---|---|
 | Declares the repo-relative path of the file that implements it, a package or an automations file, in `<meta name="epigaea-card-package" content="packages/<file>.yaml">`, repeated in plain text in the footer. A piece that also prints behaviour defined in a second file (a shared scene list, say) carries one meta tag per file. The tag name says "card" because cards came first; every type uses it | The piece is part of the behaviour's deliverable; the meta tag makes the link checkable |
 | Changes in the same PR as the behaviour it describes | A printed piece that disagrees with the automation is worse than none |
+| Has its meta tags checked in CI by `scripts/check-signage-packages.py`: each named file must exist and mention the piece's path, and a PR that changes a named file must also change a piece that names it. A PR that leaves the signage correct as it is says so with a line `Signage-unaffected: <reason>` in its body | A stale piece or a dead link fails the PR instead of reaching the wall |
 | Standalone HTML, one file, no build step, nothing required to read it but a browser | Anyone can open, print or copy it; nothing to install, nothing to break |
 | Refers to controls and signals by their physical markings (the dots on the Tap Dial's buttons, an engraved label, a red light), never by entity id, and never assumes an orientation the hardware does not print | The reader has the device in front of them, not the registry |
 | Plain words for the people who live or work there; no HA vocabulary | "Dining room joins" beats `media_player.join` |
@@ -140,6 +141,5 @@ Cards published before the move to `signage/` served at
 
 The rest of the signage work is tracked in
 [#548](https://github.com/lentago/epigaea/issues/548): the label type, an index
-page at `http://pub.lan/signage/`, QR codes on the pieces, PDF export in CI, one
-shared stylesheet, and a check that each piece's meta tags name files that
-exist and that a changed behaviour has a changed piece.
+page at `http://pub.lan/signage/`, QR codes on the pieces, PDF export in CI,
+and one shared stylesheet.

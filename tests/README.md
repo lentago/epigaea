@@ -51,6 +51,13 @@ bats tests/
   workstation and fail in CI (`CI` is set), so the limit is never skipped
   silently where it is enforced.
 
+- **`signage_packages.bats`**: runs `scripts/check-signage-packages.py` over
+  the real repo, which must pass checks 1 and 2 (meta tags name files that
+  exist, and those files mention the piece). The failure cases use fixture
+  trees in a temp dir: a missing file, a missing link-back, a piece with no
+  tag, a changed package with an unchanged piece (in a throwaway git repo), a
+  package changed together with its piece, the skip reason, and usage errors.
+
 - **`context_dump.bats`** — the snapshot transforms in
   `scripts/ha-context-dump.sh` (`build_entities`, `build_areas`,
   `build_devices`, `build_helpers`, `build_dashboards_storage`,
