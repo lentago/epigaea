@@ -39,6 +39,13 @@ setup() {
   cmp -s "$WEB_ROOT/signage/sheets/meeting-light/index.html" "$SIGNAGE/sheets/meeting-light.html"
 }
 
+@test "publishes a label under signage/labels/<slug>/index.html" {
+  run publish_signage labels kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [ "$output" = "http://pub.lan/signage/labels/kitchen-speaker-dial/" ]
+  cmp -s "$WEB_ROOT/signage/labels/kitchen-speaker-dial/index.html" "$SIGNAGE/labels/kitchen-speaker-dial.html"
+}
+
 @test "republishing overwrites in place" {
   publish_signage cards kitchen-speaker-dial "$WEB_ROOT"
   echo stale > "$WEB_ROOT/signage/cards/kitchen-speaker-dial/index.html"

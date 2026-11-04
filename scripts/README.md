@@ -238,13 +238,15 @@ means a table is malformed or a row's piece file is missing or has no
 Checks that each piece of signage fits its type's printed size: a card's
 `.card` element no taller than 5 inches (the 7 by 5 inch card), a sheet's
 `.sheet` element no taller than 10 inches (one Letter page inside half-inch
-margins). It opens `signage/<type>/<slug>.html` in headless Chrome, waits for
+margins), a label's `.label` element (its sheet form) no taller than 1.5 inches.
+A label's strip is typed into a label maker, not printed, so
+`tests/signage_labels.bats` checks its text instead. It opens `signage/<type>/<slug>.html` in headless Chrome, waits for
 the Google Fonts, and reads the root element's height. That height is the
 printed height, because a piece is the same width on screen and on paper and
 the print stylesheet's `min-height` only pads a short piece. It prints
 `<type>/<slug>: <height>in, fits (limit …)` or `too tall` per piece and exits 1
 if any piece is over its limit; `SIGNAGE_MAX_IN` overrides the limit for every
-piece checked. No arguments checks every card and sheet; `<type>/<slug>`
+piece checked. No arguments checks every card, sheet and label; `<type>/<slug>`
 arguments check just those. Exit 3 means it could not measure: no Chrome or
 Chromium on `PATH` (`CHROME` names the binary), or the web fonts did not load,
 which would change the line breaks. The `Bats` suite runs it in CI
@@ -305,9 +307,10 @@ the piece's own page, `http://pub.lan/signage/<type>/<slug>/` (the address
 `publish-signage.sh` serves it at), around the QR code for that address as
 inline SVG. So the printed copy always points at the current one, and the HTML
 still needs nothing but a browser. Error correction M, quiet zone inside the
-SVG. `--check` changes nothing and exits 1 when a slot is missing or its code
+SVG. A label's code opens the device's card instead, the one its
+`<meta name="epigaea-label-card" content="cards/<slug>">` names. `--check` changes nothing and exits 1 when a slot is missing or its code
 is for any other address, which is how CI catches a renamed piece. No arguments
-covers every card and sheet; `<type>/<slug>` arguments cover just those.
+covers every card, sheet and label; `<type>/<slug>` arguments cover just those.
 `SIGNAGE_URL_BASE` overrides the address prefix. Needs the `segno` library;
 without it the script exits 3 (`uvx --with segno python scripts/signage-qr.py`
 runs it without installing anything). The `Bats` suite runs the check in CI

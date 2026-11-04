@@ -26,6 +26,13 @@ skip_without_segno() {
   [[ "$output" == *"sheets/meeting-light: QR up to date (http://pub.lan/signage/sheets/meeting-light/)"* ]]
 }
 
+@test "a label's code opens the device's card, not the label's own page" {
+  run python3 "$SCRIPT" --check labels/kitchen-speaker-dial
+  skip_without_segno
+  [ "$status" -eq 0 ]
+  [ "$output" = "labels/kitchen-speaker-dial: QR up to date (http://pub.lan/signage/cards/kitchen-speaker-dial/)" ]
+}
+
 @test "a code for a different address is reported as out of date, and --check writes nothing" {
   before="$(cksum "${BATS_TEST_DIRNAME}/../signage/cards/meeting-button.html")"
   run env SIGNAGE_URL_BASE=http://example.invalid/signage python3 "$SCRIPT" --check cards/meeting-button

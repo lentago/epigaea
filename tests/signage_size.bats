@@ -2,7 +2,8 @@
 #
 # Tests for scripts/check-signage-size.sh, which measures each piece of
 # signage in headless Chrome and fails when one prints taller than its type
-# allows: 5 inches for a card, 10 inches for a sheet (signage/README.md,
+# allows: 5 inches for a card, 10 inches for a sheet, 1.5 inches for a sheet
+# label (signage/README.md,
 # lentago/epigaea#560, #548). The measurement needs a browser and the pieces'
 # Google Fonts. Where either is missing the script exits 3. On a workstation
 # the size tests then skip; in CI (where GitHub sets CI=true and the runner has
@@ -20,13 +21,14 @@ skip_unless_measured() {
   fi
 }
 
-@test "every piece fits its type's size, cards and sheets both checked" {
+@test "every piece fits its type's size, cards, sheets and labels all checked" {
   run bash "$SCRIPT"
   skip_unless_measured
   echo "$output"
   [ "$status" -eq 0 ]
   [[ "$output" == *"cards/kitchen-speaker-dial: "*"fits (limit 5.0in)"* ]]
   [[ "$output" == *"sheets/meeting-light: "*"fits (limit 10.0in)"* ]]
+  [[ "$output" == *"labels/kitchen-speaker-dial: "*"fits (limit 1.5in)"* ]]
 }
 
 @test "a piece taller than the limit fails and is named" {

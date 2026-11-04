@@ -35,7 +35,7 @@ first. The kit itself is tracked in
 |---|---|---|---|---|
 | **Card** | "What does this control do?" | next to the control | 7 by 5 in, cut from Letter | [`cards/`](cards/) |
 | **Sheet** | "What does this signal mean, and what do I do?" | by the thing that signals, the panel or the door | one Letter page | [`sheets/`](sheets/) |
-| **Label** | "What is this, and where is its card?" | on the device, and beside it | a label-maker strip, and a Letter sheet label with a QR code | `labels/` (not yet, #548) |
+| **Label** | "What is this, and where is its card?" | on the device, and beside it | a label-maker strip, and a 3.5 by 1.5 in sheet label with a QR code | [`labels/`](labels/) |
 
 ## The contract
 
@@ -56,7 +56,7 @@ can read the next, and a check can verify them mechanically.
 | Fonts from Google Fonts with real fallback stacks | Looks the same on screen and paper, still prints offline |
 | Footer carries provenance: repo, the implementing file, the date of the behaviour it reflects | A reader can tell a stale piece from a current one |
 | Fits its type's printed size; `scripts/check-signage-size.sh` measures every piece in headless Chrome and CI runs it | A piece that spills past its size is cut off, or prints a second page |
-| Carries a QR code that opens its own page on pub.lan, `http://pub.lan/signage/<type>/<slug>/`, written into the HTML as inline SVG by `scripts/signage-qr.py`; CI fails when a code is missing or points anywhere else. On a card it sits at the right of the header, on a sheet at the right of the footer, and it is hidden on a phone screen | The paper goes stale the day the behaviour changes; the code lets whoever is standing there check it against the current version, with nothing to install |
+| Carries a QR code that opens its own page on pub.lan, `http://pub.lan/signage/<type>/<slug>/`, written into the HTML as inline SVG by `scripts/signage-qr.py`; CI fails when a code is missing or points anywhere else. A label's code opens the device's card instead. On a card it sits at the right of the header, on a sheet at the right of the footer, on a sheet label at its right, and it is hidden on a phone screen | The paper goes stale the day the behaviour changes; the code lets whoever is standing there check it against the current version, with nothing to install |
 
 ### Cards
 
@@ -83,6 +83,29 @@ layout for a phone may scale both down; the print sizes are the contract.)
 The first sheet, [`sheets/meeting-light.html`](sheets/meeting-light.html), is
 the reference. It uses the cards' fonts, colour tokens and footer, so the two
 types read as one system.
+
+### Labels
+
+One label names one device and says where its card is. It comes in two forms,
+in one file (Chris, 2026-11-04):
+
+- **The strip** goes on the device. It is typed into a label maker, not
+  printed from the page: at most two lines of at most 24 characters each, on
+  12 mm (½ in) tape. The first line is the device's name as the household says
+  it, and the second says where its card is ("Card on the fridge"). The page
+  shows the lines to type, in a `<ul class="type-this">`, and a preview of the
+  strip at tape size.
+- **The sheet label** goes beside the device. It prints as a 3.5 by 1.5 inch
+  label with a dashed cut line (`.label { width: 3.5in; min-height: 1.5in }`)
+  on full-sheet Letter label stock, or on plain paper taped up, from any
+  printer. It carries the device's name, one line, the provenance footer, and
+  a QR code that opens the device's **card**, named in
+  `<meta name="epigaea-label-card" content="cards/<slug>">`. Only the sheet
+  label prints; the strip section is screen-only.
+
+A label takes the slug of the card it points at. The first label,
+[`labels/kitchen-speaker-dial.html`](labels/kitchen-speaker-dial.html), is the
+reference.
 
 ## Making a piece
 
@@ -161,6 +184,12 @@ Cards published before the move to `signage/` served at
 | [`downstairs-lights-button.html`](cards/downstairs-lights-button.html) | Kitchen and family room | Sonoff wireless button (SNZB-01P, "Button 1") for the downstairs and hallway lights | [`automations/sonoff_button_kitchen_family.yaml`](../automations/sonoff_button_kitchen_family.yaml) | Kitchen and family room (the main first-floor open space), next to the button; publishes to `http://pub.lan/signage/cards/downstairs-lights-button/` |
 | [`meeting-button.html`](cards/meeting-button.html) | Office | Meeting button (ESP32, ESPHome) | [`packages/meeting_indicator.yaml`](../packages/meeting_indicator.yaml) | Office, next to the button; publishes to `http://pub.lan/signage/cards/meeting-button/` |
 
+### Labels
+
+| Label | Room | Device | Files | Posted |
+|---|---|---|---|---|
+| [`kitchen-speaker-dial.html`](labels/kitchen-speaker-dial.html) | Kitchen | Hue Tap Dial (RDM002); its code opens [the card](cards/kitchen-speaker-dial.html) | [`packages/hue_tap_dial_kitchen_sonos.yaml`](../packages/hue_tap_dial_kitchen_sonos.yaml) | Strip on the dial; sheet label on the fridge beside it; publishes to `http://pub.lan/signage/labels/kitchen-speaker-dial/` |
+
 ### Sheets
 
 | Sheet | Room | Signal | Files | Posted |
@@ -170,5 +199,4 @@ Cards published before the move to `signage/` served at
 ## Not yet
 
 The rest of the signage work is tracked in
-[#548](https://github.com/lentago/epigaea/issues/548): the label type and one
-shared stylesheet.
+[#548](https://github.com/lentago/epigaea/issues/548): one shared stylesheet.
