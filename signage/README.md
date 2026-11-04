@@ -126,7 +126,9 @@ Each piece is published with its PDF. The script renders the piece with
 second line. A facility with no browser on the printer PC can print the PDF.
 `SIGNAGE_PDF=0` skips it. If this machine cannot render (no Chrome or
 `poppler-utils`, or the fonts did not load) the script warns and publishes the
-page only. A piece that renders to more than one Letter page fails the publish.
+page only, and takes down any PDF from an earlier publish so the old layout is
+not printed from the new page's address. A piece that renders to more than one
+Letter page fails the publish.
 
 CI also renders every piece on each pull request and attaches the PDFs to the
 run as the `signage-pdfs` artifact, so a reviewer can open the printed output.

@@ -169,6 +169,21 @@ setup() {
   pdfinfo "$WEB_ROOT/signage/sheets/meeting-light/meeting-light.pdf" | grep -Eq '^Pages: +1$'
 }
 
+@test "a republish without a new PDF takes down the old one rather than serve it beside the new page" {
+  mkdir -p "$WEB_ROOT/signage/cards/kitchen-speaker-dial"
+  echo old > "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf"
+  run env SIGNAGE_PDF=0 bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"removed the previous kitchen-speaker-dial.pdf"* ]]
+  [ ! -e "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf" ]
+  echo old > "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf"
+  # CHROME=true writes no PDF, so the render cannot run here (exit 3).
+  run env SIGNAGE_PDF=1 CHROME=true bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"
+  [ "$status" -eq 0 ]
+  [ ! -e "$WEB_ROOT/signage/cards/kitchen-speaker-dial/kitchen-speaker-dial.pdf" ]
+  [ -f "$WEB_ROOT/signage/cards/kitchen-speaker-dial/index.html" ]
+}
+
 @test "a PDF that cannot be rendered here warns and still publishes the page" {
   # CHROME=true is an executable that exits 0 and writes no PDF: exit 3.
   run env SIGNAGE_PDF=1 CHROME=true bash "$SCRIPT" cards kitchen-speaker-dial "$WEB_ROOT"

@@ -119,19 +119,31 @@ publish_signage() {
   fi
 
   mkdir -p "$dst_dir"
-  # Write-then-rename so a reader never sees a half-copied page.
+  # Stage both files first, then rename them into place: a reader never sees a
+  # half-copied file, and a failed copy leaves the published pair as it was.
   cp "$src" "${dst_dir}/index.html.partial"
+  if [[ -n "$pdf_dir" ]]; then
+    cp "${pdf_dir}/${type}/${slug}.pdf" "${dst_dir}/${slug}.pdf.partial"
+    rm -rf "$pdf_dir"
+  fi
   mv -f "${dst_dir}/index.html.partial" "${dst_dir}/index.html"
+  local wrote_pdf=0
+  if [[ -n "$pdf_dir" ]]; then
+    mv -f "${dst_dir}/${slug}.pdf.partial" "${dst_dir}/${slug}.pdf"
+    wrote_pdf=1
+  elif [[ -e "${dst_dir}/${slug}.pdf" ]]; then
+    # No new PDF this time. An old one beside the new page would print the
+    # old layout from the same URL, so take it down.
+    rm -f "${dst_dir}/${slug}.pdf"
+    echo "publish-signage: removed the previous ${slug}.pdf, which no longer matches the page" >&2
+  fi
   # Modes are advisory on the SMB mount (the server decides); best effort.
   chmod 755 "$dst_dir" 2>/dev/null || true
   chmod 644 "${dst_dir}/index.html" 2>/dev/null || true
 
   echo "${SIGNAGE_URL_BASE}/${type}/${slug}/"
-  if [[ -n "$pdf_dir" ]]; then
-    cp "${pdf_dir}/${type}/${slug}.pdf" "${dst_dir}/${slug}.pdf.partial"
-    mv -f "${dst_dir}/${slug}.pdf.partial" "${dst_dir}/${slug}.pdf"
+  if [[ "$wrote_pdf" == 1 ]]; then
     chmod 644 "${dst_dir}/${slug}.pdf" 2>/dev/null || true
-    rm -rf "$pdf_dir"
     echo "${SIGNAGE_URL_BASE}/${type}/${slug}/${slug}.pdf"
   fi
 }
