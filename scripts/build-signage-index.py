@@ -26,6 +26,9 @@ LINK_RE = re.compile(r"\[`?([^\]`]+)`?\]\(([^)]+)\)")
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S | re.I)
 
 
+SLUG_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+
+
 class IndexError_(Exception):
     pass
 
@@ -87,6 +90,10 @@ def resolve(rows, readme_dir):
         path = (readme_dir / r["href"]).resolve()
         if not path.is_file():
             raise IndexError_(f"piece file is missing: {r['href']} (from the {r['dir']} table)")
+        if not SLUG_RE.match(path.stem):
+            raise IndexError_(
+                f"piece file name is not a valid slug (lowercase words joined by hyphens): {r['href']}"
+            )
         t = TITLE_RE.search(path.read_text(encoding="utf-8"))
         if not t or not t.group(1).strip():
             raise IndexError_(f"piece has no <title>: {r['href']}")

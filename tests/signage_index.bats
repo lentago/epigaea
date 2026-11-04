@@ -94,6 +94,14 @@ MD
   [[ "$output" == *"piece file is missing: cards/pantry-dial.html"* ]]
 }
 
+@test "fails with exit 1 when a piece file name is not a valid slug" {
+  mv "$FIX/cards/pantry-dial.html" "$FIX/cards/Pantry_Dial.html"
+  sed -i 's/cards\/pantry-dial.html/cards\/Pantry_Dial.html/' "$FIX/README.md"
+  run python3 "$BUILD" --readme "$FIX/README.md"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"not a valid slug"* ]]
+}
+
 @test "fails with exit 1 on a row with the wrong number of columns" {
   sed -i 's/| Dial | \[/| [/' "$FIX/README.md"
   run python3 "$BUILD" --readme "$FIX/README.md"
