@@ -23,8 +23,9 @@
 #   arrives as {"@id": ..., "#text": <name>}, or as a bare string when the
 #   element has no attributes.
 #
-#   automation.office_roku_relaunch_brasenia fires once the stick has sat on
-#   the home screen for 30 s (and on HA start, in case it was already there),
+#   automation.office_roku_relaunch_brasenia_from_the_home_screen (HA derives
+#   the entity id from the alias) fires once the stick has sat on the home
+#   screen for 30 s (and on HA start, in case it was already there),
 #   POSTs ECP `launch/dev`, and checks again 15 s later. It keeps trying while
 #   the stick stays on the home screen: three quick tries, then one every
 #   5 minutes, so a launch that keeps failing never leaves the wall dark for
