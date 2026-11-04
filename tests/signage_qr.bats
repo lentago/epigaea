@@ -35,6 +35,14 @@ skip_without_segno() {
   [ "$(cksum "${BATS_TEST_DIRNAME}/../signage/cards/meeting-button.html")" = "$before" ]
 }
 
+@test "a bad name anywhere in the list stops the run before any piece is written" {
+  before="$(cksum "${BATS_TEST_DIRNAME}/../signage/cards/meeting-button.html")"
+  run env SIGNAGE_URL_BASE=http://example.invalid/signage python3 "$SCRIPT" cards/meeting-button cards/no-such-card
+  skip_without_segno
+  [ "$status" -eq 2 ]
+  [ "$(cksum "${BATS_TEST_DIRNAME}/../signage/cards/meeting-button.html")" = "$before" ]
+}
+
 @test "a piece named without its type, or an unknown piece, is a usage error" {
   run python3 "$SCRIPT" --check kitchen-speaker-dial
   skip_without_segno

@@ -78,7 +78,9 @@ def main(argv: list[str]) -> int:
         print("signage-qr: segno is not installed (pip install segno)", file=sys.stderr)
         return 3
 
-    rc = 0
+    # Validate every name before writing anything, so a typo in the last
+    # argument can't leave the earlier pieces rewritten and the rest not.
+    targets = []
     for piece in args.pieces or all_pieces():
         piece_type, _, slug = piece.partition("/")
         if piece_type not in TYPES or not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug):
@@ -88,7 +90,10 @@ def main(argv: list[str]) -> int:
         if not path.is_file():
             print(f"signage-qr: no such piece: {path}", file=sys.stderr)
             return 2
+        targets.append((piece, piece_type, slug, path))
 
+    rc = 0
+    for piece, piece_type, slug, path in targets:
         html = path.read_text(encoding="utf-8")
         slots = SLOT.findall(html)
         if len(slots) != 1:
