@@ -37,7 +37,16 @@ bats tests/
   copy, the printed URL, the in-place overwrite, and every refusal (bad type,
   bad slug, missing piece, missing web root, a web root that is not on a
   network share, CLI usage), since the refusals are what keep a typo off the
-  live `pub.lan` share.
+  live `pub.lan` share. It also covers `publish-signage.sh index`: the page is
+  written and replaced in place, the same refusals apply, and the CLI form
+  takes an optional web root.
+
+- **`signage_index.bats`**: `scripts/build-signage-index.py`, the generator for
+  the signage index page. Builds from a fixture README and checks that every
+  table row is listed, that links are relative with no host, that each piece
+  sits under its room, and that a missing piece file, a malformed row and a
+  README with no tables each exit 1. One case builds the real README and checks
+  that every file under `signage/cards/` and `signage/sheets/` is linked.
 
 - **`signage_size.bats`**: runs `scripts/check-signage-size.sh` over every
   card and sheet and fails if one prints taller than its type allows (5 inches

@@ -98,7 +98,7 @@ types read as one system.
 4. Link the piece from the header comment of each file it names, and from that
    directory's README (`packages/README.md` or `automations/README.md`).
 5. Add a row to the index below.
-6. Publish (next section).
+6. Publish the piece, then rebuild the index page (next section).
 
 ## Publishing
 
@@ -109,6 +109,16 @@ root as an optional third argument (or `SIGNAGE_WEB_ROOT`). It defaults to the
 NAS share as mounted on the workstation, `/mnt/lentago/web`, and it refuses a
 web root that is not on a network share, so an unmounted NAS cannot take the
 copy onto local disk.
+
+`scripts/publish-signage.sh index [web-root]` builds the index page and writes
+it to `<web-root>/signage/index.html`, so it serves at `http://pub.lan/signage/`.
+The page lists every piece by room, with its type, its control or signal, where
+it is posted, and a link. It is generated from the Cards, Sheets and Labels
+tables below by `scripts/build-signage-index.py`, so the index tables are the
+source: a piece that is not in a table is not on the page. The links are
+relative (`cards/<slug>/`), so the page works on any host name. It is not
+committed. Run the `index` form after you publish a piece or change a row. The
+build fails if a row names a piece file that does not exist.
 
 A piece can also be published as a claude.ai artifact for sharing off the LAN.
 The artifact viewer supplies its own document skeleton, so paste the contents
@@ -140,6 +150,5 @@ Cards published before the move to `signage/` served at
 ## Not yet
 
 The rest of the signage work is tracked in
-[#548](https://github.com/lentago/epigaea/issues/548): the label type, an index
-page at `http://pub.lan/signage/`, QR codes on the pieces, PDF export in CI,
-and one shared stylesheet.
+[#548](https://github.com/lentago/epigaea/issues/548): the label type, QR codes
+on the pieces, PDF export in CI, and one shared stylesheet.
