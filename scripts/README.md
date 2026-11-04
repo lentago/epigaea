@@ -297,6 +297,22 @@ it on every pull request and push to main, and uploads `signage-pdf/` as the
 the PDF beside the published page. Tests: `tests/signage_pdf.bats`. Added for
 #548.
 
+## `signage-qr.py`
+
+Writes each piece of signage's QR code. A piece marks the spot with a slot,
+`<!-- signage-qr --><!-- /signage-qr -->`; the script fills it with a link to
+the piece's own page, `http://pub.lan/signage/<type>/<slug>/` (the address
+`publish-signage.sh` serves it at), around the QR code for that address as
+inline SVG. So the printed copy always points at the current one, and the HTML
+still needs nothing but a browser. Error correction M, quiet zone inside the
+SVG. `--check` changes nothing and exits 1 when a slot is missing or its code
+is for any other address, which is how CI catches a renamed piece. No arguments
+covers every card and sheet; `<type>/<slug>` arguments cover just those.
+`SIGNAGE_URL_BASE` overrides the address prefix. Needs the `segno` library;
+without it the script exits 3 (`uvx --with segno python scripts/signage-qr.py`
+runs it without installing anything). The `Bats` suite runs the check in CI
+(`tests/signage_qr.bats`). Added for #548.
+
 ## Script auth conventions
 
 Three conventions learned the hard way during context-sync work. Future scripts
