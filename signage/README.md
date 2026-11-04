@@ -74,8 +74,9 @@ One sheet explains one signal: what it means, and what the reader should do
 about it. It prints as one US Letter page in portrait
 (`@page { size: letter; margin: 0.5in }`, `.sheet { width: 7.5in; min-height: 10in }`),
 so the content must fit in 10 inches. There is no cut line; the page is the
-sheet. It is read from a few steps away, so the headline is 40 pt or larger and
-the text that explains the signal is 16 pt or larger.
+sheet. It is read from a few steps away, so on paper the headline is 40 pt or larger
+and the text that explains the signal is 16 pt or larger. (The on-screen
+layout for a phone may scale both down; the print sizes are the contract.)
 
 The first sheet, [`sheets/meeting-light.html`](sheets/meeting-light.html), is
 the reference. It uses the cards' fonts, colour tokens and footer, so the two
