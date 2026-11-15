@@ -81,7 +81,7 @@ build_devices() {
     --slurpfile dev "$1" \
     --slurpfile cfg "$2" \
     '
-    ($cfg[0].data.entries | map({(.entry_id): .domain}) | add // {}) as $entry_domains |
+    (($cfg[0].data.entries // []) | map({(.entry_id): .domain}) | add // {}) as $entry_domains |
     $dev[0].data.devices
     | map({
         device_id: .id,
@@ -89,7 +89,9 @@ build_devices() {
         manufacturer: .manufacturer,
         model: .model,
         area_id: .area_id,
-        integrations: (.config_entries | map($entry_domains[.]) | map(select(. != null)) | unique)
+        # A device can carry config_entries: null (seen live 2026-11-15); treat
+        # it as no entries. A non-string member is skipped the same way.
+        integrations: ((.config_entries // []) | map(strings | $entry_domains[.]) | map(select(. != null)) | unique)
       })
     | sort_by(.name // "")
     '
@@ -148,6 +150,12 @@ build_dashboards_storage() {
 
 main() {
   rotate_log
+  # HA's shell_command reports only the return code, so send stderr (jq and git
+  # messages) to the log and name the failing line. Without this a transform
+  # error leaves the log ending on the last INFO line and nothing else.
+  exec 2>>"$LOG_FILE"
+  set -E
+  trap 'log ERROR "Failed at line ${LINENO} (exit $?): ${BASH_COMMAND}"' ERR
   log INFO "Starting HA context dump"
 
   # One-time cleanup of Card A staging dir; remove after a few snapshots have run.
