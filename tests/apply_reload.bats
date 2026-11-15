@@ -135,6 +135,16 @@ run_with_diff() {
   [ ! -s "$CALLS_FILE" ]
 }
 
+@test "dashboards/entity-allowlist.txt is a no-op; with home.yaml only a dashboard reload" {
+  # CI-only file (check-dashboard-entities.py); HA Core never loads it.
+  run_with_diff "dashboards/entity-allowlist.txt"
+  [ "$status" -eq 0 ]
+  [ ! -s "$CALLS_FILE" ]
+  run_with_diff "$(printf '%s\n' "dashboards/entity-allowlist.txt" "dashboards/home.yaml")"
+  [ "$status" -eq 0 ]
+  ! grep -q RESTART "$CALLS_FILE"
+}
+
 @test "a piece of signage alongside a package change still restarts" {
   # The no-op set must not mask a heavy file in the same diff.
   run_with_diff "$(printf '%s\n' \
