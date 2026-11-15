@@ -27,6 +27,7 @@
 # are balanced to come out within ~150px of each other:
 #   c1 (span 2) Weather              + Openings (doors/garage/motion)
 #   c2          Security/Presence    + Media (compact now-playing strips)
+#                                    + Kids TVs (Firewalla block toggles)
 #   c3          Climate (up + down)  + Outdoor lights
 #   c4          Office + Family Room + Kitchen lights
 # A card cannot span across separate sections in `type: sections`, so the
@@ -692,6 +693,80 @@ views:
               - <<: *media_tile
                 entity: media_player.roam_2
                 name: Roam 2
+
+          # Kids TVs: the two Firewalla block rules for the basement and
+          # playroom TVs, via the stable wrappers in
+          # packages/kids_tvs_block.yaml. Tap toggles the rule, hold opens
+          # more-info. On = the block is enforced (amber, left accent =
+          # active); off = allowed. The YouTube block shows nothing new to a
+          # viewer while the internet block is on.
+          - type: heading
+            heading: Kids TVs
+            heading_style: title
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - &tv_block_tile
+                type: custom:button-card
+                entity: switch.kids_tvs_internet_block
+                name: Internet
+                show_name: true
+                show_state: false
+                show_label: true
+                show_icon: true
+                size: 45%
+                tap_action: { action: toggle }
+                hold_action: { action: more-info }
+                state:
+                  - value: 'on'
+                    icon: mdi:television-off
+                    color: 'var(--home-accent-armed)'
+                    label: Blocked
+                    styles:
+                      card:
+                        - background-color: 'rgba(227, 179, 65, 0.10)'
+                        - border-left: '4px solid var(--home-accent-armed)'
+                      label: [{ color: 'var(--home-accent-armed)' }]
+                  - value: 'off'
+                    icon: mdi:television
+                    color: 'var(--home-accent-disarmed)'
+                    label: Allowed
+                    styles:
+                      card: [{ background-color: 'var(--home-bg-tile)' }]
+                      label: [{ color: 'var(--home-accent-disarmed)' }]
+                  - operator: default
+                    icon: mdi:television-off
+                    color: 'var(--home-text-tertiary)'
+                    label: Unavailable
+                    styles:
+                      card: [{ background-color: 'var(--home-bg-tile)' }]
+                      label: [{ color: 'var(--home-text-tertiary)' }]
+                styles:
+                  card:
+                    - border-radius: '10px'
+                    - border: 'none'
+                    - padding: '12px 20px'
+                    - background: 'var(--home-bg-card)'
+                  name:
+                    - font-size: '15px'
+                    - font-weight: '500'
+                    - color: 'var(--home-text-secondary)'
+                    - justify-self: start
+                  label:
+                    - font-size: '20px'
+                    - font-weight: '600'
+                    - text-transform: 'uppercase'
+                    - letter-spacing: '1.5px'
+                    - justify-self: start
+                  grid:
+                    - grid-template-areas: '"i n" "i l"'
+                    - grid-template-columns: 'min-content 1fr'
+                    - column-gap: '20px'
+                    - align-items: 'center'
+              - <<: *tv_block_tile
+                entity: switch.kids_tvs_youtube_block
+                name: YouTube
 
       # ===== COLUMN 3 (span 1): CLIMATE (up + down) + OUTDOOR =====
       # Defines &climate_block (reused for downstairs) and &mlight /

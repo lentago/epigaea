@@ -132,6 +132,7 @@ Mobile-first control interface. Design principle: show only what's active.
 | Climate | 2 `thermostat` dials (Upstairs/Downstairs), each with a `mushroom-chips-card` strip (humidity, setpoint, HVAC action); standby mode swaps the dial for a large current-temp tile |
 | Lights | 18 `mushroom-light-card` tiles grouped into 5 room sub-grids (Family, Kitchen, Office, Hallways, Outdoor) under `heading` subtitles |
 | Media | 5 `mini-media-player` cards (album art via `artwork: full-cover-fit`) in a 2-col grid + a TV `button-card` |
+| Kids TVs | 2 `button-card` tiles (Internet, YouTube) that toggle the Firewalla block rules for the kids' TVs through `switch.kids_tvs_internet_block` and `switch.kids_tvs_youtube_block` ([`packages/kids_tvs_block.yaml`](../packages/kids_tvs_block.yaml)). Amber "Blocked" means the rule is enforced; tap toggles, hold opens more-info |
 
 ### kiosk-mode (third-party HACS card)
 

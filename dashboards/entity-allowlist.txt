@@ -13,3 +13,9 @@
 
 # --- Valid but unregistered (no unique_id) ---
 alarm_control_panel.home_alarm   # YAML-defined manual alarm panel (configuration.yaml)
+
+# --- Registered, but newer than the snapshot ---
+# The context snapshot has been frozen since 2026-06-24 (#546). Remove these
+# once a fresh snapshot lands and the checker says they can go.
+switch.kids_tvs_internet_block   # template switch, packages/kids_tvs_block.yaml
+switch.kids_tvs_youtube_block    # template switch, packages/kids_tvs_block.yaml
