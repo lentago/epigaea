@@ -88,3 +88,15 @@ The office Roku Streaming Stick Plus (192.168.139.21, a static DHCP reservation)
 **`rest_command.office_roku_launch_brasenia`** — POSTs `launch/dev`, which starts the sideloaded channel.
 
 **`automation.office_roku_relaunch_brasenia_from_the_home_screen`** — fires once the sensor has read the home screen for 30 s, and on HA start if it already does. It launches the channel and refreshes the sensor to check. While the stick stays on the home screen it keeps trying, three times 15 s apart and then every 5 minutes, so a failing launch never leaves the wall dark for good. It never acts while another app is in the foreground. To pause it for work on the stick, turn the automation off in the HA UI. Changes to the brasenia channel itself belong in the brasenia repo, not here.
+
+## `kids_tvs_block.yaml` — Kids TVs block switches
+
+The Kids-TVs group on the Firewalla (the basement and playroom TVs) has two block rules, made in the Firewalla app: one blocks all internet, the other blocks only YouTube. The `firewalla_local` HACS integration (set up in the UI, so not in git) exposes each as a switch, with a long entity id derived from the rule name. This package wraps the two in template switches with short names and ids that stay put, for a companion-app widget, a dashboard tile or Assist.
+
+**`switch.kids_tvs_internet_block`** — on means the TVs have no internet (Firewalla rule 578).
+
+**`switch.kids_tvs_youtube_block`** — on means YouTube is blocked on the TVs and everything else works (rule 577).
+
+The rules are independent on the box: while the internet block is on, the YouTube block changes nothing a viewer can see. Each wrapper goes unavailable with its source switch, which is what a rule deleted or deselected in the integration looks like; the file header says how to recover.
+
+On an Android phone, add one **Entity state** widget per switch from the Home Assistant app's widget list and set its tap action to toggle. The widget then shows on or off and flips the block on a tap. Tablet screen time is not handled here: it moved to Google Family Link, and the Firewalla tablet rules were removed.

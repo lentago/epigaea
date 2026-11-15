@@ -6,8 +6,10 @@ work actually starts.
 
 ## Integrations
 
-- **Firewalla HA integration** — Toggle kids' internet rules, show active
-  rulesets, time remaining on scheduled blocks.
+- **Firewalla HA integration** — The kids' TV rules have stable switches for
+  a phone widget (`packages/kids_tvs_block.yaml`). Still open: show active
+  rulesets and the time remaining on scheduled or paused blocks. Tablet
+  screen time moved to Google Family Link and is out of scope.
 - **`firewalla-network-guardian`** — Anomaly detection module (planned
   Lentago Labs repo).
 - **Roku integration** — Two Rokus unreachable; possible Firewalla Smart

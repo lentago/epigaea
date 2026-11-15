@@ -1,0 +1,66 @@
+# Kids TVs: two block switches for a phone widget
+#
+# The Kids-TVs group on the Firewalla (the basement and playroom TVs) has two
+# block rules, both made in the Firewalla app:
+#
+#   rule 578  block internet for Kids-TVs      the TVs get nothing
+#   rule 577  block category Youtube for Kids-TVs   everything but YouTube
+#
+# The firewalla_local integration (HACS, set up in the UI) gives each selected
+# rule a switch: on means the rule is enforced, off means it is switched off
+# on the box. Those entity ids are derived from the rule name and have already
+# changed once, and their names are long. This package wraps the two rules in
+# switches with short names and ids that stay put, so a companion-app widget,
+# a dashboard tile or Assist keeps working if the integration renames its own.
+#
+#   switch.kids_tvs_internet_block   on = the TVs have no internet
+#   switch.kids_tvs_youtube_block    on = YouTube is blocked on the TVs
+#
+# The two rules are independent on the box. While the internet block is on,
+# the YouTube block changes nothing a viewer can see; it matters again the
+# moment the internet block comes off.
+#
+# Each wrapper is unavailable while its source switch is, which is what a
+# deleted or deselected rule looks like. If that happens, re-select the rule
+# in the integration's options (Settings > Devices & services > Firewalla
+# Local > Configure) and correct the source entity id below if it changed.
+
+template:
+  - switch:
+      - name: Kids TVs internet block
+        unique_id: kids_tvs_internet_block
+        icon: >-
+          {{ 'mdi:television-off'
+             if is_state('switch.office_firewalla_block_internet_for_kids_tvs', 'on')
+             else 'mdi:television' }}
+        state: >-
+          {{ is_state('switch.office_firewalla_block_internet_for_kids_tvs', 'on') }}
+        availability: >-
+          {{ has_value('switch.office_firewalla_block_internet_for_kids_tvs') }}
+        turn_on:
+          - action: switch.turn_on
+            target:
+              entity_id: switch.office_firewalla_block_internet_for_kids_tvs
+        turn_off:
+          - action: switch.turn_off
+            target:
+              entity_id: switch.office_firewalla_block_internet_for_kids_tvs
+
+      - name: Kids TVs YouTube block
+        unique_id: kids_tvs_youtube_block
+        icon: >-
+          {{ 'mdi:youtube-tv'
+             if is_state('switch.office_firewalla_block_category_youtube_for_kids_tvs', 'off')
+             else 'mdi:television-off' }}
+        state: >-
+          {{ is_state('switch.office_firewalla_block_category_youtube_for_kids_tvs', 'on') }}
+        availability: >-
+          {{ has_value('switch.office_firewalla_block_category_youtube_for_kids_tvs') }}
+        turn_on:
+          - action: switch.turn_on
+            target:
+              entity_id: switch.office_firewalla_block_category_youtube_for_kids_tvs
+        turn_off:
+          - action: switch.turn_off
+            target:
+              entity_id: switch.office_firewalla_block_category_youtube_for_kids_tvs
