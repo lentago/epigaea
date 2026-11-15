@@ -87,17 +87,20 @@ setup() {
   {"id": "d1", "name": "Orphan", "name_by_user": null, "manufacturer": null,
    "model": null, "area_id": null, "config_entries": null},
   {"id": "d2", "name": "Hue", "name_by_user": null, "manufacturer": "Signify",
-   "model": "x", "area_id": null, "config_entries": ["ce_hue", null]}
+   "model": "x", "area_id": null, "config_entries": ["ce_hue", null, 7]},
+  {"id": "d3", "name": "Nulls", "name_by_user": null, "manufacturer": null,
+   "model": null, "area_id": null, "config_entries": [null, null]}
 ]}}
 JSON
   run build_devices "${BATS_TEST_TMPDIR}/dev.json" "${FIXTURES}/core.config_entries"
   [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[["hue"],[]]' ]
+  # sorted by name: Hue, Nulls, Orphan
+  [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[["hue"],[],[]]' ]
 
   printf '{"data": {"entries": null}}\n' > "${BATS_TEST_TMPDIR}/cfg.json"
   run build_devices "${BATS_TEST_TMPDIR}/dev.json" "${BATS_TEST_TMPDIR}/cfg.json"
   [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[[],[]]' ]
+  [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[[],[],[]]' ]
 }
 
 # --- build_helpers ---------------------------------------------------------

@@ -265,9 +265,12 @@ main() {
   # Use URL-embedded auth for git push. The extraheader approach (git -c http...extraheader=...)
   # is unreliable for push in git 2.52 — git drops the extraheader on auth challenge during
   # the receive-pack handshake. URL-embedded auth is what GitHub Actions uses internally.
+  # stderr goes to the log (see main), and this URL carries the token. git
+  # normally strips credentials from the URLs it prints; the sed makes sure
+  # the token can never reach the log file whatever git or curl emits.
   git -C "$WORKTREE" push \
     "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_OWNER}/${REPO_NAME}.git" \
-    "$branch"
+    "$branch" 2> >(sed "s/${GITHUB_TOKEN}/[redacted]/g" >&2)
 
   log INFO "Pushed branch $branch"
 
