@@ -81,7 +81,7 @@ build_devices() {
     --slurpfile dev "$1" \
     --slurpfile cfg "$2" \
     '
-    ($cfg[0].data.entries | map({(.entry_id): .domain}) | add // {}) as $entry_domains |
+    (($cfg[0].data.entries // []) | map({(.entry_id): .domain}) | add // {}) as $entry_domains |
     $dev[0].data.devices
     | map({
         device_id: .id,
@@ -89,7 +89,9 @@ build_devices() {
         manufacturer: .manufacturer,
         model: .model,
         area_id: .area_id,
-        integrations: (.config_entries | map($entry_domains[.]) | map(select(. != null)) | unique)
+        # A device can carry config_entries: null (seen live 2026-11-15); treat
+        # it as no entries. A non-string member is skipped the same way.
+        integrations: ((.config_entries // []) | map(strings | $entry_domains[.]) | map(select(. != null)) | unique)
       })
     | sort_by(.name // "")
     '
@@ -148,6 +150,12 @@ build_dashboards_storage() {
 
 main() {
   rotate_log
+  # HA's shell_command reports only the return code, so send stderr (jq and git
+  # messages) to the log and name the failing line. Without this a transform
+  # error leaves the log ending on the last INFO line and nothing else.
+  exec 2>>"$LOG_FILE"
+  set -E
+  trap 'log ERROR "Failed at line ${LINENO} (exit $?): ${BASH_COMMAND}"' ERR
   log INFO "Starting HA context dump"
 
   # One-time cleanup of Card A staging dir; remove after a few snapshots have run.
@@ -257,9 +265,12 @@ main() {
   # Use URL-embedded auth for git push. The extraheader approach (git -c http...extraheader=...)
   # is unreliable for push in git 2.52 — git drops the extraheader on auth challenge during
   # the receive-pack handshake. URL-embedded auth is what GitHub Actions uses internally.
+  # stderr goes to the log (see main), and this URL carries the token. git
+  # normally strips credentials from the URLs it prints; the sed makes sure
+  # the token can never reach the log file whatever git or curl emits.
   git -C "$WORKTREE" push \
     "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_OWNER}/${REPO_NAME}.git" \
-    "$branch"
+    "$branch" 2> >(sed "s/${GITHUB_TOKEN}/[redacted]/g" >&2)
 
   log INFO "Pushed branch $branch"
 
