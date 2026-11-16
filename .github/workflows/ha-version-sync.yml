@@ -11,6 +11,18 @@ jobs:
   sync-version:
     runs-on: ubuntu-latest
     steps:
+      - name: Require HA_SYNC_PAT
+        # Without this, an unset or blank secret surfaces as actions/checkout's
+        # "Input required and not supplied: token", which names neither the
+        # secret nor the fix. See SECURITY.md -> Rotation.
+        env:
+          HA_SYNC_PAT: ${{ secrets.HA_SYNC_PAT }}
+        run: |
+          if [[ -z "${HA_SYNC_PAT}" ]]; then
+            echo "::error title=HA_SYNC_PAT missing::The HA_SYNC_PAT Actions secret is unset or empty. Set it to the bare fine-grained PAT (no 'Bearer ' prefix); see SECURITY.md -> Rotation."
+            exit 1
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           token: ${{ secrets.HA_SYNC_PAT }}
