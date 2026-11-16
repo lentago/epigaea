@@ -98,9 +98,36 @@ JSON
   [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[["hue"],[],[]]' ]
 
   printf '{"data": {"entries": null}}\n' > "${BATS_TEST_TMPDIR}/cfg.json"
+  # Nothing resolves at all: refuse the snapshot instead of emitting it.
   run build_devices "${BATS_TEST_TMPDIR}/dev.json" "${BATS_TEST_TMPDIR}/cfg.json"
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"no device resolved an integration"* ]]
+}
+
+@test "build_devices reads the v3 registry shape (config_entry_id per device)" {
+  cat > "${BATS_TEST_TMPDIR}/dev3.json" <<'JSON'
+{"version": 3, "data": {"devices": [
+  {"id": "d1", "name": "Bulb", "name_by_user": null, "manufacturer": "Signify",
+   "model": "x", "area_id": null, "config_entries": null,
+   "config_entry_id": "ce_hue", "primary_config_entry": "ce_hue"},
+  {"id": "d2", "name": "Sensor", "name_by_user": null, "manufacturer": null,
+   "model": null, "area_id": null, "config_entries": null,
+   "config_entry_id": "ce_zha", "primary_config_entry": "ce_hue"},
+  {"id": "d3", "name": "Stray", "name_by_user": null, "manufacturer": null,
+   "model": null, "area_id": null, "config_entries": null,
+   "config_entry_id": null, "primary_config_entry": null}
+]}}
+JSON
+  run build_devices "${BATS_TEST_TMPDIR}/dev3.json" "${FIXTURES}/core.config_entries"
   [ "$status" -eq 0 ]
-  [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[[],[],[]]' ]
+  [ "$(echo "$output" | jq -c 'map(.integrations)')" = '[["hue"],["hue","zha"],[]]' ]
+}
+
+@test "build_devices accepts an empty device registry" {
+  printf '{"data": {"devices": []}}\n' > "${BATS_TEST_TMPDIR}/empty.json"
+  run build_devices "${BATS_TEST_TMPDIR}/empty.json" "${FIXTURES}/core.config_entries"
+  [ "$status" -eq 0 ]
+  [ "$output" = "[]" ]
 }
 
 # --- build_helpers ---------------------------------------------------------

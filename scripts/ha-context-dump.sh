@@ -89,11 +89,20 @@ build_devices() {
         manufacturer: .manufacturer,
         model: .model,
         area_id: .area_id,
-        # A device can carry config_entries: null (seen live 2026-11-15); treat
-        # it as no entries. A non-string member is skipped the same way.
-        integrations: ((.config_entries // []) | map(strings | $entry_domains[.]) | map(select(. != null)) | unique)
+        # Device registry v3 (seen live 2026-11-16, HA 2026.11) gives each
+        # device one config_entry_id and leaves the old config_entries list
+        # null. Read both shapes; a non-string member is skipped.
+        integrations: (
+          ((.config_entries // []) + [.config_entry_id, .primary_config_entry])
+          | map(strings | $entry_domains[.]) | map(select(. != null)) | unique
+        )
       })
     | sort_by(.name // "")
+    # A registry with devices but no resolvable integration means the join
+    # read the wrong fields. Fail the run rather than push that snapshot.
+    | if length > 0 and all(.[]; .integrations == []) then
+        error("no device resolved an integration; registry shape changed?")
+      else . end
     '
 }
 
