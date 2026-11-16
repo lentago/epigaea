@@ -85,15 +85,22 @@ Chris's control).
 1. **Generate the replacement first, before revoking the old one** — GitHub
    → Settings → Developer settings → Fine-grained tokens → generate a new
    token scoped to `lentago/epigaea` only, with the three permissions listed
-   above.
+   above. Set the resource owner to `lentago` and the expiration to 366 days
+   or less: the org rejects fine-grained tokens with a longer lifetime (403,
+   seen 2026-11-15 in #546). "Regenerate" on an existing token issues a new
+   value and kills the old one at once: both sync loops stay down until
+   steps 2 and 3 are done.
 2. **Update the GitHub Actions secret:** repo → Settings → Secrets and
-   variables → Actions → `HA_SYNC_PAT` → update value.
+   variables → Actions → `HA_SYNC_PAT` → update value. Paste the **bare
+   token**. The HAOS copy below carries a `Bearer ` prefix because it is the
+   whole `Authorization` header; the Actions secret must not. An unset or
+   empty secret now fails the `Require HA_SYNC_PAT` step in both sync
+   workflows by name.
 3. **Update the HAOS copy:** edit `/homeassistant/secrets.yaml` on the VM
    (via the SSH add-on or File Editor), replace the `github_pat` value.
-   `!secret` values are resolved at config load, so this needs
-   `ha_call_service homeassistant reload_config_entries` or, if that doesn't
-   pick it up, a Core restart before `rest_command.github_dispatch_version`
-   will use the new value.
+   `!secret` values are resolved at config load; `rest_command.reload`
+   picks up a changed `github_pat` without a Core restart (verified
+   2026-11-15, #546).
 4. **Verify the loop end-to-end** before revoking the old token: manually
    call `rest_command.github_dispatch_version` from Developer Tools →
    Services (or trigger `input_button.ha_context_dump_now` for the context
