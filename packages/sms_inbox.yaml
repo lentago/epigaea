@@ -1,6 +1,6 @@
-# SMS inbox — a short-lived, local log of Chris's incoming texts that Claude
-# reads through the HA MCP server, so an assistant can track texts the way it
-# already tracks email.
+# SMS inbox — a short-lived, local log of Chris's incoming texts, so an
+# assistant can track texts the way it already tracks email. Claude reads it
+# through the HA MCP server; the agent fleet reads a copy on the NAS.
 #
 # Source
 # ------
@@ -29,8 +29,9 @@
 #
 # Privacy boundary — message text stays in the house
 # --------------------------------------------------
-# Message text lives only in HA's state machine. Three exclusions in
-# configuration.yaml keep it from going anywhere else:
+# Message text lives in HA's state machine and in one file on the NAS (The
+# NAS copy, below). Three exclusions in configuration.yaml keep it from going
+# anywhere else:
 #   - recorder: the notification sensors and sensor.sms_inbox are excluded,
 #     so no text reaches the history database, the logbook or long-term
 #     statistics.
@@ -38,14 +39,49 @@
 #     endpoint drosera's Alloy scrapes into Grafana Cloud.
 #   - drosera's Alloy `ha_trim` relabel drops the same entities again as a
 #     second line (lentago/drosera, ADR-0006 privacy-shaped egress).
-# Read the list with ha_get_state; never copy it into git, context/, a
-# dashboard or a notification.
+# Read the list with ha_get_state, or read the NAS copy. Never copy it into
+# git, context/, a dashboard, a notification, a log, or pub.lan (the NAS web/
+# folder).
 #
-# Two places the text can still travel, which no YAML here controls:
+# Places the text can still travel, which no YAML here controls:
 #   - HA backups include .storage/core.restore_state, which holds the last
-#     value of sensor.sms_inbox (up to 72 hours of texts).
+#     value of sensor.sms_inbox (up to 72 hours of texts). Supervisor leaves
+#     network mounts out of backups, so the NAS copy is not in them.
 #   - When the phone is off the home network, the companion app sends sensor
 #     updates through its cloudhook, which Nabu Casa relays (remote UI is on).
+#   - Whatever reads the NAS copy (below).
+#
+# The NAS copy
+# ------------
+# The agent fleet's daily briefings read the texts from a file on the NAS, so
+# no worker holds an HA token (Chris, 2026-11-17). The automation at the end
+# of this file runs scripts/sms-inbox-export.sh on every change to
+# sensor.sms_inbox, every 15 minutes and at HA start. It writes
+# claude-jobs/sources/sms_inbox.json on the NAS `lentago` share:
+#   HA            /share/claude_jobs/sources/sms_inbox.json
+#   workers       /srv/jobs/sources/sms_inbox.json
+#   workstation   /mnt/lentago/claude-jobs/sources/sms_inbox.json
+# as { exported_at, messages }, where `messages` is the sensor's list unchanged.
+#   - A mirror, not an archive: the file holds what the sensor holds, under the
+#     same 72-hour, 50-text retention. An empty inbox is written as an empty
+#     list; an unavailable sensor leaves the last file in place.
+#   - Any LAN client with credentials for the share can read it; Chris
+#     accepted that on 2026-11-17. It is never under web/, which pub.lan
+#     serves to the whole LAN without credentials.
+#   - Write-then-rename, never in place, and never a delete. The share's Samba
+#     recycle bin keeps every deleted file, so a delete would keep a copy of
+#     the texts past 72 hours. To retire the export: remove the automation,
+#     delete the file on the NAS, then delete it from #recycle too.
+#   - The automation stores no traces (a trace would hold the whole list), and
+#     the script never prints or logs message text.
+#   - Every claytonia job can read /srv/jobs. A job that reads the file
+#     carries the texts into its transcript (logs/<runid>.transcript.jsonl on
+#     the same share, kept past 72 hours); a job with a public workroot also
+#     streams the transcript to Grafana Cloud, and a Gemini or Codex job sends
+#     what it reads to that vendor. A reader should run as a registered
+#     project with "offbox_transcript": false, on runtime claude.
+#   - Mounting the share on HAOS is Supervisor config, not YAML. The steps are
+#     in docs/sms-inbox-nas-export.md.
 #
 # Do NOT enable the companion app's "Active notification count" sensor: it has
 # no allow list and its attributes carry the text of every app's notifications.
@@ -119,3 +155,40 @@ template:
         attributes:
           messages: "{{ messages }}"
           retention: "{{ max_age_hours }}h, newest {{ max_messages }}"
+
+# The NAS copy (header, "The NAS copy"). The command line carries only the
+# export directory, never a template: the script reads the sensor through the
+# Core API itself, so no message text passes through a shell string.
+shell_command:
+  sms_inbox_export: "bash /config/scripts/sms-inbox-export.sh /share/claude_jobs/sources"
+
+automation:
+  - id: sms_inbox_export
+    alias: "SMS inbox: export to the NAS"
+    description: >-
+      Mirrors sensor.sms_inbox to sources/sms_inbox.json on the NAS job share
+      for the agent fleet. See packages/sms_inbox.yaml, "The NAS copy".
+    # One run at a time and at most one waiting: each run reads the sensor's
+    # current state, so a waiting run already covers any later trigger.
+    mode: queued
+    max: 2
+    max_exceeded: silent
+    # No traces. A trace keeps the trigger's to_state, which is the whole
+    # message list, in memory and in .storage/trace.saved_traces.
+    trace:
+      stored_traces: 0
+    triggers:
+      # No `to:`. The list lives in the `messages` attribute, and a text in
+      # with a text out leaves the count unchanged.
+      - trigger: state
+        entity_id: sensor.sms_inbox
+      # Heartbeat, 30 s after the template's prune tick: keeps exported_at
+      # fresh, so a reader can tell a stalled export from a quiet inbox, and
+      # retries a failed write.
+      - trigger: time_pattern
+        minutes: "/15"
+        seconds: 30
+      - trigger: homeassistant
+        event: start
+    actions:
+      - action: shell_command.sms_inbox_export

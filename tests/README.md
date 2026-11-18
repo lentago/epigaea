@@ -41,6 +41,18 @@ bats tests/
   written and replaced in place, the same refusals apply, and the CLI form
   takes an optional web root.
 
+- **`sms_inbox_export.bats`** — `scripts/sms-inbox-export.sh`, which mirrors
+  `sensor.sms_inbox` to the NAS job share. Stubs `curl` with a canned entity
+  state and checks the following. Hostile message text (quotes, `$(…)`,
+  backticks, newlines, `%s`, emoji) reaches the file unchanged. The file is
+  `{ exported_at, messages }` and replaces the old one by rename. An empty inbox
+  is written as an empty list. An unavailable sensor or a failed read leaves the
+  last file alone. Nothing printed or logged carries text, on the error path
+  too. A missing or local directory is refused. It also checks two things in
+  the source. The script contains no `rm`, `unlink` or `shred`, because the
+  share's recycle bin keeps deleted files. The package passes no template to the
+  shell and sets `stored_traces: 0`, because a trace would hold the whole list.
+
 - **`signage_index.bats`**: `scripts/build-signage-index.py`, the generator for
   the signage index page. Builds from a fixture README and checks that every
   table row is listed, that links are relative with no host, that each piece

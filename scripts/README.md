@@ -183,6 +183,30 @@ reconcile in seconds — see `docs/cross-layer-changes.md` (rename recipe,
 steps 3–4). Runs inside the HA Core container; uses `SUPERVISOR_TOKEN` like
 `gitops-sync.sh`.
 
+## `sms-inbox-export.sh`
+
+Mirrors `sensor.sms_inbox`'s `messages` to `sms_inbox.json` on the NAS job
+share, so the agent fleet reads Chris's texts from a copy and no worker holds an
+HA token. Called by the `sms_inbox_export` automation in
+`packages/sms_inbox.yaml` (via `shell_command.sms_inbox_export`) on every change
+to the sensor, every 15 minutes and at HA start, with one argument: the export
+directory, `/share/claude_jobs/sources`. Runs inside the HA Core container with
+`SUPERVISOR_TOKEN`, like `force-sync.sh`.
+
+It reads the entity from the Core API and pipes it into `jq`, which writes
+`{ exported_at, messages }` to `.sms_inbox.json.partial`. On success it renames
+that over `sms_inbox.json`, so message text never passes through a shell string
+or a command line. It never deletes a file, because the share's Samba recycle
+bin keeps deleted files; a rename over the target is not captured (checked on the
+live share). It refuses an export directory that is missing or not on a network
+share (`SMS_EXPORT_ALLOW_LOCAL=1` lifts that for tests), and a sensor with no
+`messages` list leaves the last file alone. Nothing it prints or logs carries
+text: `jq`'s stderr is discarded, and `/config/sms-inbox-export.log` (rotates at
+256 KB) gets counts, paths and exit codes only. Exit 0 written, 1 read or write
+failed, 2 usage error or directory refused. Tests:
+`tests/sms_inbox_export.bats`. Setup and runbook:
+[`docs/sms-inbox-nas-export.md`](../docs/sms-inbox-nas-export.md).
+
 ## `publish-signage.sh`
 
 Copies a piece of signage from `signage/<type>/<slug>.html` to the LAN web drop
