@@ -107,7 +107,7 @@ A short-lived local log of incoming texts, so Claude can read them through the H
 
 The source is the Android companion app's **Last notification** sensor on the Galaxy S24+ (`sensor.sm_s926u1_last_notification`), with its allow list on the phone set to Google Messages only. The package checks the app again in the template, so a notification from any other app is never logged even if the allow list is widened later.
 
-**`sensor.sms_inbox`** — state is the number of texts held; the `messages` attribute is the texts, oldest first, each with `received`, `posted`, `sender` and `text`. A text is dropped 72 hours after it arrives, and the list never holds more than 50. Pruning runs on every new text and every 15 minutes, and the list survives a restart.
+**`sensor.sms_inbox`** — state is the number of texts held; the `messages` attribute is the texts, oldest first, each with `received`, `posted`, `sender`, `text` and `hidden`. Only real texts are kept: Messages' own notices (pairing, setup, background work and empty group summaries) are skipped. When Android hides a text's content, it is still logged with `hidden: true`, so the reader knows a text came in but not what it said. The skip list and the hidden marker match the phone's English notification strings, so they need updating if the phone's language changes. A text is dropped 72 hours after it arrives, and the list never holds more than 50. Pruning runs on every new text and every 15 minutes, and the list survives a restart.
 
 **`input_datetime.sms_inbox_read_through`** — the reader's watermark: after handling texts, the reader sets it to the newest `received` it saw, so the next read takes only what came after.
 

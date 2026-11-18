@@ -16,11 +16,29 @@
 #
 #   sensor.sms_inbox             state = number of texts held;
 #                                attribute `messages` = the texts, oldest
-#                                first, each { received, posted, sender, text }
+#                                first, each { received, posted, sender, text,
+#                                hidden }
 #   input_datetime.sms_inbox_read_through
 #                                watermark: the reader sets it to the newest
 #                                `received` it has handled, so the next read
 #                                takes only what came after
+#
+# What counts as a text: Google Messages also posts notices about itself
+# ("Device pairing", "Messages is doing work in the background", "Getting
+# things ready…") and an empty group summary over each conversation. The
+# companion app writes a missing field as the string "null". A notification is
+# logged only when it is not a background notice (category "service" or
+# ongoing), it has real text (not "null"), and it has a sender or is a hidden
+# text (below). Titles in `noise_titles` are dropped, and the same checks run over
+# the list already held, so notices logged before this filter clear on the
+# next run instead of waiting 72 hours.
+#
+# Hidden texts: Android 15+ blanks a notification it judges sensitive (codes,
+# unknown numbers) for third-party listeners; the text arrives as "Sensitive
+# notification content hidden" with no sender. Those are kept with
+# `hidden: true`, so the reader knows a text came in that it could not read.
+# Turning off "Suggest actions and replies for notifications" on the phone
+# stopped this on 2026-11-17.
 #
 # Retention: a text is dropped 72 hours after it arrived, and the list never
 # holds more than 50. Pruning runs on every new text and every 15 minutes, so
@@ -75,6 +93,10 @@ template:
       - variables:
           max_age_hours: 72
           max_messages: 50
+          hidden_marker: Sensitive notification content hidden
+          noise_titles:
+            - Device pairing
+            - Getting things ready…
           # The previous list is read from the state machine rather than
           # `this`, because `this` is not available in a template entity's
           # actions. Renaming sensor.sms_inbox means updating this line.
@@ -87,19 +109,32 @@ template:
             {% endif %}
             {% for m in prior %}
               {% set at = as_datetime(m.get('received', ''), none) if m is mapping else none %}
-              {% if at is not none and at > cutoff %}
+              {% set t = m.get('text') if m is mapping else none %}
+              {% set who = m.get('sender') if m is mapping else none %}
+              {% set real = t not in [none, '', 'null']
+                   and who not in noise_titles
+                   and (who not in [none, '', 'null'] or t == hidden_marker) %}
+              {% if at is not none and at > cutoff and real %}
                 {% set ns.out = ns.out + [m] %}
               {% endif %}
             {% endfor %}
             {% set s = trigger.to_state if trigger.id == 'text' else none %}
+            {% set t = s.attributes.get('android.text') if s is not none else none %}
+            {% set who = s.attributes.get('android.title') if s is not none else none %}
+            {% set who = none if who in ['', 'null'] else who %}
             {% if s is not none
                   and s.attributes.get('package') == 'com.google.android.apps.messaging'
-                  and s.attributes.get('android.text') not in [none, ''] %}
+                  and s.attributes.get('category') != 'service'
+                  and s.attributes.get('is_ongoing') not in [true, 'true']
+                  and t not in [none, '', 'null']
+                  and who not in noise_titles
+                  and (who is not none or t == hidden_marker) %}
               {% set new = {
                 'received': now().isoformat(),
                 'posted': s.attributes.get('post_time'),
-                'sender': s.attributes.get('android.title'),
-                'text': s.attributes.get('android.text')
+                'sender': who,
+                'text': t,
+                'hidden': t == hidden_marker
               } %}
               {% set dup = ns.out
                    | selectattr('posted', 'eq', new.posted)
