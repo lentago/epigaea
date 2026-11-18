@@ -1,0 +1,121 @@
+# SMS inbox — a short-lived, local log of Chris's incoming texts that Claude
+# reads through the HA MCP server, so an assistant can track texts the way it
+# already tracks email.
+#
+# Source
+# ------
+# The Android companion app's "Last notification" sensor on Chris's phone
+# (Galaxy S24+, model SM-S926U1): sensor.sm_s926u1_last_notification. Its
+# allow list on the phone is set to Google Messages only
+# (com.google.android.apps.messaging), and the template below checks the
+# package again, so a notification from any other app is never logged even if
+# the allow list is widened later.
+#
+# The source sensor holds only the latest notification, so a second text
+# overwrites the first. This package keeps a rolling list instead:
+#
+#   sensor.sms_inbox             state = number of texts held;
+#                                attribute `messages` = the texts, oldest
+#                                first, each { received, posted, sender, text }
+#   input_datetime.sms_inbox_read_through
+#                                watermark: the reader sets it to the newest
+#                                `received` it has handled, so the next read
+#                                takes only what came after
+#
+# Retention: a text is dropped 72 hours after it arrived, and the list never
+# holds more than 50. Pruning runs on every new text and every 15 minutes, so
+# texts age out even when none arrive. The list survives an HA restart
+# (trigger-based template entities restore their last state).
+#
+# Privacy boundary — message text stays in the house
+# --------------------------------------------------
+# Message text lives only in HA's state machine. Three exclusions in
+# configuration.yaml keep it from going anywhere else:
+#   - recorder: the notification sensors and sensor.sms_inbox are excluded,
+#     so no text reaches the history database, the logbook or long-term
+#     statistics.
+#   - prometheus: the same entities are filtered out of /api/prometheus, the
+#     endpoint drosera's Alloy scrapes into Grafana Cloud.
+#   - drosera's Alloy `ha_trim` relabel drops the same entities again as a
+#     second line (lentago/drosera, ADR-0006 privacy-shaped egress).
+# Read the list with ha_get_state; never copy it into git, context/, a
+# dashboard or a notification.
+#
+# Two places the text can still travel, which no YAML here controls:
+#   - HA backups include .storage/core.restore_state, which holds the last
+#     value of sensor.sms_inbox (up to 72 hours of texts).
+#   - When the phone is off the home network, the companion app sends sensor
+#     updates through its cloudhook, which Nabu Casa relays (remote UI is on).
+#
+# Do NOT enable the companion app's "Active notification count" sensor: it has
+# no allow list and its attributes carry the text of every app's notifications.
+# It is excluded below anyway, in case it is ever switched on.
+#
+# Chris directs and reviews this package; Claude writes the code.
+
+input_datetime:
+  sms_inbox_read_through:
+    name: SMS inbox read through
+    icon: mdi:message-check-outline
+    has_date: true
+    has_time: true
+
+template:
+  - triggers:
+      - trigger: state
+        entity_id: sensor.sm_s926u1_last_notification
+        # No `to:` — the state is the notification text, so a repeated text
+        # leaves the state unchanged and only the attributes (post_time)
+        # move. A bare state trigger fires on attribute changes too.
+        id: text
+      - trigger: time_pattern
+        minutes: "/15"
+        id: prune
+    actions:
+      - variables:
+          max_age_hours: 72
+          max_messages: 50
+          # The previous list is read from the state machine rather than
+          # `this`, because `this` is not available in a template entity's
+          # actions. Renaming sensor.sms_inbox means updating this line.
+          messages: >-
+            {% set ns = namespace(out=[]) %}
+            {% set cutoff = now() - timedelta(hours=max_age_hours) %}
+            {% set prior = state_attr('sensor.sms_inbox', 'messages') %}
+            {% if prior is not iterable or prior is string or prior is mapping %}
+              {% set prior = [] %}
+            {% endif %}
+            {% for m in prior %}
+              {% set at = as_datetime(m.get('received', ''), none) if m is mapping else none %}
+              {% if at is not none and at > cutoff %}
+                {% set ns.out = ns.out + [m] %}
+              {% endif %}
+            {% endfor %}
+            {% set s = trigger.to_state if trigger.id == 'text' else none %}
+            {% if s is not none
+                  and s.attributes.get('package') == 'com.google.android.apps.messaging'
+                  and s.attributes.get('android.text') not in [none, ''] %}
+              {% set new = {
+                'received': now().isoformat(),
+                'posted': s.attributes.get('post_time'),
+                'sender': s.attributes.get('android.title'),
+                'text': s.attributes.get('android.text')
+              } %}
+              {% set dup = ns.out
+                   | selectattr('posted', 'eq', new.posted)
+                   | selectattr('sender', 'eq', new.sender)
+                   | selectattr('text', 'eq', new.text)
+                   | list | count > 0 %}
+              {% if not dup %}
+                {% set ns.out = ns.out + [new] %}
+              {% endif %}
+            {% endif %}
+            {{ ns.out[-max_messages:] }}
+    sensor:
+      - name: SMS inbox
+        unique_id: sms_inbox
+        icon: mdi:message-text-outline
+        state: "{{ messages | count }}"
+        attributes:
+          messages: "{{ messages }}"
+          retention: "{{ max_age_hours }}h, newest {{ max_messages }}"

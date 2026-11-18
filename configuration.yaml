@@ -73,8 +73,19 @@ lovelace:
       show_in_sidebar: true
       filename: dashboards/home-codesign.yaml
 
-# Prometheus
+# Prometheus — /api/prometheus, scraped by drosera's Alloy into Grafana Cloud.
+# The filter keeps text-message content off that path: the companion app's
+# notification sensors carry notification text in their state and attributes,
+# and sensor.sms_inbox holds the texts themselves (packages/sms_inbox.yaml).
+# drosera's ha_trim relabel drops the same entities again as a second line.
 prometheus:
+  filter:
+    exclude_entity_globs:
+      - sensor.*_last_notification
+      - sensor.*_last_removed_notification
+      - sensor.*_active_notification_count
+    exclude_entities:
+      - sensor.sms_inbox
 
 # Recorder — keep the UGREEN NAS out of HA's history/statistics.
 # The `ugreen` integration ships 137 metric sensors (sensor.ugreen_nas_*)
@@ -82,10 +93,19 @@ prometheus:
 # NAS has its own UGOS UI and is already a Grafana/drosera source. Excluding
 # the sensors stops the database churn; the control entities we keep
 # (button./select./text.ugreen_nas_*) are unaffected and still work.
+#
+# The notification sensors and sensor.sms_inbox are excluded for privacy, not
+# load: they carry text-message content (packages/sms_inbox.yaml), which must
+# not be written to the history database, the logbook or statistics.
 recorder:
   exclude:
     entity_globs:
       - sensor.ugreen_nas_*
+      - sensor.*_last_notification
+      - sensor.*_last_removed_notification
+      - sensor.*_active_notification_count
+    entities:
+      - sensor.sms_inbox
 
 # Light groups — referenced by Sonoff button automations and dashboards.
 # `switch.back_porch` is outdoor lighting too but lives in a separate action
