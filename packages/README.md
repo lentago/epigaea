@@ -100,3 +100,15 @@ The Kids-TVs group on the Firewalla (the basement and playroom TVs) has two bloc
 The rules are independent on the box: while the internet block is on, the YouTube block changes nothing a viewer can see. Each wrapper goes unavailable with its source switch, which is what a rule deleted or deselected in the integration looks like; the file header says how to recover.
 
 On an Android phone, add one **Entity state** widget per switch from the Home Assistant app's widget list and set its tap action to toggle. The widget then shows on or off and flips the block on a tap. Tablet screen time is not handled here: it moved to Google Family Link, and the Firewalla tablet rules were removed.
+
+## `sms_inbox.yaml` — SMS inbox
+
+A short-lived local log of incoming texts, so Claude can read them through the HA MCP server the way it already reads email. Chris directs and reviews this package; Claude writes the code.
+
+The source is the Android companion app's **Last notification** sensor on the Galaxy S24+ (`sensor.sm_s926u1_last_notification`), with its allow list on the phone set to Google Messages only. The package checks the app again in the template, so a notification from any other app is never logged even if the allow list is widened later.
+
+**`sensor.sms_inbox`** — state is the number of texts held; the `messages` attribute is the texts, oldest first, each with `received`, `posted`, `sender` and `text`. A text is dropped 72 hours after it arrives, and the list never holds more than 50. Pruning runs on every new text and every 15 minutes, and the list survives a restart.
+
+**`input_datetime.sms_inbox_read_through`** — the reader's watermark: after handling texts, the reader sets it to the newest `received` it saw, so the next read takes only what came after.
+
+**Privacy boundary.** Message text stays in HA's state machine. `configuration.yaml` excludes the companion app's notification sensors and `sensor.sms_inbox` from the recorder (so no history, logbook or statistics) and from `/api/prometheus` (so drosera's Alloy can't scrape them into Grafana Cloud), and drosera's `ha_trim` relabel drops them again. Two paths the YAML can't close: HA backups carry the last value of `sensor.sms_inbox` in `.storage/core.restore_state`, and off the home network the companion app sends sensor updates through the Nabu Casa cloudhook. Never turn on the companion app's **Active notification count** sensor: it has no allow list and carries the text of every app's notifications.
