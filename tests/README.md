@@ -46,8 +46,10 @@ bats tests/
   state and checks the following. Hostile message text (quotes, `$(…)`,
   backticks, newlines, `%s`, emoji) reaches the file unchanged. The file is
   `{ exported_at, messages }` and replaces the old one by rename. An empty inbox
-  is written as an empty list. An unavailable sensor or a failed read leaves the
-  last file alone. Nothing printed or logged carries text, on the error path
+  is written as an empty list. An unavailable sensor or a failed read leaves a
+  recent file alone and empties one whose last export is past the 72-hour
+  retention. A share that doesn't answer ends the run within the timeout. The
+  script's retention matches the package's `max_age_hours`. Nothing printed or logged carries text, on the error path
   too. A missing or local directory is refused. It also checks two things in
   the source. The script contains no `rm`, `unlink` or `shred`, because the
   share's recycle bin keeps deleted files. The package passes no template to the

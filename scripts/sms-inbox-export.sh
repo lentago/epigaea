@@ -30,22 +30,33 @@
 #     or nfs). An unmounted share looks like an empty local directory, and the
 #     texts would land on HAOS's own disk. SMS_EXPORT_ALLOW_LOCAL=1 lifts the
 #     network check for tests.
-#   - A sensor with no `messages` list (unavailable, or HA still starting)
-#     leaves the last file alone: an unavailable sensor is not an empty inbox.
-#     An empty list is written as an empty list.
+#   - A sensor with no `messages` list (unavailable, or HA still starting), or
+#     a failed read, leaves the last file alone: an unavailable sensor is not
+#     an empty inbox. That holds until the last good export is older than the
+#     retention window. By then every entry in the file has expired, since all
+#     of them arrived before its exported_at, so the run empties `messages` and
+#     keeps exported_at, which still tells a reader the export has stalled. An
+#     empty inbox is written as an empty list.
+#   - Every call that touches the share has a timeout (SHARE_TIMEOUT seconds),
+#     so a hung mount ends the run with a log line rather than at HA's
+#     60-second shell_command limit.
 #
 # Environment: SUPERVISOR_TOKEN (required), SUPERVISOR_BASE (default
 # http://supervisor), SMS_EXPORT_LOG (default /config/sms-inbox-export.log),
-# SMS_EXPORT_ALLOW_LOCAL=1 (tests).
+# SMS_EXPORT_ALLOW_LOCAL=1 and SMS_EXPORT_SHARE_TIMEOUT (tests).
 #
 # Exit codes: 0 written; 1 the state could not be read or the file could not be
-# written (the last file is left alone); 2 usage error or export dir refused.
+# written (the last file is left alone, or emptied once expired); 2 usage error
+# or export dir refused.
 set -euo pipefail
 
 readonly SUPERVISOR_BASE="${SUPERVISOR_BASE:-http://supervisor}"
 readonly ENTITY="sensor.sms_inbox"
 readonly FILE_NAME="sms_inbox.json"
 readonly LOG_MAX_BYTES=262144
+# Must match max_age_hours in packages/sms_inbox.yaml; a test checks it.
+readonly RETENTION_HOURS=72
+readonly SHARE_TIMEOUT="${SMS_EXPORT_SHARE_TIMEOUT:-15}"
 
 LOG_FILE="${SMS_EXPORT_LOG:-/config/sms-inbox-export.log}"
 
@@ -69,12 +80,16 @@ rotate_log() {
 # the hex, and they name SMB2 differently. smb2 fe534d42, cifs ff534d42,
 # nfs 6969.
 check_export_dir() {
-  local dir="$1" fstype
-  if [[ ! -d "$dir" ]]; then
+  local dir="$1" fstype rc=0
+  fstype="$(timeout "$SHARE_TIMEOUT" stat -f -c '%t' "$dir" 2>/dev/null)" || rc=$?
+  if ((rc == 124)); then
+    log ERROR "export dir did not answer within ${SHARE_TIMEOUT} s; is the NAS reachable? ${dir}"
+    return 2
+  fi
+  if ((rc != 0)) || [[ ! -d "$dir" ]]; then
     log ERROR "export dir not found: ${dir}. Is the NAS share mounted (Settings > System > Storage)? Its sources/ folder must exist on the NAS."
     return 2
   fi
-  fstype="$(stat -f -c '%t' "$dir" 2>/dev/null || echo unknown)"
   case "$fstype" in
     fe534d42 | ff534d42 | 6969) ;;
     *)
@@ -99,6 +114,29 @@ build_export() {
     then {exported_at: $exported_at, messages: .attributes.messages}
     else error("no messages list")
     end'
+}
+
+# Called when the sensor could not be read. If the last good export is older
+# than the retention window, every entry in the file has expired: empty
+# `messages`, keep exported_at, and write-then-rename like any update. A file
+# that is recent, already empty or unreadable is left alone.
+expire_stale_copy() {
+  local target="$1" partial="$2"
+  [[ -f "$target" ]] || return 0
+  # $max is a jq variable, not a shell one (shellcheck exempts bare jq calls,
+  # not jq under timeout).
+  # shellcheck disable=SC2016
+  if ! timeout "$SHARE_TIMEOUT" jq -e --argjson max "$((RETENTION_HOURS * 3600))" \
+    '(.messages | length) > 0 and (now - (.exported_at | fromdateiso8601)) > $max' \
+    "$target" >/dev/null 2>&1; then
+    return 0
+  fi
+  if timeout "$SHARE_TIMEOUT" jq '.messages = []' "$target" >"$partial" 2>/dev/null &&
+    timeout "$SHARE_TIMEOUT" mv -f "$partial" "$target"; then
+    log WARNING "the last export is older than ${RETENTION_HOURS} h, so its texts have expired; emptied messages and kept exported_at in ${target}"
+  else
+    log ERROR "the last export is older than ${RETENTION_HOURS} h, but ${target} could not be emptied"
+  fi
 }
 
 sms_inbox_export() {
@@ -131,20 +169,22 @@ sms_inbox_export() {
   set -e
   if ((rc[0] != 0)); then
     log ERROR "could not read ${ENTITY} from the Core API (curl exit ${rc[0]}); left the last file alone"
+    expire_stale_copy "$target" "$partial"
     return 1
   fi
   if ((rc[1] != 0)); then
     log ERROR "${ENTITY} has no messages list (unavailable or starting?) or the partial could not be written (jq exit ${rc[1]}); left the last file alone"
+    expire_stale_copy "$target" "$partial"
     return 1
   fi
 
-  if ! mv -f "$partial" "$target"; then
-    log ERROR "could not rename ${partial} over ${target}; left the last file alone"
+  if ! timeout "$SHARE_TIMEOUT" mv -f "$partial" "$target"; then
+    log ERROR "could not rename ${partial} over ${target} within ${SHARE_TIMEOUT} s; left the last file alone"
     return 1
   fi
 
   local count
-  count="$(jq '.messages | length' "$target" 2>/dev/null || echo '?')"
+  count="$(timeout "$SHARE_TIMEOUT" jq '.messages | length' "$target" 2>/dev/null || echo '?')"
   log INFO "wrote ${count} messages to ${target}"
 }
 

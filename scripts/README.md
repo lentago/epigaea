@@ -199,8 +199,12 @@ that over `sms_inbox.json`, so message text never passes through a shell string
 or a command line. It never deletes a file, because the share's Samba recycle
 bin keeps deleted files; a rename over the target is not captured (checked on the
 live share). It refuses an export directory that is missing or not on a network
-share (`SMS_EXPORT_ALLOW_LOCAL=1` lifts that for tests), and a sensor with no
-`messages` list leaves the last file alone. Nothing it prints or logs carries
+share (`SMS_EXPORT_ALLOW_LOCAL=1` lifts that for tests). A sensor with no
+`messages` list, or a failed read, leaves the last file alone until that
+export is 72 hours old. Then every text in it has expired, so the run empties
+`messages` and keeps `exported_at`. Every call that touches the share has a
+15-second timeout, so a hung mount ends the run with a log line before HA's
+60-second `shell_command` limit. Nothing it prints or logs carries
 text: `jq`'s stderr is discarded, and `/config/sms-inbox-export.log` (rotates at
 256 KB) gets counts, paths and exit codes only. Exit 0 written, 1 read or write
 failed, 2 usage error or directory refused. Tests:

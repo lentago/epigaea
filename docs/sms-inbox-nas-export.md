@@ -18,7 +18,9 @@ On the NAS it is `claude-jobs/sources/sms_inbox.json` in the `lentago` SMB share
 { "exported_at": "2026-11-17T22:15:30Z", "messages": [ { "received": "…", "posted": 0, "sender": "…", "text": "…" } ] }
 ```
 
-`messages` is the sensor's attribute, unchanged, oldest first. Entries carry whatever fields the package writes; #586 adds `hidden`. `exported_at` is UTC and moves at least every 15 minutes, so an `exported_at` older than about 20 minutes means the export has stalled, not that no texts came in.
+`messages` is the sensor's attribute, unchanged, oldest first. Entries carry whatever fields the package writes. #586 adds `hidden`: `hidden: true` marks a text Android blanked before HA saw it, so its `text` is a placeholder and the message itself isn't in the file. `exported_at` is UTC and moves at least every 15 minutes, so an `exported_at` older than about 20 minutes means the export has stalled, not that no texts came in.
+
+If the export can't read the sensor, it leaves the file alone until that file's `exported_at` is 72 hours old. By then every text in it has expired, so the next run empties `messages` and keeps the old `exported_at`. While HA itself is down nothing runs, so the file keeps its last contents until HA is back.
 
 ## One-time setup
 
@@ -55,8 +57,10 @@ jq '{exported_at, count: (.messages | length)}' /mnt/lentago/claude-jobs/sources
 | `wrote N messages to …` | done |
 | `export dir not found` | the share isn't mounted, or `sources/` is missing on the NAS |
 | `not on a network share` | the path exists but isn't the mount; check **Settings → System → Storage** |
+| `did not answer within 15 s` | the mount exists but the NAS isn't responding |
 | `could not read sensor.sms_inbox` | the Core API didn't answer (HA restarting, or a token problem) |
 | `no messages list` | the sensor is unavailable; the last file is left alone |
+| `the last export is older than 72 h … emptied messages` | reads have failed for 72 hours; the expired texts were removed from the file |
 
 ## Reading it
 

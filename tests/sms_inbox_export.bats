@@ -62,6 +62,12 @@ setup() {
   export -f curl
 }
 
+# A previous export holding one text, stamped with the given exported_at.
+write_prior_export() {
+  jq -n --arg at "$1" --arg s "$SENTINEL" \
+    '{exported_at: $at, messages: [{received: "x", sender: "Al", text: $s}]}' >"$TARGET"
+}
+
 @test "writes exported_at and the sensor's messages, unchanged" {
   run sms_inbox_export "$EXPORT_DIR"
   [ "$status" -eq 0 ]
@@ -96,9 +102,9 @@ setup() {
   jq -e '.messages == []' "$TARGET"
 }
 
-@test "a sensor with no messages list leaves the last file alone" {
+@test "a sensor with no messages list leaves a recent file alone" {
   echo '{"entity_id":"sensor.sms_inbox","state":"unavailable","attributes":{}}' >"$STATE_FILE"
-  echo '{"exported_at":"old","messages":[]}' >"$TARGET"
+  write_prior_export "$(date -u -d '-71 hours' +%Y-%m-%dT%H:%M:%SZ)"
   cp "$TARGET" "${BATS_TEST_TMPDIR}/before"
   run sms_inbox_export "$EXPORT_DIR"
   [ "$status" -eq 1 ]
@@ -106,13 +112,45 @@ setup() {
   [[ "$output" == *"no messages list"* ]]
 }
 
-@test "a failed read leaves the last file alone" {
-  echo '{"exported_at":"old","messages":[]}' >"$TARGET"
+@test "a failed read leaves a recent file alone" {
+  write_prior_export "$(date -u -d '-1 hour' +%Y-%m-%dT%H:%M:%SZ)"
   cp "$TARGET" "${BATS_TEST_TMPDIR}/before"
   CURL_FAIL=1 run sms_inbox_export "$EXPORT_DIR"
   [ "$status" -eq 1 ]
   cmp -s "$TARGET" "${BATS_TEST_TMPDIR}/before"
   [[ "$output" == *"curl exit 22"* ]]
+}
+
+@test "a failed read empties a file whose last export is past retention" {
+  write_prior_export "2020-01-01T00:00:00Z"
+  CURL_FAIL=1 run sms_inbox_export "$EXPORT_DIR"
+  [ "$status" -eq 1 ]
+  jq -e '.messages == [] and .exported_at == "2020-01-01T00:00:00Z"' "$TARGET"
+  [ ! -e "${EXPORT_DIR}/.sms_inbox.json.partial" ]
+  [[ "$output" == *"have expired"* ]]
+  [[ "$output" != *"$SENTINEL"* ]]
+}
+
+@test "an unavailable sensor empties a file whose last export is past retention" {
+  echo '{"entity_id":"sensor.sms_inbox","state":"unavailable","attributes":{}}' >"$STATE_FILE"
+  write_prior_export "$(date -u -d '-73 hours' +%Y-%m-%dT%H:%M:%SZ)"
+  run sms_inbox_export "$EXPORT_DIR"
+  [ "$status" -eq 1 ]
+  jq -e '.messages == []' "$TARGET"
+}
+
+@test "the script's retention matches the package's" {
+  pkg="$(grep -E '^[[:space:]]+max_age_hours:' "$PACKAGE" | grep -oE '[0-9]+')"
+  [ "$pkg" = "$RETENTION_HOURS" ]
+}
+
+@test "a share that does not answer ends the run with a log line" {
+  mkdir -p "${BATS_TEST_TMPDIR}/bin"
+  printf '#!/bin/sh\nsleep 5\n' >"${BATS_TEST_TMPDIR}/bin/stat"
+  chmod +x "${BATS_TEST_TMPDIR}/bin/stat"
+  PATH="${BATS_TEST_TMPDIR}/bin:$PATH" SMS_EXPORT_SHARE_TIMEOUT=1 run bash "$SCRIPT" "$EXPORT_DIR"
+  [ "$status" -eq 2 ]
+  [[ "$output" == *"did not answer within 1 s"* ]]
 }
 
 @test "nothing printed or logged carries message text" {
