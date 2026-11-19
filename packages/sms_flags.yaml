@@ -16,7 +16,8 @@
 #      is answered or cleared.
 #   3. A stub is checked off when the text is answered. Two signals, either:
 #        - reply:   the phone posts to a webhook when Chris sends a message
-#                   (MacroDroid "SMS Sent" or Tasker); only the peer is sent
+#                   (MacroDroid "SMS Sent" or Tasker); only the recipient (a name
+#                   and a number) is sent, never the text
 #        - manual:  Chris taps the item done in the to-do list
 #      Opening or dismissing a text does NOT clear it: a text read and never
 #      answered is the main way one slips through, and it is what this package
