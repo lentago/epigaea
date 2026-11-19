@@ -144,112 +144,24 @@
     "hidden": false
   },
   {
-    "entity_id": "automation.hue_tap_dial_button_1_bright_100_4000k",
-    "friendly_name": "Hue Tap Dial: Button 1 → Bright (100% / 4000K)",
+    "entity_id": "automation.hue_tap_dial_buttons_kitchen_sonos_transport_and_mute",
+    "friendly_name": "Hue Tap Dial: buttons → Kitchen Sonos play/pause, next track, volume presets",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
     "hidden": false
   },
   {
-    "entity_id": "automation.hue_tap_dial_button_1_long_concentrate_100_5000k",
-    "friendly_name": "Hue Tap Dial: Button 1 long → Concentrate (100% / 5000K)",
+    "entity_id": "automation.hue_tap_dial_dial_rotation_kitchen_sonos_volume",
+    "friendly_name": "Hue Tap Dial: dial rotation → Kitchen Sonos volume",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
     "hidden": false
   },
   {
-    "entity_id": "automation.hue_tap_dial_button_1_long_fast_color_loop",
-    "friendly_name": "Hue Tap Dial: Button 1 long → Fast color loop",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_1_short_bright_daylight_100_4000k",
-    "friendly_name": "Hue Tap Dial: Button 1 short → Bright Daylight (100% / 4000K)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_2_long_relax_40_2200k",
-    "friendly_name": "Hue Tap Dial: Button 2 long → Relax (40% / 2200K)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_2_relax_40_2200k",
-    "friendly_name": "Hue Tap Dial: Button 2 → Relax (40% / 2200K)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_2_short_sunset_per_bulb_warm_colors",
-    "friendly_name": "Hue Tap Dial: Button 2 short → Sunset (per-bulb warm colors)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_3_concentrate_100_5000k",
-    "friendly_name": "Hue Tap Dial: Button 3 → Concentrate (100% / 5000K)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_3_long_rainbow_per_bulb_vivid_primaries",
-    "friendly_name": "Hue Tap Dial: Button 3 long → Rainbow (per-bulb vivid primaries)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_3_short_ocean_per_bulb_cool_colors",
-    "friendly_name": "Hue Tap Dial: Button 3 short → Ocean (per-bulb cool colors)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_4_all_playroom_lights_off",
-    "friendly_name": "Hue Tap Dial: Button 4 → all playroom lights off",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_4_long_colorloop_effect",
-    "friendly_name": "Hue Tap Dial: Button 4 long → Colorloop effect",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_button_4_short_all_playroom_lights_off",
-    "friendly_name": "Hue Tap Dial: Button 4 short → all playroom lights off",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.hue_tap_dial_dial_rotation_playroom_brightness",
-    "friendly_name": "Hue Tap Dial: dial rotation → playroom brightness",
+    "entity_id": "automation.hue_tap_dial_long_and_multi_presses_kitchen_sonos_grouping",
+    "friendly_name": "Hue Tap Dial: long 1-3 and double 2-4 → Kitchen Sonos join / leave, group volume",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
@@ -288,40 +200,16 @@
     "hidden": false
   },
   {
-    "entity_id": "automation.office_hue_switch_bottom_all_office_lights_off",
-    "friendly_name": "Office Hue Switch: Rocker down → all office lights off",
+    "entity_id": "automation.office_external_off_stops_the_flicker_loop",
+    "friendly_name": "Office: external off stops the flicker loop",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
     "hidden": false
   },
   {
-    "entity_id": "automation.office_hue_switch_top_cycle_office_scenes",
-    "friendly_name": "Office Hue Switch: Rocker up → cycle office scenes",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.office_hue_switch_top_hold_bright_scene",
-    "friendly_name": "Office Hue Switch: Top hold → Bright scene",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.office_lights",
-    "friendly_name": "Office lights",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.office_switch_mirror_to_office_lights",
-    "friendly_name": "Office Switch: mirror to office lights",
+    "entity_id": "automation.office_roku_relaunch_brasenia_from_the_home_screen",
+    "friendly_name": "Office Roku: relaunch brasenia from the home screen",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
@@ -360,14 +248,6 @@
     "hidden": false
   },
   {
-    "entity_id": "automation.office_zen77_up_hold_jump_to_scene_1_bright",
-    "friendly_name": "Office ZEN77: Up hold → jump to scene 1 (Bright)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
     "entity_id": "automation.office_zen77_up_tap_office_on_cycle_scenes",
     "friendly_name": "Office ZEN77: Up tap → office on / cycle scenes",
     "area_id": null,
@@ -392,16 +272,40 @@
     "hidden": false
   },
   {
-    "entity_id": "automation.sonoff_button_1_double_press_kitchen_family_room_off",
-    "friendly_name": "Sonoff Button 1: Double press → Downstairs + Hallways OFF",
+    "entity_id": "automation.playroom_external_off_stops_the_color_loop",
+    "friendly_name": "Playroom: external off stops the color loop",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
     "hidden": false
   },
   {
-    "entity_id": "automation.sonoff_button_1_kitchen_family_room_lights_to_100",
-    "friendly_name": "Sonoff Button 1: Kitchen + Family Room lights to 100%",
+    "entity_id": "automation.sms_flags_nudge_about_texts_to_answer",
+    "friendly_name": "SMS flags: nudge about texts to answer",
+    "area_id": null,
+    "device_id": null,
+    "platform": "automation",
+    "hidden": false
+  },
+  {
+    "entity_id": "automation.sms_flags_sync_the_to_do_list",
+    "friendly_name": "SMS flags: sync the to-do list",
+    "area_id": null,
+    "device_id": null,
+    "platform": "automation",
+    "hidden": false
+  },
+  {
+    "entity_id": "automation.sms_inbox_export_to_the_nas",
+    "friendly_name": "SMS inbox: export to the NAS",
+    "area_id": null,
+    "device_id": null,
+    "platform": "automation",
+    "hidden": false
+  },
+  {
+    "entity_id": "automation.sonoff_button_1_double_press_kitchen_family_room_off",
+    "friendly_name": "Sonoff Button 1: Double press → Downstairs + Hallways OFF",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
@@ -432,14 +336,6 @@
     "hidden": false
   },
   {
-    "entity_id": "automation.sonoff_button_2_double_press_outdoor_lights_off",
-    "friendly_name": "Sonoff Button 2: Double press → Outdoor lights OFF",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
     "entity_id": "automation.sonoff_button_2_long_press_cycle_office_scenes",
     "friendly_name": "Sonoff Button 2: Single press → office on / cycle scenes",
     "area_id": null,
@@ -450,38 +346,6 @@
   {
     "entity_id": "automation.sonoff_button_2_long_press_jump_to_scene_1_bright",
     "friendly_name": "Sonoff Button 2: Long press → jump to scene 1 (Bright)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.sonoff_button_2_single_press_office_lights_on_current_scene",
-    "friendly_name": "Sonoff Button 2: Single press → Office lights ON (current scene)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.sonoff_button_2_single_press_outdoor_lights_on",
-    "friendly_name": "Sonoff Button 2: Single press → Outdoor lights ON",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.turn_off_downstairs_lights",
-    "friendly_name": "Turn off downstairs lights",
-    "area_id": null,
-    "device_id": null,
-    "platform": "automation",
-    "hidden": false
-  },
-  {
-    "entity_id": "automation.turn_on_downstairs_lights",
-    "friendly_name": "Turn on downstairs lights",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
@@ -504,14 +368,6 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.any_light_on",
-    "friendly_name": "Any Light On",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.any_switch_on",
     "friendly_name": "Any Switch On",
     "area_id": null,
@@ -525,14 +381,6 @@
     "area_id": null,
     "device_id": "c0263c2200a5e656f9af7f0713d58566",
     "platform": "tplink",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.basement_kitchen_door",
-    "friendly_name": "Basement-Kitchen Door",
-    "area_id": null,
-    "device_id": "4911f075d1a94d702cef9bb1e0740abd",
-    "platform": "zha",
     "hidden": false
   },
   {
@@ -560,10 +408,34 @@
     "hidden": false
   },
   {
+    "entity_id": "binary_sensor.claude_runner_4_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.claude_runner_5_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "binary_sensor.claude_runner_status",
     "friendly_name": "Status",
     "area_id": null,
     "device_id": "fea1833d9b8de3f0e9c2ef2726cb5d95",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.claytonia_forge_build_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -624,18 +496,18 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.fedora_workstation_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.fedora_ws_status",
     "friendly_name": "Status",
     "area_id": null,
     "device_id": "195dcc63a4724efaa883aef92dd0e00e",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.fedora_xfce_test_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -816,10 +688,10 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.grafana_stack_status",
+    "entity_id": "binary_sensor.gha_runner_status",
     "friendly_name": "Status",
     "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -864,6 +736,14 @@
     "hidden": false
   },
   {
+    "entity_id": "binary_sensor.k3s_2_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "binary_sensor.kitchen_island_cloud_connection",
     "friendly_name": "Cloud connection",
     "area_id": null,
@@ -893,6 +773,14 @@
     "area_id": null,
     "device_id": "8cbd714807a1f0a8f38d97e57dfa1d36",
     "platform": "tplink",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.lunaria_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -968,6 +856,38 @@
     "hidden": false
   },
   {
+    "entity_id": "binary_sensor.minecraft_lan_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.minecraft_runner_2_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.minecraft_runner_3_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.minecraft_runner_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "binary_sensor.mini_2_0n3c_battery",
     "friendly_name": "Battery",
     "area_id": null,
@@ -989,6 +909,70 @@
     "area_id": null,
     "device_id": "4b155327efb08a33d19073ae9d014e5a",
     "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_alarm_active",
+    "friendly_name": "Alarm active",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_lan_iot_status",
+    "friendly_name": "LAN IoT Status",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_lan_lan_1_status",
+    "friendly_name": "LAN LAN 1 Status",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_vpn_amneziawg_status",
+    "friendly_name": "VPN AmneziaWG Status",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_vpn_openvpn_status",
+    "friendly_name": "VPN OpenVPN Status",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_vpn_wireguard_status",
+    "friendly_name": "VPN WireGuard Status",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_wan_failover",
+    "friendly_name": "WAN failover",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_firewalla_wan_isp_1_status",
+    "friendly_name": "WAN ISP 1 Status",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
     "hidden": false
   },
   {
@@ -1104,6 +1088,14 @@
     "hidden": false
   },
   {
+    "entity_id": "binary_sensor.pe_publish_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "binary_sensor.play_room_lights_on",
     "friendly_name": "Play Room Lights On",
     "area_id": null,
@@ -1117,6 +1109,38 @@
     "area_id": null,
     "device_id": "c13d103ea0a1177f174dba7bd38fbeaa",
     "platform": "tplink",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.play_room_play_room_tv_headphones_connected",
+    "friendly_name": "Headphones connected",
+    "area_id": null,
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.play_room_play_room_tv_supports_airplay",
+    "friendly_name": "Supports AirPlay",
+    "area_id": null,
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.play_room_play_room_tv_supports_ethernet",
+    "friendly_name": "Supports Ethernet",
+    "area_id": null,
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.play_room_play_room_tv_supports_find_remote",
+    "friendly_name": "Supports find remote",
+    "area_id": null,
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
     "hidden": false
   },
   {
@@ -1264,32 +1288,8 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.sonos_basement_leader",
-    "friendly_name": "Sonos Basement Leader",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.sonos_basement_paused",
-    "friendly_name": "Sonos Basement Paused",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.sonos_dining_room_leader",
     "friendly_name": "Sonos Dining Room Leader",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.sonos_dining_room_paused",
-    "friendly_name": "Sonos Dining Room Paused",
     "area_id": null,
     "device_id": null,
     "platform": "template",
@@ -1304,24 +1304,8 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.sonos_kitchen_paused",
-    "friendly_name": "Sonos Kitchen Paused",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.sonos_master_bedroom_leader",
     "friendly_name": "Sonos Master Bedroom Leader",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.sonos_master_bedroom_paused",
-    "friendly_name": "Sonos Master Bedroom Paused",
     "area_id": null,
     "device_id": null,
     "platform": "template",
@@ -1336,24 +1320,8 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.sonos_office_paused",
-    "friendly_name": "Sonos Office Paused",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.sonos_roam_leader",
     "friendly_name": "Sonos Roam Leader",
-    "area_id": null,
-    "device_id": null,
-    "platform": "template",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.sonos_roam_paused",
-    "friendly_name": "Sonos Roam Paused",
     "area_id": null,
     "device_id": null,
     "platform": "template",
@@ -1600,30 +1568,6 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.storage_nas_storage_active",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_nas_storage_enabled",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_nas_storage_shared",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.storage_neptune_storage_active",
     "friendly_name": "Storage active",
     "area_id": null,
@@ -1740,150 +1684,6 @@
     "friendly_name": "Storage shared",
     "area_id": null,
     "device_id": "a9dd84abced3129cab0a3a5b64354c88",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_active",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_active_3",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_active_4",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_active_5",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_active_6",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_active_7",
-    "friendly_name": "Storage active",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_enabled",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_enabled_3",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_enabled_4",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_enabled_5",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_enabled_6",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_enabled_7",
-    "friendly_name": "Storage enabled",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_shared",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_shared_3",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_shared_4",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_shared_5",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_shared_6",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.storage_pitzilabs_storage_shared_7",
-    "friendly_name": "Storage shared",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -2008,14 +1808,6 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.vm_106_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "binary_sensor.water_heater_leak",
     "friendly_name": null,
     "area_id": "basement",
@@ -2032,10 +1824,10 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.xubuntu_workstation_status",
+    "entity_id": "binary_sensor.xubuntu_test_status",
     "friendly_name": "Status",
     "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -2109,14 +1901,6 @@
     "area_id": null,
     "device_id": "48d49cbc456a5942edd0ec627baab874",
     "platform": "esphome",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.basement_kitchen_door_identify",
-    "friendly_name": "Identify",
-    "area_id": null,
-    "device_id": "4911f075d1a94d702cef9bb1e0740abd",
-    "platform": "zha",
     "hidden": false
   },
   {
@@ -2208,6 +1992,70 @@
     "hidden": false
   },
   {
+    "entity_id": "button.claude_runner_4_create_snapshot",
+    "friendly_name": "Create snapshot",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_4_restart",
+    "friendly_name": "Restart",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_4_start",
+    "friendly_name": "Start",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_4_stop",
+    "friendly_name": "Stop",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_5_create_snapshot",
+    "friendly_name": "Create snapshot",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_5_restart",
+    "friendly_name": "Restart",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_5_start",
+    "friendly_name": "Start",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claude_runner_5_stop",
+    "friendly_name": "Stop",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "button.claude_runner_create_snapshot",
     "friendly_name": "Create snapshot",
     "area_id": null,
@@ -2236,6 +2084,38 @@
     "friendly_name": "Stop",
     "area_id": null,
     "device_id": "fea1833d9b8de3f0e9c2ef2726cb5d95",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claytonia_forge_build_create_snapshot",
+    "friendly_name": "Create snapshot",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claytonia_forge_build_restart",
+    "friendly_name": "Restart",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claytonia_forge_build_start",
+    "friendly_name": "Start",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.claytonia_forge_build_stop",
+    "friendly_name": "Stop",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -2269,62 +2149,6 @@
     "area_id": null,
     "device_id": "b864ce7e9feab3a8fadc0ecdfddf7f3c",
     "platform": "zha",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_create_snapshot",
-    "friendly_name": "Create snapshot",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_hibernate",
-    "friendly_name": "Hibernate",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_reset",
-    "friendly_name": "Reset",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_restart",
-    "friendly_name": "Restart",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_shut_down",
-    "friendly_name": "Shut down",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_start",
-    "friendly_name": "Start",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.fedora_workstation_stop",
-    "friendly_name": "Stop",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -2388,6 +2212,70 @@
     "friendly_name": "Stop",
     "area_id": null,
     "device_id": "195dcc63a4724efaa883aef92dd0e00e",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test",
+    "friendly_name": null,
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_create_snapshot",
+    "friendly_name": "Create snapshot",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_hibernate",
+    "friendly_name": "Hibernate",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_reset",
+    "friendly_name": "Reset",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_restart",
+    "friendly_name": "Restart",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_shut_down",
+    "friendly_name": "Shut down",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_start",
+    "friendly_name": "Start",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.fedora_xfce_test_stop",
+    "friendly_name": "Stop",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -2496,34 +2384,34 @@
     "hidden": false
   },
   {
-    "entity_id": "button.grafana_stack_create_snapshot",
+    "entity_id": "button.gha_runner_create_snapshot",
     "friendly_name": "Create snapshot",
     "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.grafana_stack_restart",
+    "entity_id": "button.gha_runner_restart",
     "friendly_name": "Restart",
     "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.grafana_stack_start",
+    "entity_id": "button.gha_runner_start",
     "friendly_name": "Start",
     "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.grafana_stack_stop",
+    "entity_id": "button.gha_runner_stop",
     "friendly_name": "Stop",
     "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -2648,6 +2536,38 @@
     "hidden": false
   },
   {
+    "entity_id": "button.k3s_2_create_snapshot",
+    "friendly_name": "Create snapshot",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.k3s_2_restart",
+    "friendly_name": "Restart",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.k3s_2_start",
+    "friendly_name": "Start",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.k3s_2_stop",
+    "friendly_name": "Stop",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "button.kid_room_1_identify",
     "friendly_name": "Identify",
     "area_id": null,
@@ -2661,6 +2581,38 @@
     "area_id": null,
     "device_id": "0a6647718a0292e693aab2afb449b75d",
     "platform": "zha",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.lunaria_create_snapshot",
+    "friendly_name": "Create snapshot",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.lunaria_restart",
+    "friendly_name": "Restart",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.lunaria_start",
+    "friendly_name": "Start",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "button.lunaria_stop",
+    "friendly_name": "Stop",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -3104,24 +3056,8 @@
     "hidden": false
   },
   {
-    "entity_id": "button.ugreen_nas_reboot",
-    "friendly_name": "UGREEN NAS Reboot",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.ugreen_nas_shutdown",
-    "friendly_name": "UGREEN NAS Shutdown",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.ugreen_nas_wake_up",
-    "friendly_name": "UGREEN NAS Wake Up",
+    "entity_id": "button.ugreen_nas_stand_alone_disks_adopt",
+    "friendly_name": "UGREEN NAS Stand-alone disks: Adopt",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -3140,62 +3076,6 @@
     "friendly_name": null,
     "area_id": null,
     "device_id": "915775ccecd22835605a71e047e57aea",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_create_snapshot",
-    "friendly_name": "Create snapshot",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_hibernate",
-    "friendly_name": "Hibernate",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_reset",
-    "friendly_name": "Reset",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_restart",
-    "friendly_name": "Restart",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_shut_down",
-    "friendly_name": "Shut down",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_start",
-    "friendly_name": "Start",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.vm_106_stop",
-    "friendly_name": "Stop",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -3224,34 +3104,10 @@
     "hidden": false
   },
   {
-    "entity_id": "button.win_11_ws_hibernate",
-    "friendly_name": "Hibernate",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.win_11_ws_reset",
-    "friendly_name": "Reset",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "button.win_11_ws_restart",
     "friendly_name": "Restart",
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.win_11_ws_shut_down",
-    "friendly_name": "Shut down",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -3272,66 +3128,66 @@
     "hidden": false
   },
   {
-    "entity_id": "button.win_ws",
+    "entity_id": "button.xubuntu_test",
     "friendly_name": null,
     "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_create_snapshot",
+    "entity_id": "button.xubuntu_test_create_snapshot",
     "friendly_name": "Create snapshot",
     "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_hibernate",
+    "entity_id": "button.xubuntu_test_hibernate",
     "friendly_name": "Hibernate",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_reset",
+    "entity_id": "button.xubuntu_test_reset",
     "friendly_name": "Reset",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_restart",
+    "entity_id": "button.xubuntu_test_restart",
     "friendly_name": "Restart",
     "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_shut_down",
+    "entity_id": "button.xubuntu_test_shut_down",
     "friendly_name": "Shut down",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_start",
+    "entity_id": "button.xubuntu_test_start",
     "friendly_name": "Start",
     "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "button.xubuntu_workstation_stop",
+    "entity_id": "button.xubuntu_test_stop",
     "friendly_name": "Stop",
     "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -3388,14 +3244,6 @@
     "friendly_name": "Stop",
     "area_id": null,
     "device_id": "915775ccecd22835605a71e047e57aea",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "button.xubuntu_ws_test",
-    "friendly_name": null,
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -3512,14 +3360,6 @@
     "hidden": false
   },
   {
-    "entity_id": "counter.office_scene_index",
-    "friendly_name": "Office Scene Index",
-    "area_id": null,
-    "device_id": null,
-    "platform": "counter",
-    "hidden": false
-  },
-  {
     "entity_id": "counter.office_sonoff_scene",
     "friendly_name": "Office Sonoff Scene",
     "area_id": null,
@@ -3576,6 +3416,14 @@
     "hidden": false
   },
   {
+    "entity_id": "device_tracker.sm_s901u1",
+    "friendly_name": "SM-S901U1",
+    "area_id": null,
+    "device_id": "7a932c5d025522677a314bbc8f6feaa3",
+    "platform": "mobile_app",
+    "hidden": false
+  },
+  {
     "entity_id": "device_tracker.sm_s926u1",
     "friendly_name": "SM-S926U1",
     "area_id": null,
@@ -3617,7 +3465,7 @@
   },
   {
     "entity_id": "event.office_switch_scene_001",
-    "friendly_name": "Scene 001",
+    "friendly_name": "Upper Paddle",
     "area_id": null,
     "device_id": "51a69e120926a13bba9cfaac7a2937e7",
     "platform": "zwave_js",
@@ -3625,7 +3473,7 @@
   },
   {
     "entity_id": "event.office_switch_scene_002",
-    "friendly_name": "Scene 002",
+    "friendly_name": "Lower Paddle",
     "area_id": null,
     "device_id": "51a69e120926a13bba9cfaac7a2937e7",
     "platform": "zwave_js",
@@ -3664,6 +3512,14 @@
     "hidden": false
   },
   {
+    "entity_id": "input_datetime.sms_inbox_read_through",
+    "friendly_name": "SMS inbox read through",
+    "area_id": null,
+    "device_id": null,
+    "platform": "input_datetime",
+    "hidden": false
+  },
+  {
     "entity_id": "input_number.office_brightness",
     "friendly_name": "Office Brightness",
     "area_id": null,
@@ -3680,8 +3536,16 @@
     "hidden": false
   },
   {
+    "entity_id": "light.back_porch",
+    "friendly_name": null,
+    "area_id": null,
+    "device_id": "c0263c2200a5e656f9af7f0713d58566",
+    "platform": "switch_as_x",
+    "hidden": false
+  },
+  {
     "entity_id": "light.basement_lamp_1_light",
-    "friendly_name": "Light",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "408b1fc93e2e314421a1e463a9072e27",
     "platform": "hubspace",
@@ -3689,7 +3553,7 @@
   },
   {
     "entity_id": "light.basement_lamp_2_light",
-    "friendly_name": "Light",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "cb68ea7df77c3d66c3ffcfd06a319065",
     "platform": "hubspace",
@@ -3825,7 +3689,7 @@
   },
   {
     "entity_id": "light.hangout_space_light",
-    "friendly_name": "Light",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "1b107e9a6eee09cb82e777bd3e3f745c",
     "platform": "hubspace",
@@ -3873,7 +3737,7 @@
   },
   {
     "entity_id": "light.master_bathroom",
-    "friendly_name": "Master Bathroom",
+    "friendly_name": "",
     "area_id": null,
     "device_id": "85a396c41f4525d362a45e5f143214bf",
     "platform": "hubspace",
@@ -3961,7 +3825,7 @@
   },
   {
     "entity_id": "light.spare_light",
-    "friendly_name": "Light",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "17510e3a0a8d4e060629e51821afeacc",
     "platform": "hubspace",
@@ -4032,6 +3896,22 @@
     "hidden": false
   },
   {
+    "entity_id": "media_player.office_office",
+    "friendly_name": null,
+    "area_id": null,
+    "device_id": "d723e430ed6d2075e0600b409be85201",
+    "platform": "sonos",
+    "hidden": false
+  },
+  {
+    "entity_id": "media_player.play_room_play_room_tv",
+    "friendly_name": null,
+    "area_id": null,
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
     "entity_id": "media_player.roam_2",
     "friendly_name": null,
     "area_id": null,
@@ -4040,11 +3920,11 @@
     "hidden": false
   },
   {
-    "entity_id": "media_player.spotify",
+    "entity_id": "notify.sm_s901u1",
     "friendly_name": null,
     "area_id": null,
-    "device_id": "8099bb7aaac63f524cfc316dbbffa6bc",
-    "platform": "spotify",
+    "device_id": "7a932c5d025522677a314bbc8f6feaa3",
+    "platform": "mobile_app",
     "hidden": false
   },
   {
@@ -4085,6 +3965,22 @@
     "area_id": null,
     "device_id": "8bf1e839ce7964732ace6d4f811bef3c",
     "platform": "sonos",
+    "hidden": false
+  },
+  {
+    "entity_id": "number.basement_lamp_1_speed",
+    "friendly_name": "Effect Speed",
+    "area_id": null,
+    "device_id": "408b1fc93e2e314421a1e463a9072e27",
+    "platform": "hubspace",
+    "hidden": false
+  },
+  {
+    "entity_id": "number.basement_lamp_2_speed",
+    "friendly_name": "Effect Speed",
+    "area_id": null,
+    "device_id": "cb68ea7df77c3d66c3ffcfd06a319065",
+    "platform": "hubspace",
     "hidden": false
   },
   {
@@ -4288,6 +4184,14 @@
     "hidden": false
   },
   {
+    "entity_id": "number.hangout_space_speed",
+    "friendly_name": "Effect Speed",
+    "area_id": null,
+    "device_id": "1b107e9a6eee09cb82e777bd3e3f745c",
+    "platform": "hubspace",
+    "hidden": false
+  },
+  {
     "entity_id": "number.kitchen_balance",
     "friendly_name": "Balance",
     "area_id": null,
@@ -4309,6 +4213,14 @@
     "area_id": null,
     "device_id": "23f4f74f8da201e8faa28dc4ce4be577",
     "platform": "sonos",
+    "hidden": false
+  },
+  {
+    "entity_id": "number.master_bathroom_master_bathroom_speed",
+    "friendly_name": "Effect Speed",
+    "area_id": null,
+    "device_id": "85a396c41f4525d362a45e5f143214bf",
+    "platform": "hubspace",
     "hidden": false
   },
   {
@@ -4512,6 +4424,14 @@
     "hidden": false
   },
   {
+    "entity_id": "number.spare_speed",
+    "friendly_name": "Effect Speed",
+    "area_id": null,
+    "device_id": "17510e3a0a8d4e060629e51821afeacc",
+    "platform": "hubspace",
+    "hidden": false
+  },
+  {
     "entity_id": "number.table_lamp_power_on_level",
     "friendly_name": "Power-on level",
     "area_id": null,
@@ -4552,6 +4472,14 @@
     "hidden": false
   },
   {
+    "entity_id": "remote.play_room_play_room_tv",
+    "friendly_name": null,
+    "area_id": null,
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
     "entity_id": "script.meeting_indicator_clear",
     "friendly_name": "Meeting: clear indicator",
     "area_id": null,
@@ -4586,54 +4514,6 @@
   {
     "entity_id": "script.office_sonoff_candle_loop",
     "friendly_name": "Office Sonoff: Flicker loop driver",
-    "area_id": null,
-    "device_id": null,
-    "platform": "script",
-    "hidden": false
-  },
-  {
-    "entity_id": "script.office_switch_set_mode_single_rocker",
-    "friendly_name": "Office Switch: set device_mode = 0 (single rocker)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "script",
-    "hidden": false
-  },
-  {
-    "entity_id": "script.office_switch_set_mode_via_attr_hex",
-    "friendly_name": "Office Switch: try attribute write 0x0034 = 3 (no mfg code)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "script",
-    "hidden": false
-  },
-  {
-    "entity_id": "script.office_switch_set_mode_via_attr_with_mfg",
-    "friendly_name": "Office Switch: try attribute write 0x0034 = 3 (mfg 0x100B)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "script",
-    "hidden": false
-  },
-  {
-    "entity_id": "script.office_switch_set_mode_via_command_0",
-    "friendly_name": "Office Switch: try mfg command 0x00 with mode=3 (dual rocker)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "script",
-    "hidden": false
-  },
-  {
-    "entity_id": "script.office_switch_set_mode_via_command_2",
-    "friendly_name": "Office Switch: try mfg command 0x02 with mode=3 (dual rocker)",
-    "area_id": null,
-    "device_id": null,
-    "platform": "script",
-    "hidden": false
-  },
-  {
-    "entity_id": "script.playroom_brightness_step",
-    "friendly_name": "Playroom: step brightness on all four lights",
     "area_id": null,
     "device_id": null,
     "platform": "script",
@@ -4880,6 +4760,14 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.backup_last_successful_automatic_backup_size",
+    "friendly_name": "Last successful automatic backup size",
+    "area_id": null,
+    "device_id": "1bd5818602f5c504d5bdadb697437577",
+    "platform": "backup",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.backup_next_scheduled_automatic_backup",
     "friendly_name": "Next scheduled automatic backup",
     "area_id": null,
@@ -4893,22 +4781,6 @@
     "area_id": null,
     "device_id": "8bf1e839ce7964732ace6d4f811bef3c",
     "platform": "sonos",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.basement_kitchen_door_battery",
-    "friendly_name": "Battery",
-    "area_id": null,
-    "device_id": "4911f075d1a94d702cef9bb1e0740abd",
-    "platform": "zha",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.basement_kitchen_door_temperature",
-    "friendly_name": "Temperature",
-    "area_id": null,
-    "device_id": "4911f075d1a94d702cef9bb1e0740abd",
-    "platform": "zha",
     "hidden": false
   },
   {
@@ -5272,6 +5144,182 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.claude_runner_4_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_disk_usage",
+    "friendly_name": "Disk usage",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_4_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_disk_usage",
+    "friendly_name": "Disk usage",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claude_runner_5_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.claude_runner_cpu_usage",
     "friendly_name": "CPU usage",
     "area_id": null,
@@ -5360,8 +5408,104 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.claytonia_forge_build_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_disk_usage",
+    "friendly_name": "Disk usage",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.claytonia_forge_build_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.climate",
     "friendly_name": "Climate",
+    "area_id": null,
+    "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
+    "platform": "spook",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.counters",
+    "friendly_name": "Counters",
     "area_id": null,
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "platform": "spook",
@@ -5373,94 +5517,6 @@
     "area_id": null,
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "platform": "spook",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_cpu_usage",
-    "friendly_name": "CPU usage",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_disk_usage",
-    "friendly_name": "Disk usage",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_max_cpu",
-    "friendly_name": "Max CPU",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_max_disk_usage",
-    "friendly_name": "Max disk usage",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_max_memory_usage",
-    "friendly_name": "Max memory usage",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_memory_usage",
-    "friendly_name": "Memory usage",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_memory_usage_percentage",
-    "friendly_name": "Memory usage percentage",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_network_input",
-    "friendly_name": "Network input",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_network_output",
-    "friendly_name": "Network output",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ct101_uptime",
-    "friendly_name": "Uptime",
-    "area_id": null,
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -5560,6 +5616,14 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.downstairs_downstairs_fan_timer_timeout",
+    "friendly_name": "Fan timer timeout",
+    "area_id": null,
+    "device_id": "1a1ee7279d9103a7ae2cd26290c013aa",
+    "platform": "nest",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.downstairs_humidity",
     "friendly_name": "Humidity",
     "area_id": null,
@@ -5629,94 +5693,6 @@
     "area_id": null,
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "platform": "spook",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_cpu_usage",
-    "friendly_name": "CPU usage",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_disk_usage",
-    "friendly_name": "Disk usage",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_max_cpu",
-    "friendly_name": "Max CPU",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_max_disk_usage",
-    "friendly_name": "Max disk usage",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_max_memory_usage",
-    "friendly_name": "Max memory usage",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_memory_usage",
-    "friendly_name": "Memory usage",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_memory_usage_percentage",
-    "friendly_name": "Memory usage percentage",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_network_input",
-    "friendly_name": "Network input",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_network_output",
-    "friendly_name": "Network output",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.fedora_workstation_uptime",
-    "friendly_name": "Uptime",
-    "area_id": null,
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -5808,32 +5784,96 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.firewalla_hannah_tablet_usage",
-    "friendly_name": "Hannah-Tablet Usage",
+    "entity_id": "sensor.fedora_xfce_test_cpu_usage",
+    "friendly_name": "CPU usage",
     "area_id": null,
-    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
-    "platform": "firewalla_local",
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.firewalla_jacob_tablet_usage",
-    "friendly_name": "Jacob-Tablet Usage",
+    "entity_id": "sensor.fedora_xfce_test_disk_usage",
+    "friendly_name": "Disk usage",
     "area_id": null,
-    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
-    "platform": "firewalla_local",
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.fedora_xfce_test_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
     "entity_id": "sensor.firewalla_kids_tvs_usage",
     "friendly_name": "Kids-TVs Usage",
-    "area_id": null,
-    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
-    "platform": "firewalla_local",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.firewalla_speed_test",
-    "friendly_name": "Speed Test",
     "area_id": null,
     "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
     "platform": "firewalla_local",
@@ -5904,10 +5944,90 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.grafana_stack_cpu_usage",
+    "entity_id": "sensor.gha_runner_cpu_usage",
     "friendly_name": "CPU usage",
     "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_disk_usage",
+    "friendly_name": "Disk usage",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.gha_runner_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -5920,26 +6040,10 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.grafana_stack_disk_usage",
-    "friendly_name": "Disk usage",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.grafana_stack_disk_usage_2",
     "friendly_name": "Disk usage",
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.grafana_stack_max_cpu",
-    "friendly_name": "Max CPU",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -5952,26 +6056,10 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.grafana_stack_max_disk_usage",
-    "friendly_name": "Max disk usage",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.grafana_stack_max_disk_usage_2",
     "friendly_name": "Max disk usage",
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.grafana_stack_max_memory_usage",
-    "friendly_name": "Max memory usage",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -5984,26 +6072,10 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.grafana_stack_memory_usage",
-    "friendly_name": "Memory usage",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.grafana_stack_memory_usage_2",
     "friendly_name": "Memory usage",
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.grafana_stack_memory_usage_percentage",
-    "friendly_name": "Memory usage percentage",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -6016,26 +6088,10 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.grafana_stack_network_input",
-    "friendly_name": "Network input",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.grafana_stack_network_input_2",
     "friendly_name": "Network input",
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.grafana_stack_network_output",
-    "friendly_name": "Network output",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -6048,26 +6104,10 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.grafana_stack_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.grafana_stack_status_2",
     "friendly_name": "Status",
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.grafana_stack_uptime",
-    "friendly_name": "Uptime",
-    "area_id": null,
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -6077,6 +6117,14 @@
     "area_id": null,
     "device_id": "2250be7ea783cb9c230f9feece7fbaac",
     "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.groups",
+    "friendly_name": "Groups",
+    "area_id": null,
+    "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
+    "platform": "spook",
     "hidden": false
   },
   {
@@ -6352,6 +6400,94 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.k3s_2_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_disk_usage",
+    "friendly_name": "Disk usage",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.k3s_2_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.kid_room_1_battery",
     "friendly_name": "Battery",
     "area_id": null,
@@ -6440,6 +6576,94 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.lunaria_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_disk_usage",
+    "friendly_name": "Disk usage",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_max_cpu",
+    "friendly_name": "Max CPU",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_max_disk_usage",
+    "friendly_name": "Max disk usage",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_memory_usage",
+    "friendly_name": "Memory usage",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_network_input",
+    "friendly_name": "Network input",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_network_output",
+    "friendly_name": "Network output",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.lunaria_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.main_panel_wifi_signal",
     "friendly_name": "WiFi Signal",
     "area_id": null,
@@ -6485,6 +6709,166 @@
     "area_id": null,
     "device_id": "7e3a44d9602c6f285bb4d45a1903b76f",
     "platform": "esphome",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_lan_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_lan_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_lan_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_lan_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_lan_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_2_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_2_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_2_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_2_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_2_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_3_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_3_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_3_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_3_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_3_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.minecraft_runner_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -6616,6 +7000,62 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.office_firewalla_active_alarms",
+    "friendly_name": "Active alarms",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_firewalla_isp_1_ping_latency",
+    "friendly_name": "ISP 1 Ping latency",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_firewalla_isp_1_ping_packet_loss",
+    "friendly_name": "ISP 1 Ping packet loss",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_firewalla_isp_1_speed_test_download",
+    "friendly_name": "ISP 1 Speed test download",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_firewalla_isp_1_speed_test_latency",
+    "friendly_name": "ISP 1 Speed test latency",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_firewalla_isp_1_speed_test_upload",
+    "friendly_name": "ISP 1 Speed test upload",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_roku_active_app",
+    "friendly_name": "Office Roku active app",
+    "area_id": null,
+    "device_id": null,
+    "platform": "rest",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.office_switch_battery",
     "friendly_name": "Battery",
     "area_id": null,
@@ -6629,6 +7069,46 @@
     "area_id": null,
     "device_id": "51a69e120926a13bba9cfaac7a2937e7",
     "platform": "zwave_js",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.pe_publish_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.pe_publish_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.pe_publish_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.pe_publish_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.pe_publish_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -6648,67 +7128,19 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.pitzilabs_firewalla_axiom_pipeline",
-    "friendly_name": "pitzilabs firewalla-axiom-pipeline",
+    "entity_id": "sensor.play_room_play_room_tv_active_app",
+    "friendly_name": "Active app",
     "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
     "hidden": false
   },
   {
-    "entity_id": "sensor.pitzilabs_foundry_platform_demo",
-    "friendly_name": "pitzilabs foundry-platform-demo",
+    "entity_id": "sensor.play_room_play_room_tv_active_app_id",
+    "friendly_name": "Active app ID",
     "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.pitzilabs_homeassistant_config",
-    "friendly_name": "pitzilabs homeassistant-config",
-    "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.pitzilabs_homelab_observability",
-    "friendly_name": "pitzilabs homelab-observability",
-    "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.pitzilabs_ice_cream_book",
-    "friendly_name": "pitzilabs ice-cream-book",
-    "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.pitzilabs_reference_checker",
-    "friendly_name": "pitzilabs reference-checker",
-    "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.pitzilabs_shared_workflows",
-    "friendly_name": "pitzilabs shared-workflows",
-    "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.pitzilabs_workstation_bootstrap",
-    "friendly_name": "pitzilabs workstation-bootstrap",
-    "area_id": null,
-    "device_id": null,
-    "platform": "github_custom",
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "platform": "roku",
     "hidden": false
   },
   {
@@ -7328,6 +7760,30 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.sm_s901u1_battery_level",
+    "friendly_name": "SM-S901U1 Battery level",
+    "area_id": null,
+    "device_id": "7a932c5d025522677a314bbc8f6feaa3",
+    "platform": "mobile_app",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.sm_s901u1_battery_state",
+    "friendly_name": "SM-S901U1 Battery state",
+    "area_id": null,
+    "device_id": "7a932c5d025522677a314bbc8f6feaa3",
+    "platform": "mobile_app",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.sm_s901u1_charger_type",
+    "friendly_name": "SM-S901U1 Charger type",
+    "area_id": null,
+    "device_id": "7a932c5d025522677a314bbc8f6feaa3",
+    "platform": "mobile_app",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.sm_s926u1_battery_level",
     "friendly_name": "SM-S926U1 Battery level",
     "area_id": null,
@@ -7346,6 +7802,14 @@
   {
     "entity_id": "sensor.sm_s926u1_charger_type",
     "friendly_name": "SM-S926U1 Charger type",
+    "area_id": null,
+    "device_id": "d2014c733948cebda0f6a68d761b29ca",
+    "platform": "mobile_app",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.sm_s926u1_last_notification",
+    "friendly_name": "SM-S926U1 Last notification",
     "area_id": null,
     "device_id": "d2014c733948cebda0f6a68d761b29ca",
     "platform": "mobile_app",
@@ -7389,6 +7853,22 @@
     "area_id": null,
     "device_id": "f68584302c389454da21ee384a4edcbb",
     "platform": "tuya",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.sms_answered",
+    "friendly_name": "SMS answered",
+    "area_id": null,
+    "device_id": null,
+    "platform": "template",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.sms_inbox",
+    "friendly_name": "SMS inbox",
+    "area_id": null,
+    "device_id": null,
+    "platform": "template",
     "hidden": false
   },
   {
@@ -7720,38 +8200,6 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.storage_nas_available_storage",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_nas_storage_usage_percentage",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_nas_total_storage",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_nas_used_storage",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.storage_neptune_available_storage",
     "friendly_name": "Available storage",
     "area_id": null,
@@ -7908,198 +8356,6 @@
     "friendly_name": "Used storage",
     "area_id": null,
     "device_id": "a9dd84abced3129cab0a3a5b64354c88",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_available_storage",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_available_storage_3",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_available_storage_4",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_available_storage_5",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_available_storage_6",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_available_storage_7",
-    "friendly_name": "Available storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_storage_usage_percentage",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_storage_usage_percentage_3",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_storage_usage_percentage_4",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_storage_usage_percentage_5",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_storage_usage_percentage_6",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_storage_usage_percentage_7",
-    "friendly_name": "Storage usage percentage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_total_storage",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_total_storage_3",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_total_storage_4",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_total_storage_5",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_total_storage_6",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_total_storage_7",
-    "friendly_name": "Total storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_used_storage",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_used_storage_3",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_used_storage_4",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_used_storage_5",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_used_storage_6",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.storage_pitzilabs_used_storage_7",
-    "friendly_name": "Used storage",
-    "area_id": null,
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -8344,8 +8600,24 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.timers",
+    "friendly_name": "Timers",
+    "area_id": null,
+    "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
+    "platform": "spook",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.times",
     "friendly_name": "Times",
+    "area_id": null,
+    "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
+    "platform": "spook",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.todos",
+    "friendly_name": "To-do lists",
     "area_id": null,
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "platform": "spook",
@@ -8433,7 +8705,7 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_disk_1_summary",
-    "friendly_name": "UGREEN NAS Hard Drive 1 Summary",
+    "friendly_name": "UGREEN NAS Disk 1 Summary",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -8441,7 +8713,7 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_disk_2_summary",
-    "friendly_name": "UGREEN NAS Hard Drive 2 Summary",
+    "friendly_name": "UGREEN NAS Disk 2 Summary",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -8464,8 +8736,16 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.ugreen_nas_fans_system_mode",
-    "friendly_name": "UGREEN NAS Fans (system mode)",
+    "entity_id": "sensor.ugreen_nas_gpu_temperature",
+    "friendly_name": "UGREEN NAS GPU Temperature",
+    "area_id": null,
+    "device_id": "226fb0693b9856293f743fa446439f3e",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_gpu_usage",
+    "friendly_name": "UGREEN NAS GPU Usage",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -8521,7 +8801,7 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_lan_1_model",
-    "friendly_name": "UGREEN NAS LAN 1 Model",
+    "friendly_name": "UGREEN NAS LAN 1 Mode",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -8562,70 +8842,6 @@
   {
     "entity_id": "sensor.ugreen_nas_lan_1_upload_raw",
     "friendly_name": "UGREEN NAS LAN 1 Upload (raw)",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_dns_server",
-    "friendly_name": "UGREEN NAS LAN Port DNS Server",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_gateway",
-    "friendly_name": "UGREEN NAS LAN Port Gateway",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_ip",
-    "friendly_name": "UGREEN NAS LAN Port IP",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_mac",
-    "friendly_name": "UGREEN NAS LAN Port MAC",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_model",
-    "friendly_name": "UGREEN NAS LAN Port Model",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_mtu",
-    "friendly_name": "UGREEN NAS LAN Port MTU",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_netmask",
-    "friendly_name": "UGREEN NAS LAN Port Netmask",
-    "area_id": null,
-    "device_id": "226fb0693b9856293f743fa446439f3e",
-    "platform": "ugreen",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.ugreen_nas_lan_port_speed",
-    "friendly_name": "UGREEN NAS LAN Port Speed",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -8689,7 +8905,15 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_nas_ugos_version",
-    "friendly_name": "UGREEN NAS NAS UGOS Version",
+    "friendly_name": "UGREEN NAS UGOS Version",
+    "area_id": null,
+    "device_id": "226fb0693b9856293f743fa446439f3e",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_npu_usage",
+    "friendly_name": "UGREEN NAS NPU Usage",
     "area_id": null,
     "device_id": "226fb0693b9856293f743fa446439f3e",
     "platform": "ugreen",
@@ -8816,6 +9040,14 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_1_firmware",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Firmware",
+    "area_id": null,
+    "device_id": "007de11242de6081a3876f417ee566e0",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.ugreen_nas_pool_1_disk_1_interface_type",
     "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Interface Type",
     "area_id": null,
@@ -8848,8 +9080,24 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_1_power_on_count",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Power-On Count",
+    "area_id": null,
+    "device_id": "007de11242de6081a3876f417ee566e0",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.ugreen_nas_pool_1_disk_1_power_on_hours",
     "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Power-On Hours",
+    "area_id": null,
+    "device_id": "007de11242de6081a3876f417ee566e0",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_1_read_iops",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Read IOPS",
     "area_id": null,
     "device_id": "007de11242de6081a3876f417ee566e0",
     "platform": "ugreen",
@@ -8929,7 +9177,23 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_pool_1_disk_1_used_for",
-    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Used For",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Used In",
+    "area_id": null,
+    "device_id": "007de11242de6081a3876f417ee566e0",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_1_utilization",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Utilization",
+    "area_id": null,
+    "device_id": "007de11242de6081a3876f417ee566e0",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_1_write_iops",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 1) Write IOPS",
     "area_id": null,
     "device_id": "007de11242de6081a3876f417ee566e0",
     "platform": "ugreen",
@@ -8968,6 +9232,14 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_2_firmware",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Firmware",
+    "area_id": null,
+    "device_id": "86c2711ed25521bb7005750c9f2955a5",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.ugreen_nas_pool_1_disk_2_interface_type",
     "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Interface Type",
     "area_id": null,
@@ -9000,8 +9272,24 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_2_power_on_count",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Power-On Count",
+    "area_id": null,
+    "device_id": "86c2711ed25521bb7005750c9f2955a5",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.ugreen_nas_pool_1_disk_2_power_on_hours",
     "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Power-On Hours",
+    "area_id": null,
+    "device_id": "86c2711ed25521bb7005750c9f2955a5",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_2_read_iops",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Read IOPS",
     "area_id": null,
     "device_id": "86c2711ed25521bb7005750c9f2955a5",
     "platform": "ugreen",
@@ -9081,7 +9369,23 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_pool_1_disk_2_used_for",
-    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Used For",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Used In",
+    "area_id": null,
+    "device_id": "86c2711ed25521bb7005750c9f2955a5",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_2_utilization",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Utilization",
+    "area_id": null,
+    "device_id": "86c2711ed25521bb7005750c9f2955a5",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_disk_2_write_iops",
+    "friendly_name": "UGREEN NAS (Pool 1 | Disk 2) Write IOPS",
     "area_id": null,
     "device_id": "86c2711ed25521bb7005750c9f2955a5",
     "platform": "ugreen",
@@ -9233,7 +9537,15 @@
   },
   {
     "entity_id": "sensor.ugreen_nas_pool_1_volume_1_pool_name",
-    "friendly_name": "UGREEN NAS (Pool 1 | Volume 1) Pool Name",
+    "friendly_name": "UGREEN NAS (Pool 1 | Volume 1) On Pool",
+    "area_id": null,
+    "device_id": "29ee23ce4526698869d3f178f7532993",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_volume_1_read_iops",
+    "friendly_name": "UGREEN NAS (Pool 1 | Volume 1) Read IOPS",
     "area_id": null,
     "device_id": "29ee23ce4526698869d3f178f7532993",
     "platform": "ugreen",
@@ -9274,6 +9586,22 @@
   {
     "entity_id": "sensor.ugreen_nas_pool_1_volume_1_used_size_raw",
     "friendly_name": "UGREEN NAS (Pool 1 | Volume 1) Used Size (raw)",
+    "area_id": null,
+    "device_id": "29ee23ce4526698869d3f178f7532993",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_volume_1_utilization",
+    "friendly_name": "UGREEN NAS (Pool 1 | Volume 1) Utilization",
+    "area_id": null,
+    "device_id": "29ee23ce4526698869d3f178f7532993",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_pool_1_volume_1_write_iops",
+    "friendly_name": "UGREEN NAS (Pool 1 | Volume 1) Write IOPS",
     "area_id": null,
     "device_id": "29ee23ce4526698869d3f178f7532993",
     "platform": "ugreen",
@@ -9424,6 +9752,14 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.ugreen_nas_update_available",
+    "friendly_name": "UGREEN NAS Update Available",
+    "area_id": null,
+    "device_id": "226fb0693b9856293f743fa446439f3e",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.ugreen_nas_ups_model",
     "friendly_name": "UGREEN NAS UPS Model",
     "area_id": null,
@@ -9456,6 +9792,22 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.ugreen_nas_vpu_decode",
+    "friendly_name": "UGREEN NAS VPU Decode",
+    "area_id": null,
+    "device_id": "226fb0693b9856293f743fa446439f3e",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.ugreen_nas_vpu_encode",
+    "friendly_name": "UGREEN NAS VPU Encode",
+    "area_id": null,
+    "device_id": "226fb0693b9856293f743fa446439f3e",
+    "platform": "ugreen",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.update",
     "friendly_name": "Update",
     "area_id": null,
@@ -9480,99 +9832,19 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.upstairs_upstairs_thermostat_fan_timer_timeout",
+    "friendly_name": "Fan timer timeout",
+    "area_id": null,
+    "device_id": "9a9b77008bdf8a082fcfe35e0f206da5",
+    "platform": "nest",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.vacuums",
     "friendly_name": "Vacuums",
     "area_id": null,
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "platform": "spook",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_cpu_usage",
-    "friendly_name": "CPU usage",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_disk_usage",
-    "friendly_name": "Disk usage",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_max_cpu",
-    "friendly_name": "Max CPU",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_max_disk_usage",
-    "friendly_name": "Max disk usage",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_max_memory_usage",
-    "friendly_name": "Max memory usage",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_memory_usage",
-    "friendly_name": "Memory usage",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_memory_usage_percentage",
-    "friendly_name": "Memory usage percentage",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_network_input",
-    "friendly_name": "Network input",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_network_output",
-    "friendly_name": "Network output",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.vm_106_uptime",
-    "friendly_name": "Uptime",
-    "area_id": null,
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "platform": "proxmoxve",
     "hidden": false
   },
   {
@@ -9680,94 +9952,6 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.win_11_ws_cpu_usage",
-    "friendly_name": "CPU usage",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_disk_usage",
-    "friendly_name": "Disk usage",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_max_cpu",
-    "friendly_name": "Max CPU",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_max_disk_usage",
-    "friendly_name": "Max disk usage",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_max_memory_usage",
-    "friendly_name": "Max memory usage",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_memory_usage",
-    "friendly_name": "Memory usage",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_memory_usage_percentage",
-    "friendly_name": "Memory usage percentage",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_network_input",
-    "friendly_name": "Network input",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_network_output",
-    "friendly_name": "Network output",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_status",
-    "friendly_name": "Status",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.win_11_ws_uptime",
-    "friendly_name": "Uptime",
-    "area_id": null,
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "platform": "proxmoxve",
-    "hidden": false
-  },
-  {
     "entity_id": "sensor.withings_active_calories_burnt_today",
     "friendly_name": "Active calories burnt today",
     "area_id": null,
@@ -9832,90 +10016,90 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_cpu_usage",
+    "entity_id": "sensor.xubuntu_test_cpu_usage",
     "friendly_name": "CPU usage",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_disk_usage",
+    "entity_id": "sensor.xubuntu_test_disk_usage",
     "friendly_name": "Disk usage",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_max_cpu",
+    "entity_id": "sensor.xubuntu_test_max_cpu",
     "friendly_name": "Max CPU",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_max_disk_usage",
+    "entity_id": "sensor.xubuntu_test_max_disk_usage",
     "friendly_name": "Max disk usage",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_max_memory_usage",
+    "entity_id": "sensor.xubuntu_test_max_memory_usage",
     "friendly_name": "Max memory usage",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_memory_usage",
+    "entity_id": "sensor.xubuntu_test_memory_usage",
     "friendly_name": "Memory usage",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_memory_usage_percentage",
+    "entity_id": "sensor.xubuntu_test_memory_usage_percentage",
     "friendly_name": "Memory usage percentage",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_network_input",
+    "entity_id": "sensor.xubuntu_test_network_input",
     "friendly_name": "Network input",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_network_output",
+    "entity_id": "sensor.xubuntu_test_network_output",
     "friendly_name": "Network output",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_status",
+    "entity_id": "sensor.xubuntu_test_status",
     "friendly_name": "Status",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
   {
-    "entity_id": "sensor.xubuntu_workstation_uptime",
+    "entity_id": "sensor.xubuntu_test_uptime",
     "friendly_name": "Uptime",
     "area_id": null,
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
     "platform": "proxmoxve",
     "hidden": false
   },
@@ -10061,7 +10245,7 @@
     "area_id": null,
     "device_id": "c0263c2200a5e656f9af7f0713d58566",
     "platform": "tplink",
-    "hidden": false
+    "hidden": true
   },
   {
     "entity_id": "switch.back_porch_led",
@@ -10153,7 +10337,7 @@
   },
   {
     "entity_id": "switch.bonus_room",
-    "friendly_name": "Playroom Lights Power",
+    "friendly_name": "",
     "area_id": null,
     "device_id": "f090c7c3434162e57c3d8a9cee321fae",
     "platform": "wemo",
@@ -10264,30 +10448,6 @@
     "hidden": false
   },
   {
-    "entity_id": "switch.firewalla_block_category_tlx_fw_youtube_for_2edf2fa2_56bf_4369_924a_4ee9d1d6a4be_kids_tvs",
-    "friendly_name": "block category TLX-fw-youtube for 2edf2fa2-56bf-4369-924a-4ee9d1d6a4be (Kids-TVs)",
-    "area_id": null,
-    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
-    "platform": "firewalla_local",
-    "hidden": false
-  },
-  {
-    "entity_id": "switch.firewalla_block_internet_for_46fa8123_7084_4bae_bea2_af0b4d0555b8_jacob_tablet",
-    "friendly_name": "block internet for 46fa8123-7084-4bae-bea2-af0b4d0555b8 (Jacob-Tablet)",
-    "area_id": null,
-    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
-    "platform": "firewalla_local",
-    "hidden": false
-  },
-  {
-    "entity_id": "switch.firewalla_block_internet_for_d1fa1628_6e6f_4279_8f52_085a095de025_hannah_tablet",
-    "friendly_name": "block internet for d1fa1628-6e6f-4279-8f52-085a095de025 (Hannah-Tablet)",
-    "area_id": null,
-    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
-    "platform": "firewalla_local",
-    "hidden": false
-  },
-  {
     "entity_id": "switch.front_door_led",
     "friendly_name": "LED",
     "area_id": null,
@@ -10369,50 +10529,66 @@
   },
   {
     "entity_id": "switch.holiday_lights_outlet_socket_1",
-    "friendly_name": "Socket 1",
+    "friendly_name": "Socket",
     "area_id": null,
-    "device_id": "0c9cded159068797862d5c173a621511",
+    "device_id": "cd80c9228ef639e28a24c6b2a3125be2",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.holiday_lights_outlet_socket_2",
-    "friendly_name": "Socket 2",
+    "friendly_name": "Socket",
     "area_id": null,
-    "device_id": "0c9cded159068797862d5c173a621511",
+    "device_id": "895687257beb2c815653146aeaf6d216",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.holiday_lights_outlet_socket_3",
-    "friendly_name": "Socket 3",
+    "friendly_name": "Socket",
     "area_id": null,
-    "device_id": "0c9cded159068797862d5c173a621511",
+    "device_id": "8e24b2b1990743ddae763f8aeb6390f2",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.holiday_lights_outlet_socket_4",
-    "friendly_name": "Socket 4",
+    "friendly_name": "Socket",
     "area_id": null,
-    "device_id": "0c9cded159068797862d5c173a621511",
+    "device_id": "1bc78ea2cf5b402879529a5faee21f86",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.holiday_lights_switch_1",
-    "friendly_name": "Switch 1",
+    "friendly_name": "Switch",
     "area_id": null,
-    "device_id": "ed1de90e29de782a98db5aef110ab096",
+    "device_id": "2a1cde642e7d485549e21f0e13e22353",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.holiday_lights_switch_2",
-    "friendly_name": "Switch 2",
+    "friendly_name": "Switch",
     "area_id": null,
-    "device_id": "ed1de90e29de782a98db5aef110ab096",
+    "device_id": "04cb05a83db52d973dfba8adb51f2f96",
     "platform": "tuya",
+    "hidden": false
+  },
+  {
+    "entity_id": "switch.kids_tvs_internet_block",
+    "friendly_name": "Kids TVs internet block",
+    "area_id": null,
+    "device_id": null,
+    "platform": "template",
+    "hidden": false
+  },
+  {
+    "entity_id": "switch.kids_tvs_youtube_block",
+    "friendly_name": "Kids TVs YouTube block",
+    "area_id": null,
+    "device_id": null,
+    "platform": "template",
     "hidden": false
   },
   {
@@ -10525,6 +10701,22 @@
     "area_id": null,
     "device_id": "d723e430ed6d2075e0600b409be85201",
     "platform": "sonos",
+    "hidden": false
+  },
+  {
+    "entity_id": "switch.office_firewalla_block_category_youtube_for_kids_tvs",
+    "friendly_name": "block category Youtube for Kids-TVs",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
+    "hidden": false
+  },
+  {
+    "entity_id": "switch.office_firewalla_block_internet_for_kids_tvs",
+    "friendly_name": "block internet for Kids-TVs",
+    "area_id": null,
+    "device_id": "08d60c9c455ee297c1a4e9e820e8b479",
+    "platform": "firewalla_local",
     "hidden": false
   },
   {
@@ -10769,33 +10961,33 @@
   },
   {
     "entity_id": "switch.workstation_1_switch_1",
-    "friendly_name": "Switch 1",
+    "friendly_name": "Switch",
     "area_id": null,
-    "device_id": "77db955bc365c0abece1e1db7e87877c",
+    "device_id": "a20bb99340317ac9108d8bede5ed20ad",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.workstation_1_switch_2",
-    "friendly_name": "Switch 2",
+    "friendly_name": "Switch",
     "area_id": null,
-    "device_id": "77db955bc365c0abece1e1db7e87877c",
+    "device_id": "8fe60c4371239b60b7b9719a1c9cec56",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.workstation_2_switch_1",
-    "friendly_name": "Switch 1",
+    "friendly_name": "Switch",
     "area_id": null,
-    "device_id": "ec247d71315935bcde958b92f8714b68",
+    "device_id": "2eb754e8213edeb4167f7f594ab57e91",
     "platform": "tuya",
     "hidden": false
   },
   {
     "entity_id": "switch.workstation_2_switch_2",
-    "friendly_name": "Switch 2",
+    "friendly_name": "Switch",
     "area_id": null,
-    "device_id": "ec247d71315935bcde958b92f8714b68",
+    "device_id": "383001ed96cb05baa537809238c8f0e4",
     "platform": "tuya",
     "hidden": false
   },
@@ -10817,10 +11009,18 @@
   },
   {
     "entity_id": "todo.shopping_list",
-    "friendly_name": "Shopping List",
+    "friendly_name": "Shopping list",
     "area_id": null,
     "device_id": null,
     "platform": "shopping_list",
+    "hidden": false
+  },
+  {
+    "entity_id": "todo.texts_to_answer",
+    "friendly_name": "Texts to answer",
+    "area_id": null,
+    "device_id": null,
+    "platform": "local_todo",
     "hidden": false
   },
   {
@@ -10857,42 +11057,34 @@
   },
   {
     "entity_id": "update.apexcharts_card_update",
-    "friendly_name": "apexcharts-card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "ca434a02db9505fe9478fe8a028a4922",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.auto_entities_update",
-    "friendly_name": "auto-entities update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "28489d7faccc1a8625fee746e0f2fe35",
-    "platform": "hacs",
-    "hidden": false
-  },
-  {
-    "entity_id": "update.basement_kitchen_door_firmware",
-    "friendly_name": "Firmware",
-    "area_id": null,
-    "device_id": "4911f075d1a94d702cef9bb1e0740abd",
-    "platform": "zha",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.better_thermostat_ui_update",
-    "friendly_name": "Better Thermostat UI update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "556e9cb2e240e39fcdd625353971ef3b",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.better_thermostat_update",
-    "friendly_name": "Better Thermostat update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "7e5bc28cefae42176e747f6b0cd8823f",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -10905,10 +11097,10 @@
   },
   {
     "entity_id": "update.bubble_card_update",
-    "friendly_name": "Bubble Card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "e1b524130f9311bf54107048f5ad48c1",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -10929,26 +11121,26 @@
   },
   {
     "entity_id": "update.button_card_update",
-    "friendly_name": "button-card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "fa2ec64825c5d77a12a5f4896a3a3c26",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.card_mod_update",
-    "friendly_name": "card-mod update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "df4932ca398079fc9324dde2cf715ab6",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.clock_weather_card_update",
-    "friendly_name": "Clock Weather Card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "055a6f8b3b42c8fb0413c5305fec4626",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -10961,10 +11153,10 @@
   },
   {
     "entity_id": "update.decluttering_card_update",
-    "friendly_name": "Decluttering Card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "73271ae2ce9e53ac413bdcad711e5806",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11001,34 +11193,18 @@
   },
   {
     "entity_id": "update.firewalla_local_update",
-    "friendly_name": "Firewalla Local update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "e953e0fc3003eda5e70e3edcf51ee662",
-    "platform": "hacs",
-    "hidden": false
-  },
-  {
-    "entity_id": "update.github_custom_update",
-    "friendly_name": "Github Custom update",
-    "area_id": null,
-    "device_id": "312c5a7be0510c34b725aa8ba6abf264",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.ha_mcp_tools_update",
-    "friendly_name": "HA MCP Tools update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "5162f4d6a73b227ec91668b5c1ff58ec",
-    "platform": "hacs",
-    "hidden": false
-  },
-  {
-    "entity_id": "update.hacs_update",
-    "friendly_name": "HACS update",
-    "area_id": null,
-    "device_id": "f9a51eae4abd5087170b4a6577eb96d7",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11081,18 +11257,18 @@
   },
   {
     "entity_id": "update.html_jinja2_template_card_update",
-    "friendly_name": "HTML Jinja2 Template card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "04d5a7a6c6053a2f943b2bb09bbb81d1",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.hubspace_homeassistant_update",
-    "friendly_name": "Hubspace-Homeassistant update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "f611b1bc74fe783740bd80023270394e",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11129,18 +11305,18 @@
   },
   {
     "entity_id": "update.kiosk_mode_update",
-    "friendly_name": "Kiosk Mode update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "519017a3fa6a200b9dfa9ff625df984a",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.layout_card_update",
-    "friendly_name": "layout-card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "27f5129d872dbf4d905c7983fe44eaa8",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11161,26 +11337,26 @@
   },
   {
     "entity_id": "update.mini_graph_card_update",
-    "friendly_name": "mini-graph-card update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "d50d941df33126093e9880d15d125d7f",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.mini_media_player_update",
-    "friendly_name": "Mini Media Player update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "8e9f948dcd751282457e6f148eb0a1a5",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.mushroom_update",
-    "friendly_name": "Mushroom update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "7126a716c726fd2e401080befa872937",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11193,10 +11369,10 @@
   },
   {
     "entity_id": "update.noctis_update",
-    "friendly_name": "Noctis update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "08c2e551219f1e94b52abe8a6ac72c6a",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11265,10 +11441,10 @@
   },
   {
     "entity_id": "update.spook_your_homie_update",
-    "friendly_name": "Spook 👻 Your homie update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "8b66ff3841ee737370171263bfe6b422",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11281,18 +11457,18 @@
   },
   {
     "entity_id": "update.ugreen_nas_integration_update",
-    "friendly_name": "UGreen NAS Integration update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "792675a285dd3da24e44c67268e933ee",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
     "entity_id": "update.watchman_update",
-    "friendly_name": "Watchman update",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "54aa9a26d90cc6dd75026830728e93f8",
-    "platform": "hacs",
+    "platform": "marketplace",
     "hidden": false
   },
   {
@@ -11313,7 +11489,7 @@
   },
   {
     "entity_id": "weather.forecast_home",
-    "friendly_name": "Home",
+    "friendly_name": null,
     "area_id": null,
     "device_id": "81fbd9a5df7ea3ca13cbe194a1523f40",
     "platform": "met",
