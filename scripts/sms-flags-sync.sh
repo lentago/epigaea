@@ -127,7 +127,7 @@ def meta: (.description // "" | try fromjson catch {}) | select(type == "object"
         | select(($f.received | tsn) as $rt | $rt != null and $rt > ($now - $max_age * 3600))
         # Must name a real inbox entry, and say something other than its text.
         | select(any($msgs[]; ((.sender | lbl) == $s) and .received == $f.received
-              and ((.text // "") as $t | ($t | length) < 12 or ($g | contains($t) | not))))
+              and ((.text // "") as $t | ($t | length) < 12 or (($g | ascii_downcase) | contains($t | ascii_downcase) | not))))
         | select(($have | index("\($s | .[0:80])|\($f.received)")) == null)
         | select(answered($s; $f.received) | not)
         | {item: "\($s | .[0:80]): \($g)",

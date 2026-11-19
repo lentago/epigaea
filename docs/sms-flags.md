@@ -42,7 +42,7 @@ Runs on a claytonia worker, as a registered project with `"offbox_transcript": f
 - Each pass writes the full list of texts it currently judges to need an answer. Stubs that exist stay until answered, so a text the pass stops flagging is not removed.
 - The pass stores or prints no message text: not in its answer, a log, a PR or a comment.
 
-The sync script drops, without error, a flag that names no inbox entry, is over 72 hours old, has a gist containing the whole text (checked for texts of 12 characters or more, so a short text like "ok" can't wrongly drop a gist), or is already answered. It logs counts only.
+The sync script drops, without error, a flag that names no inbox entry, is over 72 hours old, or has a gist containing the whole text (checked for texts of 12 characters or more, so a short text like "ok" can't wrongly drop a gist; case is ignored). This is a backstop against a pass that echoes a text whole. It does not catch a quoted fragment or a close paraphrase, so the promise that a gist is never the text rests on the Claude pass following its contract above. A flag that is already answered is dropped too. If the sync can't read the to-do list, the ledger or the inbox, it changes nothing and raises a persistent notification, "SMS flags: sync failed", which the next good run dismisses. The script logs counts only.
 
 ## One-time setup (HA)
 

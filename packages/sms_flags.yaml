@@ -131,6 +131,26 @@ automation:
         event: start
     actions:
       - action: shell_command.sms_flags_sync
+        response_variable: sync
+        continue_on_error: true
+      # A failed sync would otherwise leave only a line in the log, and the
+      # nudge would just stay quiet. The notice carries no text, and the next
+      # successful run dismisses it.
+      - if:
+          - condition: template
+            value_template: "{{ sync is not mapping or sync.get('returncode', 1) != 0 }}"
+        then:
+          - action: persistent_notification.create
+            data:
+              notification_id: sms_flags_sync_failed
+              title: "SMS flags: sync failed"
+              message: >-
+                The unanswered-texts sync could not run, so new flags are not
+                reaching the to-do list. See /config/sms-flags-sync.log.
+        else:
+          - action: persistent_notification.dismiss
+            data:
+              notification_id: sms_flags_sync_failed
 
   - id: sms_flags_nudge
     alias: "SMS flags: nudge about texts to answer"
