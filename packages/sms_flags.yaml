@@ -1,0 +1,193 @@
+# SMS flags — flags the texts Chris has not answered, and nudges him about them.
+# Builds on packages/sms_inbox.yaml. Chris chose this design on 2026-11-19
+# (option C, "at least three times a day").
+#
+# The flow
+# --------
+#   1. A Claude pass (three times a day, on a claytonia worker) reads the NAS
+#      copy of the inbox, judges which texts need an answer, and writes one
+#      line per text on what the sender needs: sources/sms_flags.json. It
+#      writes a gist, never the text. Contract: docs/sms-flags.md.
+#   2. scripts/sms-flags-sync.sh (this package, every 15 minutes and on a
+#      ledger change) turns each valid flag into a stub on the HA to-do list
+#      "Texts to answer" (todo.texts_to_answer): "Sender: gist", plus the
+#      sender and received time as JSON in the description. The stub holds no
+#      message text, so it outlives the 72-hour inbox window and stays until it
+#      is answered or cleared.
+#   3. A stub is checked off when the text is answered. Two signals, either:
+#        - reply:   the phone posts to a webhook when Chris sends a message
+#                   (MacroDroid "SMS Sent" or Tasker); only the peer is sent
+#        - manual:  Chris taps the item done in the to-do list
+#      Opening or dismissing a text does NOT clear it: a text read and never
+#      answered is the main way one slips through, and it is what this package
+#      exists to catch (Chris, 2026-11-19). A reply lands in
+#      sensor.sms_answered, the answered ledger; the
+#      sync script completes every open stub whose sender matches a ledger
+#      entry made after the text arrived, and never adds a flag that a ledger
+#      entry already covers.
+#   4. Three nudges a day (09:00, 13:00, 18:00 local), each an hour after a
+#      Claude pass, push who and gist to the phone while any stub is open.
+#      Never the text.
+#
+# Privacy
+# -------
+# The same boundary as packages/sms_inbox.yaml. sensor.sms_answered holds
+# sender names and times, no text; it is excluded from the recorder and from
+# /api/prometheus anyway. The sync automation stores no traces. The to-do list itself lives in HA's storage (a Local To-do
+# list); its stubs are sender, time and gist.
+#
+# Setup the YAML cannot do (docs/sms-flags.md): the Local To-do list named
+# "Texts to answer", the `sms_reply_webhook_id` secret and the phone's reply
+# recipe.
+#
+# Chris directs and reviews this package; Claude writes the code.
+
+template:
+  - triggers:
+      # Chris sent a reply. The phone posts JSON {"peer": "<number or name>",
+      # "name": "<contact name, optional>"}; the reply's text is never sent.
+      # The id is a secret because this repo is public and the webhook is
+      # reachable through Nabu Casa (local_only is off so a reply sent away
+      # from home still clears the flag).
+      - trigger: webhook
+        webhook_id: !secret sms_reply_webhook_id
+        allowed_methods: [POST]
+        local_only: false
+        id: reply
+      - trigger: time_pattern
+        minutes: "/15"
+        id: prune
+    actions:
+      - variables:
+          max_age_hours: 72
+          max_entries: 300
+          # Read from the state machine, as in sms_inbox.yaml: `this` is not
+          # available in a template entity's actions.
+          answers: >-
+            {% set ns = namespace(out=[]) %}
+            {% set cutoff = now() - timedelta(hours=max_age_hours) %}
+            {% set prior = state_attr('sensor.sms_answered', 'answers') %}
+            {% if prior is not iterable or prior is string or prior is mapping %}
+              {% set prior = [] %}
+            {% endif %}
+            {% set new = none %}
+            {% if trigger.id == 'reply' %}
+              {% set j = trigger.json if trigger.json is mapping else {} %}
+              {% set peer = (j.get('peer') or j.get('name') or '') | string | trim %}
+              {% if peer != '' %}
+                {% set new = {
+                  'peer': peer[:80],
+                  'name': ((j.get('name') or '') | string | trim)[:80],
+                  'at': now().isoformat(),
+                  'via': 'reply'
+                } %}
+              {% endif %}
+            {% endif %}
+            {% for m in prior if m is mapping %}
+              {% set at = as_datetime(m.get('at', ''), none) %}
+              {# A repeat of the same peer and signal replaces the older entry. #}
+              {% if at is not none and at > cutoff
+                    and not (new is not none and m.get('peer') == new.peer and m.get('via') == new.via) %}
+                {% set ns.out = ns.out + [m] %}
+              {% endif %}
+            {% endfor %}
+            {% if new is not none %}
+              {% set ns.out = ns.out + [new] %}
+            {% endif %}
+            {{ ns.out[-max_entries:] }}
+    sensor:
+      - name: SMS answered
+        unique_id: sms_answered
+        icon: mdi:message-check
+        state: "{{ answers | count }}"
+        attributes:
+          answers: "{{ answers }}"
+
+# The sync script reads the sensors through the Core API itself, so the command
+# line carries only the sources directory, never a template.
+shell_command:
+  sms_flags_sync: "bash /config/scripts/sms-flags-sync.sh /share/claude_jobs/sources"
+
+automation:
+  - id: sms_flags_sync
+    alias: "SMS flags: sync the to-do list"
+    description: >-
+      Adds stubs for new flags, checks off answered ones and removes old
+      completed ones. See packages/sms_flags.yaml, "The flow".
+    # Each run reads current state, so one waiting run covers later triggers.
+    mode: queued
+    max: 2
+    max_exceeded: silent
+    trace:
+      stored_traces: 0
+    triggers:
+      - trigger: state
+        entity_id: sensor.sms_answered
+      # 45 s past the quarter-hour: after the inbox export (:30) has written.
+      - trigger: time_pattern
+        minutes: "/15"
+        seconds: 45
+      - trigger: homeassistant
+        event: start
+    actions:
+      - action: shell_command.sms_flags_sync
+        response_variable: sync
+        continue_on_error: true
+      # A failed sync would otherwise leave only a line in the log, and the
+      # nudge would just stay quiet. The notice carries no text, and the next
+      # successful run dismisses it.
+      - if:
+          - condition: template
+            value_template: "{{ sync is not mapping or sync.get('returncode', 1) != 0 }}"
+        then:
+          - action: persistent_notification.create
+            data:
+              notification_id: sms_flags_sync_failed
+              title: "SMS flags: sync failed"
+              message: >-
+                The unanswered-texts sync could not run, so new flags are not
+                reaching the to-do list. See /config/sms-flags-sync.log.
+        else:
+          - action: persistent_notification.dismiss
+            data:
+              notification_id: sms_flags_sync_failed
+
+  - id: sms_flags_nudge
+    alias: "SMS flags: nudge about texts to answer"
+    description: >-
+      Three times a day, while any stub is open, pushes who and the gist to
+      Chris's phone. Never the message text. Each time is an hour after a
+      Claude pass, so the pass has refreshed the flags.
+    mode: single
+    triggers:
+      - trigger: time
+        at: "09:00:00"
+      - trigger: time
+        at: "13:00:00"
+      - trigger: time
+        at: "18:00:00"
+    conditions:
+      - condition: numeric_state
+        entity_id: todo.texts_to_answer
+        above: 0
+    actions:
+      - action: todo.get_items
+        target:
+          entity_id: todo.texts_to_answer
+        data:
+          status: needs_action
+        response_variable: open_items
+      - variables:
+          items: "{{ open_items['todo.texts_to_answer']['items'] }}"
+      - action: notify.mobile_app_sm_s926u1
+        data:
+          title: >-
+            {{ items | count }} {{ 'text' if items | count == 1 else 'texts' }} to answer
+          message: >-
+            {% for i in items[:6] %}{{ i.summary }}{{ '\n' if not loop.last }}{% endfor %}
+            {% if items | count > 6 %}
+            +{{ items | count - 6 }} more{% endif %}
+          data:
+            tag: sms-flags
+            group: sms-flags
+            clickAction: /todo?entity_id=todo.texts_to_answer

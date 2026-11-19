@@ -86,6 +86,7 @@ prometheus:
       - sensor.*_active_notification_count
     exclude_entities:
       - sensor.sms_inbox
+      - sensor.sms_answered
 
 # Recorder — keep the UGREEN NAS out of HA's history/statistics.
 # The `ugreen` integration ships 137 metric sensors (sensor.ugreen_nas_*)
@@ -106,6 +107,7 @@ recorder:
       - sensor.*_active_notification_count
     entities:
       - sensor.sms_inbox
+      - sensor.sms_answered
 
 # Light groups — referenced by Sonoff button automations and dashboards.
 # `switch.back_porch` is outdoor lighting too but lives in a separate action

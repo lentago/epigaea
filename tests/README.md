@@ -55,6 +55,15 @@ bats tests/
   share's recycle bin keeps deleted files. The package passes no template to the
   shell and sets `stored_traces: 0`, because a trace would hold the whole list.
 
+- **`sms_flags_sync.bats`** — `scripts/sms-flags-sync.sh`, which syncs the
+  "Texts to answer" to-do list. Stubs `curl` with canned entity states and a
+  canned to-do response and records every write. A flag is added only if it
+  names a real inbox entry, is under 72 hours old, has a gist that isn't the
+  text, has no stub and wasn't answered. A ledger entry completes a matching
+  stub (by name, or by phone number whatever its formatting) only if it came
+  after the text; offsets compare as instants. Open stubs outlive 72 hours;
+  completed ones go at 96. A failed read changes nothing, and no log line or
+  write carries message text.
 - **`signage_index.bats`**: `scripts/build-signage-index.py`, the generator for
   the signage index page. Builds from a fixture README and checks that every
   table row is listed, that links are relative with no host, that each piece
