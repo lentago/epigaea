@@ -7,7 +7,9 @@
 # to the sensor, every 15 minutes and at HA start. Runs inside the HA Core
 # container. It reads the sensor from Core's own API at 127.0.0.1:8123 with a
 # long-lived access token (below): Core's SUPERVISOR_TOKEN is for calls out to
-# the Supervisor, and Core's API does not accept it.
+# the Supervisor, and Core's API does not accept it (scripts/README.md,
+# "Authentication"; the live HTTP status was not read when this was written, so
+# if a manual export still fails, the status is on curl's stderr line in the log).
 #
 # Usage: sms-inbox-export.sh <export-dir>
 #
@@ -113,7 +115,15 @@ check_export_dir() {
 resolve_ha_token() {
   local t="${HA_TOKEN:-}"
   if [[ -z "$t" && -f "$SMS_SECRETS_YAML" ]]; then
-    t="$(awk -F'"' '/^ha_token:/ {print $2; exit}' "$SMS_SECRETS_YAML" 2>/dev/null)" || t=""
+    local raw
+    raw="$(awk '/^ha_token:/ {sub(/^ha_token:[[:space:]]*/, ""); print; exit}' "$SMS_SECRETS_YAML" 2>/dev/null)" || raw=""
+    # Double-quoted, single-quoted or bare; anything after the value (a
+    # comment) is dropped.
+    case "$raw" in
+      \"*) t="${raw#\"}"; t="${t%%\"*}" ;;
+      \'*) t="${raw#\'}"; t="${t%%\'*}" ;;
+      *) t="${raw%%[[:space:]]#*}"; t="${t%"${t##*[![:space:]]}"}" ;;
+    esac
   fi
   t="${t#Bearer }"
   [[ -n "$t" ]] || return 1

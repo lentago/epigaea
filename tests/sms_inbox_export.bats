@@ -236,5 +236,17 @@ write_prior_export() {
 }
 
 @test "the scripts no longer use the Supervisor token or proxy" {
-  ! grep -n 'SUPERVISOR' "$SCRIPT" "${BATS_TEST_DIRNAME}/../scripts/sms-flags-sync.sh" | grep -v '^[^:]*:[0-9]*:#'
+  # Non-comment lines only: no Supervisor token, host or /core/api proxy path.
+  ! grep -inE 'supervisor|/core/api' "$SCRIPT" "${BATS_TEST_DIRNAME}/../scripts/sms-flags-sync.sh" | grep -vE '^[^:]*:[0-9]+:[[:space:]]*#'
+}
+
+@test "ha_token in secrets.yaml may be double-quoted, single-quoted or bare, with a comment" {
+  unset HA_TOKEN
+  local v
+  for v in '"Bearer q1"  # c' "'Bearer q1' # c" 'Bearer q1 # c' 'q1'; do
+    printf 'ha_token: %s\n' "$v" >"${BATS_TEST_TMPDIR}/secrets.yaml"
+    run env SMS_SECRETS_YAML="${BATS_TEST_TMPDIR}/secrets.yaml" bash "$SCRIPT" "$EXPORT_DIR"
+    [ "$status" -eq 0 ]
+    grep -q 'Authorization: Bearer q1"' "$AUTH_LOG"
+  done
 }
