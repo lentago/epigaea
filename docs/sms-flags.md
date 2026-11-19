@@ -53,10 +53,14 @@ The sync script drops, without error, a flag that names no inbox entry, is over 
 ## One-time setup (phone: Galaxy S24+)
 
 1. **Reply signal.** Either recipe posts the same JSON to the reply webhook, `https://<your HA address>/api/webhook/<sms_reply_webhook_id>`. Use the Nabu Casa URL so a reply sent away from home still counts.
-   - **MacroDroid:** trigger *SMS Sent*; action *HTTP Request*, POST, content type `application/json`, body `{"peer": "<Outgoing SMS Contact>"}`, inserting the *Outgoing SMS Contact* magic text from the trigger. It is the only recipient value the *SMS Sent* trigger offers, a name or a number depending on the contact, and the sync matches either. Don't send the message text.
-   - **Tasker:** query `content://sms/sent` on a content-observer profile, then *HTTP Request* with the same body.
-   The webhook also accepts an optional `name` field for a recipe that has both a number and a name.
-2. **RCS test.** Google Messages sends RCS, and SyncTech reported in June 2026 that a Google Messages bug keeps sent RCS out of Android's message store, so the reply trigger may never fire for RCS. Send one RCS chat message and one plain SMS to a test contact, then check each time the sensor `sensor.sms_answered` (**Developer tools → States**; `answers` shows `via: reply`). If only the SMS registers, a stub stays open after an RCS reply, so check it off by hand (one tap) until Google fixes it.
+   - **MacroDroid (the recipe tested on Chris's phone):** trigger *SMS Sent*; action *HTTP Request*, POST, content type `application/json`, body `{"peer": "[sms_name]", "name": "[sms_number]"}`. `[sms_name]` and `[sms_number]` are the magic texts as MacroDroid writes them into the body. The picker labels both *Outgoing SMS Contact*, so insert them from the picker rather than typing them, one for `peer` and one for `name`. The body then carries the contact name in one field and the number in the other, and the sync matches either, so the order doesn't matter. Don't send the message text.
+   - **Check the closing `"}` after inserting each magic text.** An early body arrived cut off at `{"peer": ` and HA's webhook trigger logged `orjson.JSONDecodeError: unexpected end of data`, so the reply was lost. Re-open the body field and confirm it ends with `"}`. A contact name that contains a double quote also breaks the JSON (MacroDroid doesn't escape it) and loses that reply the same way; rename the contact or tick the stub by hand.
+   - **Tasker:** query `content://sms/sent` on a content-observer profile, then *HTTP Request* with the same body. Not tested.
+2. **Test results** (2026-11-19, Galaxy S24+, MacroDroid):
+   - SMS to a **saved contact** is recorded by name and auto-completes the stub. Verified.
+   - SMS to an **unsaved number** (for example a Google Voice number) arrives with both fields empty, so nothing is recorded. Tap the stub done by hand, or save the contact.
+   - A sent **RCS** message fires no trigger at all. This confirms the Google Messages bug SyncTech reported in June 2026 (sent RCS never reaches Android's message store) on this phone, so RCS replies need a manual tap.
+   To re-test, send one SMS and one RCS message to a saved contact, then read `sensor.sms_answered` (**Developer tools → States**; `answers` shows `via: reply`) after each. If a future Google Messages update fixes RCS, the RCS message will register too.
 
 ## Checking it
 
