@@ -4,8 +4,9 @@
 # three inputs, so unanswered texts are flagged and a reply clears
 # them. Called by the `sms_flags_sync` automation in packages/sms_flags.yaml
 # (via shell_command.sms_flags_sync) when sensor.sms_answered changes, every 15
-# minutes and at HA start. Runs inside the HA Core container, where
-# SUPERVISOR_TOKEN is injected (same auth as sms-inbox-export.sh).
+# minutes and at HA start. Runs inside the HA Core container and talks to
+# Core's own API with the long-lived token that sms-inbox-export.sh resolves
+# (HA_TOKEN, else ha_token in /config/secrets.yaml).
 #
 # Usage: sms-flags-sync.sh <sources-dir>
 #
@@ -43,7 +44,7 @@
 #     complete stubs, and a missing inbox must not add them.
 #   - The script never deletes a file. It only reads the share.
 #
-# Environment: SUPERVISOR_TOKEN (required), SUPERVISOR_BASE, SMS_FLAGS_LOG
+# Environment: HA_TOKEN, SMS_SECRETS_YAML, CORE_API_BASE, SMS_FLAGS_LOG
 # (default /config/sms-flags-sync.log), SMS_EXPORT_ALLOW_LOCAL=1 and
 # SMS_EXPORT_SHARE_TIMEOUT (tests; shared with sms-inbox-export.sh).
 #
@@ -65,14 +66,11 @@ readonly STUB_KEEP_HOURS=96
 api() { # <path> [json-body]
   local path="$1"
   if (($# > 1)); then
-    curl -fsS --max-time 20 -X POST \
-      -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
+    core_curl -fsS --max-time 20 -X POST \
       -H 'Content-Type: application/json' \
-      --data "$2" "${SUPERVISOR_BASE}/core/api/${path}"
+      --data "$2" "${CORE_API_BASE}/${path}"
   else
-    curl -fsS --max-time 20 \
-      -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
-      "${SUPERVISOR_BASE}/core/api/${path}"
+    core_curl -fsS --max-time 20 "${CORE_API_BASE}/${path}"
   fi
 }
 
@@ -143,8 +141,8 @@ sms_flags_sync() {
     return 2
   fi
   dir="${dir%/}"
-  if [[ -z "${SUPERVISOR_TOKEN:-}" ]]; then
-    log ERROR "SUPERVISOR_TOKEN is not set; run inside the HA Core container"
+  if ! resolve_ha_token; then
+    log ERROR "no HA token: set ha_token in ${SMS_SECRETS_YAML} (a long-lived access token; scripts/README.md, Authentication)"
     return 2
   fi
   check_export_dir "$dir" || return

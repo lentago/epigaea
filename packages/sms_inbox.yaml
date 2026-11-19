@@ -202,7 +202,8 @@ template:
 
 # The NAS copy (header, "The NAS copy"). The command line carries only the
 # export directory, never a template: the script reads the sensor through the
-# Core API itself, so no message text passes through a shell string.
+# Core API itself (long-lived token from /config/secrets.yaml, `ha_token`), so
+# no message text passes through a shell string.
 shell_command:
   sms_inbox_export: "bash /config/scripts/sms-inbox-export.sh /share/claude_jobs/sources"
 

@@ -48,7 +48,7 @@ The sync script drops, without error, a flag that names no inbox entry, is over 
 
 1. **The list** (done 2026-11-19): a Local To-do list named `Texts to answer`, entity `todo.texts_to_answer`. If it is ever recreated, keep that name.
 2. **Add the secret** (the id is the webhook's only credential, and it appears in the phone's request URL; the risk is integrity, not confidentiality: someone who learns it can clear flags) `sms_reply_webhook_id` to `/config/secrets.yaml` on HAOS, a long random string (for example `openssl rand -hex 24`). `secrets.yaml.example` has the key. Do this **before this PR deploys**: with the key missing the config check fails and gitops-sync rolls the deploy back. The repo is public, so this value must never be committed.
-3. **Mount the NAS share** as in [sms-inbox-nas-export.md](sms-inbox-nas-export.md). The sync script reads `/share/claude_jobs/sources/sms_flags.json` and refuses to run off a network mount.
+3. **Mount the NAS share and set `ha_token`** as in [sms-inbox-nas-export.md](sms-inbox-nas-export.md) (setup steps 3 and 5). The sync script reads HA's API with that token. The sync script reads `/share/claude_jobs/sources/sms_flags.json` and refuses to run off a network mount.
 
 ## One-time setup (phone: Galaxy S24+)
 
