@@ -104,10 +104,12 @@ def meta: (.description // "" | try fromjson catch {}) | select(type == "object"
 | ($items | map(select(.status == "needs_action"))) as $open
 | ($items | map(meta | select(.s != null and .r != null) | "\(.s)|\(.r)")) as $have
 | def answered($s; $r):
+    # An empty normalized value (an emoji-only name) never matches anything:
+    # two such contacts would otherwise match each other.
     ($r | tsn) as $rt
-    | $rt != null and any($answers[];
+    | $rt != null and ($s | norm) != "" and any($answers[];
         ((.at | tsn) // 0) >= $rt
-        and (([.peer, .name] | map(select(. != null and . != "") | norm))
+        and (([.peer, .name] | map(select(. != null and . != "") | norm) | map(select(. != "")))
              | any(. == ($s | norm))));
   {
     complete: [ $open[] | (meta) as $m
