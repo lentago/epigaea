@@ -222,3 +222,76 @@ writes() { jq -r --arg k "$1" 'select(.svc == $k)' "$WRITES"; }
   [ "$(grep -cE '^[[:space:]]+- trigger: time$' "$PACKAGE")" -ge 1 ]
   [ "$(grep -cE '^[[:space:]]+at: "[0-9]{2}:[0-9]{2}:00"$' "$PACKAGE")" -ge 3 ]
 }
+
+# HAOS's BusyBox flock is `flock [-sxun] FD | { FILE [-c] PROG ARGS }`, with no
+# -w. GNU flock, which this runner has, hid that once, so these tests put a
+# BusyBox-shaped flock first on PATH.
+busybox_flock() {
+  mkdir -p "${BATS_TEST_TMPDIR}/bin"
+  cat >"${BATS_TEST_TMPDIR}/bin/flock" <<'STUB'
+#!/bin/bash
+# Accepts only -s -x -u -n and a numeric FD, like BusyBox.
+for a in "$@"; do
+  case "$a" in
+    -[sxun]) ;;
+    -*) echo "flock: unrecognized option: ${a#-}" >&2
+        echo "BusyBox v1.37.0 multi-call binary." >&2
+        echo "Usage: flock [-sxun] FD | { FILE [-c] PROG ARGS }" >&2
+        exit 1 ;;
+  esac
+done
+[[ "${FLOCK_HELD:-0}" == "1" ]] && exit 1
+exit 0
+STUB
+  chmod +x "${BATS_TEST_TMPDIR}/bin/flock"
+}
+
+@test "the run lock works with BusyBox flock, which has no -w" {
+  busybox_flock
+  PATH="${BATS_TEST_TMPDIR}/bin:$PATH" run bash "$SCRIPT" "$DIR"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"synced:"* ]]
+  [[ "$output" != *"flock"* ]]
+}
+
+@test "a lock held past the wait is reported as held, not as a flock failure" {
+  busybox_flock
+  FLOCK_HELD=1 SMS_FLAGS_LOCK_WAIT=2 PATH="${BATS_TEST_TMPDIR}/bin:$PATH" run bash "$SCRIPT" "$DIR"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"another sync held the lock for 2 s"* ]]
+}
+
+@test "a flock that cannot run is its own error" {
+  mkdir -p "${BATS_TEST_TMPDIR}/bin"
+  printf '#!/bin/sh\necho "flock: unrecognized option: n" >&2\nexit 1\n' >"${BATS_TEST_TMPDIR}/bin/flock"
+  chmod +x "${BATS_TEST_TMPDIR}/bin/flock"
+  PATH="${BATS_TEST_TMPDIR}/bin:$PATH" run bash "$SCRIPT" "$DIR"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"flock could not run"* ]]
+  [[ "$output" != *"held the lock"* ]]
+}
+
+@test "a real held lock makes a second run wait, then give up as held" {
+  exec 8>"${LOG_FILE}.lock"
+  flock -n -x 8
+  SMS_FLAGS_LOCK_WAIT=1 run bash "$SCRIPT" "$DIR"
+  exec 8>&-
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"held the lock for 1 s"* ]]
+}
+
+@test "with no flags file the sync is a quiet success" {
+  rm -f "$FLAGS"
+  run bash "$SCRIPT" "$DIR"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"added 0, completed 0, removed 0"* ]]
+}
+
+@test "any message from flock, whatever its wording, is a flock failure" {
+  mkdir -p "${BATS_TEST_TMPDIR}/bin"
+  printf '#!/bin/sh\necho "flock: Bad file descriptor" >&2\nexit 1\n' >"${BATS_TEST_TMPDIR}/bin/flock"
+  chmod +x "${BATS_TEST_TMPDIR}/bin/flock"
+  SMS_FLAGS_LOCK_WAIT=30 PATH="${BATS_TEST_TMPDIR}/bin:$PATH" run bash "$SCRIPT" "$DIR"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"flock could not run (flock: Bad file descriptor)"* ]]
+}
