@@ -431,3 +431,7 @@ an authenticated operation that the public-anonymous path can't satisfy:
 - A clone of a private repo
 
 Don't conclude auth works just because `ls-remote` returns a SHA.
+
+## `sms-flags-sync.sh`
+
+Keeps `todo.texts_to_answer` in step with the Claude pass's `sms_flags.json`, the answered ledger (`sensor.sms_answered`) and the inbox. Called by the `sms_flags_sync` automation in `packages/sms_flags.yaml` (via `shell_command.sms_flags_sync`) on a ledger change, every 15 minutes and at start. Each run completes open stubs answered since their text arrived, adds a stub for each valid new flag (it must name a real inbox entry, be under 72 hours old, have a gist that isn't the text, and not be answered), and removes completed stubs 96 hours after their text. Message text is read in one `jq` process and never reaches a file, variable or log; a failed read changes nothing; the script never deletes a file on the share. Log: `/config/sms-flags-sync.log`. Tests: `tests/sms_flags_sync.bats`. Contract and setup: [`docs/sms-flags.md`](../docs/sms-flags.md).
