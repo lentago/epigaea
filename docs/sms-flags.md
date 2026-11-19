@@ -10,18 +10,17 @@ The privacy rules are the inbox's. Message text stays in the inbox and its NAS c
 |---|---|---|
 | Claude pass | claytonia worker, three times a day | Reads `sources/sms_inbox.json`, judges which texts need an answer, writes `sources/sms_flags.json` |
 | `sms-flags-sync.sh` | HA, every 15 min and on a ledger change | Turns valid flags into stubs on `todo.texts_to_answer`, checks off answered ones, removes old completed ones |
-| `sensor.sms_answered` | HA | The answered ledger: `{peer, name, at, via}` for each reply or glance in the last 72 hours |
+| `sensor.sms_answered` | HA | The answered ledger: `{peer, name, at, via}` for each reply in the last 72 hours |
 | Nudge | HA, 09:00, 13:00, 18:00 | While any stub is open, pushes "N texts to answer" with sender and gist per item |
 
 A stub is "Sender: gist", with the sender and the received time as JSON in its description. It stays until the text is answered or Chris taps it done. A completed stub is removed 96 hours after its text arrived; the text left the inbox at 72 hours, so nothing re-flags it.
 
-**Answered** means any one of:
+**Answered** means either of:
 
 - **reply** — the phone posts to the reply webhook when Chris sends a message.
-- **seen** — the Google Messages notification was removed (dismissed or opened). A swipe-dismiss without reading counts, and then the stub is completed silently and the nudge never mentions that text. Chris accepted this trade-off for the one-tap simplicity; if it bites, drop the `seen` trigger from the ledger.
 - **manual** — Chris checks the item off.
 
-A reply or a glance clears a stub only if it came after the text. The sender is matched by name, or by phone number ignoring formatting (last ten digits). If the phone's reply event carries a number and the inbox has a contact name, they won't match; send the contact name in the webhook's `name` field, or use the manual check-off.
+Opening or dismissing a text does **not** clear its stub: a text read and never answered is the main way one slips through, which is what this exists to catch. A reply clears a stub only if it came after the text. The sender is matched by name, or by phone number ignoring formatting (last ten digits). If the phone's reply event carries a number and the inbox has a contact name, they won't match; send the contact name in the webhook's `name` field, or use the manual check-off.
 
 ## The Claude pass (for the Director to route)
 
@@ -53,12 +52,11 @@ The sync script drops, without error, a flag that names no inbox entry, is over 
 
 ## One-time setup (phone: Galaxy S24+)
 
-1. **Seen signal.** In the Home Assistant companion app: **Settings → Companion app → Manage sensors → Last removed notification → enable**. Open its settings and set the allow list to **Google Messages only** (`com.google.android.apps.messaging`), as for *Last notification*. The sensor is already excluded from the recorder and Prometheus by glob. Don't enable *Active notification count* (no allow list).
-2. **Reply signal.** Either recipe posts the same JSON to the reply webhook, `https://<your HA address>/api/webhook/<sms_reply_webhook_id>`. Use the Nabu Casa URL so a reply sent away from home still counts.
+1. **Reply signal.** Either recipe posts the same JSON to the reply webhook, `https://<your HA address>/api/webhook/<sms_reply_webhook_id>`. Use the Nabu Casa URL so a reply sent away from home still counts.
    - **MacroDroid:** trigger *SMS Sent*; action *HTTP Request*, POST, content type `application/json`, body `{"peer": "{sms_number}", "name": "{sms_contact}"}`. Don't send the message text.
    - **Tasker:** query `content://sms/sent` on a content-observer profile, then *HTTP Request* with the same body.
    If a variable name differs in your MacroDroid version, pick the equivalent magic text for the recipient's number and contact name.
-3. **RCS test.** Google Messages sends RCS, and SyncTech reported in June 2026 that a Google Messages bug keeps sent RCS out of Android's message store, so the reply trigger may never fire for RCS. Send one RCS chat message and one plain SMS to a test contact, then check each time the sensor `sensor.sms_answered` (**Developer tools → States**; `answers` shows `via: reply`). If only the SMS registers, rely on *seen* and the manual check-off until Google fixes it.
+2. **RCS test.** Google Messages sends RCS, and SyncTech reported in June 2026 that a Google Messages bug keeps sent RCS out of Android's message store, so the reply trigger may never fire for RCS. Send one RCS chat message and one plain SMS to a test contact, then check each time the sensor `sensor.sms_answered` (**Developer tools → States**; `answers` shows `via: reply`). If only the SMS registers, a stub stays open after an RCS reply, so check it off by hand (one tap) until Google fixes it.
 
 ## Checking it
 
@@ -80,4 +78,4 @@ To test the nudge, run **Developer tools → Actions → `automation.trigger`** 
 
 ## Retiring it
 
-Remove `packages/sms_flags.yaml`, `scripts/sms-flags-sync.sh`, the two `sensor.sms_answered` exclusions in `configuration.yaml` and the secret by PR. Delete the `Texts to answer` list and `sources/sms_flags.json` (and its `#recycle` copy). Turn the phone recipe and the removed-notification sensor off.
+Remove `packages/sms_flags.yaml`, `scripts/sms-flags-sync.sh`, the two `sensor.sms_answered` exclusions in `configuration.yaml` and the secret by PR. Delete the `Texts to answer` list and `sources/sms_flags.json` (and its `#recycle` copy). Turn the phone recipe off.

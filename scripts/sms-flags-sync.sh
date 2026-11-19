@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Keep the "Texts to answer" to-do list (todo.texts_to_answer) in step with
-# three inputs, so unanswered texts are flagged and a reply or a glance clears
+# three inputs, so unanswered texts are flagged and a reply clears
 # them. Called by the `sms_flags_sync` automation in packages/sms_flags.yaml
 # (via shell_command.sms_flags_sync) when sensor.sms_answered changes, every 15
 # minutes and at HA start. Runs inside the HA Core container, where

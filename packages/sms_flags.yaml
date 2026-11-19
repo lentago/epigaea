@@ -14,13 +14,14 @@
 #      sender and received time as JSON in the description. The stub holds no
 #      message text, so it outlives the 72-hour inbox window and stays until it
 #      is answered or cleared.
-#   3. A stub is checked off when the text is answered. Three signals, any one:
+#   3. A stub is checked off when the text is answered. Two signals, either:
 #        - reply:   the phone posts to a webhook when Chris sends a message
 #                   (MacroDroid "SMS Sent" or Tasker); only the peer is sent
-#        - seen:    Google Messages' notification was removed, read from the
-#                   companion app's "Last removed notification" sensor
 #        - manual:  Chris taps the item done in the to-do list
-#      reply and seen land in sensor.sms_answered, the answered ledger; the
+#      Opening or dismissing a text does NOT clear it: a text read and never
+#      answered is the main way one slips through, and it is what this package
+#      exists to catch (Chris, 2026-11-19). A reply lands in
+#      sensor.sms_answered, the answered ledger; the
 #      sync script completes every open stub whose sender matches a ledger
 #      entry made after the text arrived, and never adds a flag that a ledger
 #      entry already covers.
@@ -32,15 +33,12 @@
 # -------
 # The same boundary as packages/sms_inbox.yaml. sensor.sms_answered holds
 # sender names and times, no text; it is excluded from the recorder and from
-# /api/prometheus anyway. Both automations store no traces: the removed-
-# notification sensor carries the text of the notification, and a trace would
-# keep it. The to-do list itself lives in HA's storage (a Local To-do list);
-# its stubs are sender, time and gist.
+# /api/prometheus anyway. The sync automation stores no traces. The to-do list itself lives in HA's storage (a Local To-do
+# list); its stubs are sender, time and gist.
 #
 # Setup the YAML cannot do (docs/sms-flags.md): the Local To-do list named
-# "Texts to answer", the `sms_reply_webhook_id` secret, the companion app's
-# "Last removed notification" sensor with a Google Messages allow list, and the
-# phone's reply recipe.
+# "Texts to answer", the `sms_reply_webhook_id` secret and the phone's reply
+# recipe.
 #
 # Chris directs and reviews this package; Claude writes the code.
 
@@ -56,11 +54,6 @@ template:
         allowed_methods: [POST]
         local_only: false
         id: reply
-      # Chris dismissed or opened a Google Messages notification: the sensor's
-      # title is the sender. Unavailable and unknown states carry no attributes.
-      - trigger: state
-        entity_id: sensor.sm_s926u1_last_removed_notification
-        id: seen
       - trigger: time_pattern
         minutes: "/15"
         id: prune
@@ -88,12 +81,6 @@ template:
                   'at': now().isoformat(),
                   'via': 'reply'
                 } %}
-              {% endif %}
-            {% elif trigger.id == 'seen' and trigger.to_state is not none %}
-              {% set a = trigger.to_state.attributes %}
-              {% set who = (a.get('android.title') or '') | string | trim %}
-              {% if a.get('package') == 'com.google.android.apps.messaging' and who != '' %}
-                {% set new = {'peer': who[:80], 'name': '', 'at': now().isoformat(), 'via': 'seen'} %}
               {% endif %}
             {% endif %}
             {% for m in prior if m is mapping %}

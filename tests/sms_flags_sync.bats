@@ -135,7 +135,7 @@ writes() { jq -r --arg k "$1" 'select(.svc == $k)' "$WRITES"; }
 }
 
 @test "a flag already answered is not added" {
-  jq -n --arg a "$(iso 1)" '{attributes: {answers: [{peer: "Al", at: $a, via: "seen"}]}}' >"$ANSWERS"
+  jq -n --arg a "$(iso 1)" '{attributes: {answers: [{peer: "Al", at: $a, via: "reply"}]}}' >"$ANSWERS"
   run sms_flags_sync "$DIR"
   [ "$status" -eq 0 ]
   [ "$(jq -s 'map(select(.svc == "add_item")) | length' "$WRITES")" -eq 2 ]
