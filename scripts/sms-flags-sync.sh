@@ -94,7 +94,7 @@ def ts: capture("^(?<d>[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2})(\\
 def tsn: try ts catch null;
 def norm: tostring | ascii_downcase
   | if test("^[+0-9 ()._-]{7,}$") then gsub("[^0-9]"; "") | .[-10:]
-    else gsub("[^a-z0-9]"; "") end;
+    else gsub("[^\\p{L}\\p{N}]"; "") end;
 def lbl: if . == null or . == "" then "Unknown sender" else tostring end;
 def meta: (.description // "" | try fromjson catch {}) | select(type == "object");
 

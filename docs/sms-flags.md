@@ -20,7 +20,7 @@ A stub is "Sender: gist", with the sender and the received time as JSON in its d
 - **reply** — the phone posts to the reply webhook when Chris sends a message.
 - **manual** — Chris checks the item off.
 
-Opening or dismissing a text does **not** clear its stub: a text read and never answered is the main way one slips through, which is what this exists to catch. A reply clears a stub only if it came after the text. The sender is matched by name, or by phone number ignoring formatting (last ten digits). A name with no letters or digits (an emoji-only contact) never matches a reply, and never clears another contact's stub; check those off by hand. If the phone's reply event carries a number and the inbox has a contact name, they won't match; send the contact name in the webhook's `name` field, or use the manual check-off.
+Opening or dismissing a text does **not** clear its stub: a text read and never answered is the main way one slips through, which is what this exists to catch. A reply clears a stub only if it came after the text. The sender is matched by name, or by phone number ignoring formatting (last ten digits). A name with no letters or digits (an emoji-only contact) never matches a reply, never clears another contact's stub, and its reply never suppresses a new flag from it; check those off by hand. If the phone's reply event carries a number and the inbox has a contact name, they won't match; use the manual check-off (or, for a recipe that has both values, send the contact name in the webhook's optional `name` field). Matching keeps letters and digits in any script, so "Zoë" and "Zoé" stay distinct.
 
 ## The Claude pass (for the Director to route)
 
