@@ -32,10 +32,6 @@
     "name": "Kitchen"
   },
   {
-    "area_id": "living_room",
-    "name": "Living Room"
-  },
-  {
     "area_id": "master_bathroom",
     "name": "Master Bathroom"
   },
@@ -46,6 +42,14 @@
   {
     "area_id": "office",
     "name": "Office"
+  },
+  {
+    "area_id": "office_2",
+    "name": "Office 2"
+  },
+  {
+    "area_id": "office_3",
+    "name": "Office 3"
   },
   {
     "area_id": "play_room",

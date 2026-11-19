@@ -20,6 +20,16 @@
     ]
   },
   {
+    "device_id": "8bf1e839ce7964732ace6d4f811bef3c",
+    "name": "Basement",
+    "manufacturer": "Sonos",
+    "model": "Arc",
+    "area_id": "basement",
+    "integrations": [
+      "sonos"
+    ]
+  },
+  {
     "device_id": "776ef515c715beeb3c62f2229ca16d43",
     "name": "Basement 1",
     "manufacturer": "Belkin",
@@ -50,23 +60,13 @@
     ]
   },
   {
-    "device_id": "4911f075d1a94d702cef9bb1e0740abd",
-    "name": "Basement-Kitchen Door",
-    "manufacturer": "Ecolink",
-    "model": "4655BC0-R",
-    "area_id": "basement",
-    "integrations": [
-      "zha"
-    ]
-  },
-  {
     "device_id": "7e5bc28cefae42176e747f6b0cd8823f",
     "name": "Better Thermostat",
     "manufacturer": "kartoffeltoby",
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -76,7 +76,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -92,8 +92,8 @@
   {
     "device_id": "cb2f82f7e05c0c803d1a769aa47ab3cb",
     "name": "Bookcase Lamp",
-    "manufacturer": "Signify Netherlands B.V.",
-    "model": "LCL001",
+    "manufacturer": "Philips",
+    "model": "Hue white and color ambiance LightStrip plus",
     "area_id": "office",
     "integrations": [
       "zha"
@@ -106,14 +106,24 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
+    ]
+  },
+  {
+    "device_id": "5dae9e89715f5e6d302f293c915e535f",
+    "name": "Chris-Phone",
+    "manufacturer": "Firewalla",
+    "model": "Tracked client",
+    "area_id": null,
+    "integrations": [
+      "firewalla_local"
     ]
   },
   {
     "device_id": "9f4ebbb742445b128f4f08060d64ae98",
     "name": "Claude AI Task",
     "manufacturer": "Anthropic",
-    "model": "Claude Haiku 4.5",
+    "model": "Claude Haiku 5.5",
     "area_id": null,
     "integrations": [
       "anthropic"
@@ -123,20 +133,10 @@
     "device_id": "3d17631adfb4b3d4e279aa75ed5c0cd3",
     "name": "Claude conversation",
     "manufacturer": "Anthropic",
-    "model": "Claude Haiku 4.5",
+    "model": "Claude Haiku 5.5",
     "area_id": "office",
     "integrations": [
       "anthropic"
-    ]
-  },
-  {
-    "device_id": "5dae9e89715f5e6d302f293c915e535f",
-    "name": "Client d6:a8:20:92:02:31",
-    "manufacturer": "Firewalla",
-    "model": "Tracked client",
-    "area_id": null,
-    "integrations": [
-      "firewalla_local"
     ]
   },
   {
@@ -146,7 +146,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -176,14 +176,14 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
     "device_id": "42bfb736cf5e7d6fadc0a7beae30bd2c",
     "name": "Desk Lamp",
-    "manufacturer": "Signify Netherlands B.V.",
-    "model": "LCA009",
+    "manufacturer": "Philips",
+    "model": "Hue white and color ambiance E26/A19 1600lm",
     "area_id": "office",
     "integrations": [
       "zha"
@@ -192,8 +192,8 @@
   {
     "device_id": "a6a5ffeb8b561d98b1e53245835d391d",
     "name": "Desk Lamp 2",
-    "manufacturer": "Signify Netherlands B.V.",
-    "model": "LCA009",
+    "manufacturer": "Philips",
+    "model": "Hue white and color ambiance E26/A19 1600lm",
     "area_id": "office",
     "integrations": [
       "zha"
@@ -212,8 +212,8 @@
   {
     "device_id": "b864ce7e9feab3a8fadc0ecdfddf7f3c",
     "name": "Door Lamp",
-    "manufacturer": "Signify Netherlands B.V.",
-    "model": "LCA009",
+    "manufacturer": "Philips",
+    "model": "Hue white and color ambiance E26/A19 1600lm",
     "area_id": "office",
     "integrations": [
       "zha"
@@ -243,7 +243,7 @@
     "device_id": "637d72767c80489de2451a1ce94f1c16",
     "name": "Evolve",
     "manufacturer": "Tuya",
-    "model": "Evolve (unsupported)",
+    "model": "Evolve",
     "area_id": null,
     "integrations": [
       "tuya"
@@ -276,17 +276,7 @@
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
-    ]
-  },
-  {
-    "device_id": "81fbd9a5df7ea3ca13cbe194a1523f40",
-    "name": "Forecast",
-    "manufacturer": "Met.no",
-    "model": "Forecast",
-    "area_id": null,
-    "integrations": [
-      "met"
+      "marketplace"
     ]
   },
   {
@@ -340,16 +330,6 @@
     ]
   },
   {
-    "device_id": "312c5a7be0510c34b725aa8ba6abf264",
-    "name": "Github Custom",
-    "manufacturer": "boralyl",
-    "model": "integration",
-    "area_id": null,
-    "integrations": [
-      "hacs"
-    ]
-  },
-  {
     "device_id": "65f099139174f0cdc2bd57357f1b8916",
     "name": "Google AI Conversation",
     "manufacturer": "Google",
@@ -373,7 +353,7 @@
     "device_id": "3be636e0e82f8160992d9399f7faf460",
     "name": "Google AI TTS",
     "manufacturer": "Google",
-    "model": "gemini-2.5-flash-preview-tts",
+    "model": "gemini-3.8-flash-tts",
     "area_id": null,
     "integrations": [
       "google_generative_ai_conversation"
@@ -400,23 +380,23 @@
     ]
   },
   {
+    "device_id": "e8b509cb41470defb41962bc83c1d83b",
+    "name": "HA-MCP File & YAML Tools",
+    "manufacturer": "homeassistant-ai",
+    "model": "File & YAML editing services",
+    "area_id": null,
+    "integrations": [
+      "ha_mcp_tools"
+    ]
+  },
+  {
     "device_id": "5162f4d6a73b227ec91668b5c1ff58ec",
-    "name": "HA MCP Tools",
+    "name": "HA-MCP — Manage Home Assistant with AI",
     "manufacturer": "homeassistant-ai",
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
-    ]
-  },
-  {
-    "device_id": "f9a51eae4abd5087170b4a6577eb96d7",
-    "name": "HACS",
-    "manufacturer": "hacs.xyz",
-    "model": "",
-    "area_id": null,
-    "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -436,7 +416,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -510,9 +490,19 @@
     ]
   },
   {
+    "device_id": "81fbd9a5df7ea3ca13cbe194a1523f40",
+    "name": "Home",
+    "manufacturer": "Met.no",
+    "model": "Forecast",
+    "area_id": null,
+    "integrations": [
+      "met"
+    ]
+  },
+  {
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "name": "Home Assistant",
-    "manufacturer": "Home Assistant",
+    "manufacturer": "Spook 👻",
     "model": null,
     "area_id": null,
     "integrations": [
@@ -616,7 +606,7 @@
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -624,7 +614,7 @@
     "name": "Hue Tap Dial",
     "manufacturer": "Signify Netherlands B.V.",
     "model": "RDM002",
-    "area_id": "play_room",
+    "area_id": "kitchen",
     "integrations": [
       "zha"
     ]
@@ -656,7 +646,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -736,7 +726,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -746,12 +736,12 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
     "device_id": "34be729fbd82fd26c2264547ce8812ef",
-    "name": "Nabu Casa / Webhook Proxy for HA MCP",
+    "name": "Nabu Casa - Webhook Proxy for HA MCP",
     "manufacturer": "Home Assistant MCP Server",
     "model": "Home Assistant App",
     "area_id": null,
@@ -766,7 +756,7 @@
     "model": "theme",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -790,11 +780,21 @@
     ]
   },
   {
-    "device_id": "8bf1e839ce7964732ace6d4f811bef3c",
-    "name": "Office",
+    "device_id": "17c99e5ee5f19df7db8173fa02feab4c",
+    "name": "Office 2",
     "manufacturer": "Sonos",
-    "model": "Arc",
-    "area_id": "basement",
+    "model": "One",
+    "area_id": "office_2",
+    "integrations": [
+      "sonos"
+    ]
+  },
+  {
+    "device_id": "4b7412b9d8bd3dc9b072b2859bcfbaee",
+    "name": "Office 3",
+    "manufacturer": "Sonos",
+    "model": "One",
+    "area_id": "office_3",
     "integrations": [
       "sonos"
     ]
@@ -877,6 +877,16 @@
     "area_id": null,
     "integrations": [
       "blink"
+    ]
+  },
+  {
+    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "name": "Play Room TV",
+    "manufacturer": "TCL",
+    "model": "32S327",
+    "area_id": "play_room",
+    "integrations": [
+      "roku"
     ]
   },
   {
@@ -972,7 +982,7 @@
   {
     "device_id": "a8f5a303dc3ba3b6071b345f749125a5",
     "name": "Repairs",
-    "manufacturer": "Home Assistant",
+    "manufacturer": "Spook 👻",
     "model": null,
     "area_id": null,
     "integrations": [
@@ -987,6 +997,16 @@
     "area_id": "office",
     "integrations": [
       "sonos"
+    ]
+  },
+  {
+    "device_id": "7a932c5d025522677a314bbc8f6feaa3",
+    "name": "SM-S901U1",
+    "manufacturer": "samsung",
+    "model": "SM-S901U1",
+    "area_id": null,
+    "integrations": [
+      "mobile_app"
     ]
   },
   {
@@ -1076,37 +1096,7 @@
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
-    ]
-  },
-  {
-    "device_id": "8099bb7aaac63f524cfc316dbbffa6bc",
-    "name": "Spotify",
-    "manufacturer": "Spotify AB",
-    "model": "Spotify premium",
-    "area_id": "office",
-    "integrations": [
-      "spotify"
-    ]
-  },
-  {
-    "device_id": "e0475bea85c93946aef4aa4d0a1a4e61",
-    "name": "Storage (PItziLabs)",
-    "manufacturer": null,
-    "model": "Storage",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
-    ]
-  },
-  {
-    "device_id": "025e04bd2b95f6c314f6677c3b3d7a2f",
-    "name": "Storage (PitziLabs)",
-    "manufacturer": null,
-    "model": "Storage",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
+      "marketplace"
     ]
   },
   {
@@ -1122,16 +1112,6 @@
   {
     "device_id": "d5bc905049022637782f5b68a34d4f61",
     "name": "Storage (local-lvm)",
-    "manufacturer": null,
-    "model": "Storage",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
-    ]
-  },
-  {
-    "device_id": "6aeeeb2493b27f593d5d57251e5ffed9",
-    "name": "Storage (nas)",
     "manufacturer": null,
     "model": "Storage",
     "area_id": null,
@@ -1172,8 +1152,8 @@
   {
     "device_id": "572144c6b5b3e480f73704f239f7355f",
     "name": "Table Lamp",
-    "manufacturer": "Signify Netherlands B.V.",
-    "model": "LCA009",
+    "manufacturer": "Philips",
+    "model": "Hue white and color ambiance E26/A19 1600lm",
     "area_id": "office",
     "integrations": [
       "zha"
@@ -1236,7 +1216,7 @@
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1250,23 +1230,13 @@
     ]
   },
   {
-    "device_id": "c159bb5e739ec1604ba3631bc5315b06",
-    "name": "VM 105",
-    "manufacturer": null,
-    "model": "VM",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
-    ]
-  },
-  {
     "device_id": "54aa9a26d90cc6dd75026830728e93f8",
     "name": "Watchman",
     "manufacturer": "dummylabs",
     "model": "integration",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1316,7 +1286,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1326,7 +1296,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1350,11 +1320,21 @@
     ]
   },
   {
+    "device_id": "6cd84157e6b4f3e1ea7968bb4c5644fe",
+    "name": "brasenia",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
     "device_id": "666ed2817145ee99844918d938e5bcc3",
     "name": "button 1",
     "manufacturer": "eWeLink",
     "model": "SNZB-01P",
-    "area_id": "office",
+    "area_id": "downstairs",
     "integrations": [
       "zha"
     ]
@@ -1376,7 +1356,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1386,7 +1366,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1420,6 +1400,36 @@
     ]
   },
   {
+    "device_id": "1ad3021e4cbe57cf3c449a6e090c85e8",
+    "name": "claude-runner-4",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "0d6d1a4ab8ba44b6812e62a69ce6ca21",
+    "name": "claude-runner-5",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "97cd5126989f2befc6b315e73f516961",
+    "name": "claude_jobs",
+    "manufacturer": "Home Assistant",
+    "model": "Home Assistant Mount",
+    "area_id": null,
+    "integrations": [
+      "hassio"
+    ]
+  },
+  {
     "device_id": "c853c4e98d5f7aa5ab06776a212be60c",
     "name": "downstairs hallway",
     "manufacturer": "TP-Link",
@@ -1442,6 +1452,16 @@
   {
     "device_id": "195dcc63a4724efaa883aef92dd0e00e",
     "name": "fedora-ws",
+    "manufacturer": null,
+    "model": "VM",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "d61ae8f082ceaf3891c2b427546c3e36",
+    "name": "fedora-xfce-test",
     "manufacturer": null,
     "model": "VM",
     "area_id": null,
@@ -1490,18 +1510,8 @@
     ]
   },
   {
-    "device_id": "0e5c05bb76bf5cebf684c2072267f88b",
-    "name": "grafana-stack",
-    "manufacturer": null,
-    "model": "Container",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
-    ]
-  },
-  {
-    "device_id": "35733916f8eb90eceb77f8026e885337",
-    "name": "grafana-stack",
+    "device_id": "73ee19bf4ca54d9e2d432fe25e60f7a7",
+    "name": "gha-runner",
     "manufacturer": null,
     "model": "Container",
     "area_id": null,
@@ -1537,6 +1547,26 @@
     "area_id": null,
     "integrations": [
       "hubspace"
+    ]
+  },
+  {
+    "device_id": "e51d1f0726a84fbafcdfade3b1750b9a",
+    "name": "k3s-1",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "7e249585bf4b83adce0ff0536d14f889",
+    "name": "k3s-2",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
     ]
   },
   {
@@ -1576,7 +1606,7 @@
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
@@ -1590,18 +1620,68 @@
     ]
   },
   {
+    "device_id": "e027e8de4539fe9995bc9ca28cc31270",
+    "name": "minecraft-lan",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "ea4f35059d4bb1cda331bea751f35e50",
+    "name": "minecraft-runner",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "393245c4b1aae56e4146efc0ae5c4648",
+    "name": "minecraft-runner-2",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "ad72ac87dc10f4daf77803bf1ccf0dc5",
+    "name": "minecraft-runner-3",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
     "device_id": "d50d941df33126093e9880d15d125d7f",
     "name": "mini-graph-card",
     "manufacturer": "kalkih",
     "model": "plugin",
     "area_id": null,
     "integrations": [
-      "hacs"
+      "marketplace"
     ]
   },
   {
     "device_id": "4b155327efb08a33d19073ae9d014e5a",
     "name": "n8n",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
+    "device_id": "aa7b6a56f6e82c4a3224428f75369af6",
+    "name": "pe-publish",
     "manufacturer": null,
     "model": "Container",
     "area_id": null,
@@ -1690,16 +1770,6 @@
     ]
   },
   {
-    "device_id": "4561e1cbf0279c77774c6d0f47c5c789",
-    "name": "win-ws",
-    "manufacturer": null,
-    "model": "VM",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
-    ]
-  },
-  {
     "device_id": "77db955bc365c0abece1e1db7e87877c",
     "name": "workstation 1",
     "manufacturer": "Tuya",
@@ -1720,8 +1790,8 @@
     ]
   },
   {
-    "device_id": "8f41a7e0b7047abef06358aef0172be9",
-    "name": "xubuntu-workstation",
+    "device_id": "e73761660fadf46264758a94e6bf5126",
+    "name": "xubuntu-test",
     "manufacturer": null,
     "model": "VM",
     "area_id": null,
@@ -1732,16 +1802,6 @@
   {
     "device_id": "915775ccecd22835605a71e047e57aea",
     "name": "xubuntu-ws",
-    "manufacturer": null,
-    "model": "VM",
-    "area_id": null,
-    "integrations": [
-      "proxmoxve"
-    ]
-  },
-  {
-    "device_id": "1ad49f57647f856e023cc1d62a483ef4",
-    "name": "xubuntu-ws-test",
     "manufacturer": null,
     "model": "VM",
     "area_id": null,
