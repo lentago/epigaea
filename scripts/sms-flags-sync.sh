@@ -94,7 +94,7 @@ def ts: capture("^(?<d>[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2})(\\
 def tsn: try ts catch null;
 def norm: tostring | ascii_downcase
   | if test("^[+0-9 ()._-]{7,}$") then gsub("[^0-9]"; "") | .[-10:]
-    else gsub("[^a-z0-9]"; "") end;
+    else gsub("[^\\p{L}\\p{N}]"; "") end;
 def lbl: if . == null or . == "" then "Unknown sender" else tostring end;
 def meta: (.description // "" | try fromjson catch {}) | select(type == "object");
 
@@ -104,10 +104,12 @@ def meta: (.description // "" | try fromjson catch {}) | select(type == "object"
 | ($items | map(select(.status == "needs_action"))) as $open
 | ($items | map(meta | select(.s != null and .r != null) | "\(.s)|\(.r)")) as $have
 | def answered($s; $r):
+    # An empty normalized value (an emoji-only name) never matches anything:
+    # two such contacts would otherwise match each other.
     ($r | tsn) as $rt
-    | $rt != null and any($answers[];
+    | $rt != null and ($s | norm) != "" and any($answers[];
         ((.at | tsn) // 0) >= $rt
-        and (([.peer, .name] | map(select(. != null and . != "") | norm))
+        and (([.peer, .name] | map(select(. != null and . != "") | norm) | map(select(. != "")))
              | any(. == ($s | norm))));
   {
     complete: [ $open[] | (meta) as $m

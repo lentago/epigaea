@@ -295,3 +295,31 @@ STUB
   [ "$status" -eq 1 ]
   [[ "$output" == *"flock could not run (flock: Bad file descriptor)"* ]]
 }
+
+@test "an emoji-only name never matches: not another emoji-only sender, not itself" {
+  { stub needs_action u1 "❤️" "$R_AL"; stub needs_action u2 "🏠" "$R_BOB"; } | set_todo
+  jq -n --arg a "$(iso 1)" \
+    '{attributes: {answers: [{peer: "🏠", at: $a, via: "reply"}, {peer: "", name: "!!!", at: $a, via: "reply"}]}}' >"$ANSWERS"
+  run sms_flags_sync "$DIR"
+  [ "$status" -eq 0 ]
+  ! jq -e -s 'any(.[]; .svc == "update_item")' "$WRITES"
+}
+
+@test "a flag from an emoji-only sender is not suppressed by an unrelated emoji-only reply" {
+  jq --arg al "$R_AL" '.attributes.messages[0].sender = "❤️"' "$INBOX" >"${INBOX}.n" && mv "${INBOX}.n" "$INBOX"
+  jq --arg al "$R_AL" '.flags = [{sender: "❤️", received: $al, gist: "wants a call"}]' "$FLAGS" >"${FLAGS}.n" && mv "${FLAGS}.n" "$FLAGS"
+  jq -n --arg a "$(iso 1)" '{attributes: {answers: [{peer: "🏠", at: $a, via: "reply"}]}}' >"$ANSWERS"
+  run sms_flags_sync "$DIR"
+  [ "$status" -eq 0 ]
+  jq -e -s 'any(.[]; .svc == "add_item" and (.item | startswith("❤️:")))' "$WRITES"
+}
+
+@test "names that differ only in non-ASCII letters stay distinct, in any script" {
+  { stub needs_action u1 "Zoé" "$R_AL"; stub needs_action u2 "Иван" "$R_BOB"; stub needs_action u3 "Zoë" "$R_CAL"; } | set_todo
+  jq -n --arg a "$(iso 1)" \
+    '{attributes: {answers: [{peer: "Zoë", at: $a, via: "reply"}, {peer: "Иван", at: $a, via: "reply"}]}}' >"$ANSWERS"
+  echo '{"flags":[]}' >"$FLAGS"
+  run sms_flags_sync "$DIR"
+  [ "$status" -eq 0 ]
+  jq -e -s 'map(select(.svc == "update_item") | .item) | sort == ["u2", "u3"]' "$WRITES"
+}
