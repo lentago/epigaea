@@ -18,7 +18,7 @@ A stub is "Sender: gist", with the sender and the received time as JSON in its d
 **Answered** means any one of:
 
 - **reply** — the phone posts to the reply webhook when Chris sends a message.
-- **seen** — the Google Messages notification was removed (dismissed or opened).
+- **seen** — the Google Messages notification was removed (dismissed or opened). A swipe-dismiss without reading counts, and then the stub is completed silently and the nudge never mentions that text. Chris accepted this trade-off for the one-tap simplicity; if it bites, drop the `seen` trigger from the ledger.
 - **manual** — Chris checks the item off.
 
 A reply or a glance clears a stub only if it came after the text. The sender is matched by name, or by phone number ignoring formatting (last ten digits). If the phone's reply event carries a number and the inbox has a contact name, they won't match; send the contact name in the webhook's `name` field, or use the manual check-off.
@@ -43,12 +43,12 @@ Runs on a claytonia worker, as a registered project with `"offbox_transcript": f
 - Each pass writes the full list of texts it currently judges to need an answer. Stubs that exist stay until answered, so a text the pass stops flagging is not removed.
 - The pass stores or prints no message text: not in its answer, a log, a PR or a comment.
 
-The sync script drops, without error, a flag that names no inbox entry, is over 72 hours old, has a gist containing the whole text, or is already answered. It logs counts only.
+The sync script drops, without error, a flag that names no inbox entry, is over 72 hours old, has a gist containing the whole text (checked for texts of 12 characters or more, so a short text like "ok" can't wrongly drop a gist), or is already answered. It logs counts only.
 
 ## One-time setup (HA)
 
-1. **Create the list.** **Settings → Devices & services → Add integration → Local To-do**, named `Texts to answer`, so the entity is `todo.texts_to_answer`.
-2. **Add the secret** `sms_reply_webhook_id` to `/config/secrets.yaml` on HAOS, a long random string (for example `openssl rand -hex 24`). `secrets.yaml.example` has the key. Do this **before this PR deploys**: with the key missing the config check fails and gitops-sync rolls the deploy back. The repo is public, so this value must never be committed.
+1. **The list** (done 2026-11-19): a Local To-do list named `Texts to answer`, entity `todo.texts_to_answer`. If it is ever recreated, keep that name.
+2. **Add the secret** (the id is the webhook's only credential, and it appears in the phone's request URL; the risk is integrity, not confidentiality: someone who learns it can clear flags) `sms_reply_webhook_id` to `/config/secrets.yaml` on HAOS, a long random string (for example `openssl rand -hex 24`). `secrets.yaml.example` has the key. Do this **before this PR deploys**: with the key missing the config check fails and gitops-sync rolls the deploy back. The repo is public, so this value must never be committed.
 3. **Mount the NAS share** as in [sms-inbox-nas-export.md](sms-inbox-nas-export.md). The sync script reads `/share/claude_jobs/sources/sms_flags.json` and refuses to run off a network mount.
 
 ## One-time setup (phone: Galaxy S24+)

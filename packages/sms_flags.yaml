@@ -67,7 +67,7 @@ template:
     actions:
       - variables:
           max_age_hours: 72
-          max_entries: 100
+          max_entries: 300
           # Read from the state machine, as in sms_inbox.yaml: `this` is not
           # available in a template entity's actions.
           answers: >-

@@ -208,5 +208,12 @@ sms_flags_sync() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   rotate_log
+  # One run at a time: the automation is queued, but a manual run must not
+  # read the same plan as a running one and add duplicate stubs.
+  exec 9>"${LOG_FILE}.lock"
+  if ! flock -w 60 9; then
+    log ERROR "another sync held the lock for 60 s; skipped"
+    exit 1
+  fi
   sms_flags_sync "$@"
 fi
