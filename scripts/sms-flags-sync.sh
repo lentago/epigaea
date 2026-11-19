@@ -206,20 +206,22 @@ sms_flags_sync() {
 
 # Take the run lock on fd 9, waiting up to SMS_FLAGS_LOCK_WAIT seconds (default
 # 60). HAOS's BusyBox flock has only `flock [-sxun] FD`, no -w, so this retries
-# `flock -n -x` once a second. A flock that cannot run at all (an option it
-# rejects, or no flock) is its own error, not "the lock is held".
+# `flock -n -x` once a second. A flock that cannot run at all (it prints a
+# message: an option it rejects, no flock, a bad fd) is its own error, not
+# "the lock is held", which is silence and exit 1.
 acquire_lock() {
   local wait="${SMS_FLAGS_LOCK_WAIT:-60}" waited=0 err
   while :; do
     if err="$(flock -n -x 9 2>&1)"; then
       return 0
     fi
-    case "$err" in
-      *unrecognized* | *Usage* | *usage* | *"not found"* | *"No such file"*)
-        log ERROR "flock could not run (${err%%$'\n'*}); skipped"
-        exit 1
-        ;;
-    esac
+    # A held lock makes `flock -n` exit 1 and print nothing. Any message at all
+    # means flock itself could not run (a rejected option, no flock, a bad fd),
+    # whatever its wording.
+    if [[ -n "$err" ]]; then
+      log ERROR "flock could not run (${err%%$'\n'*}); skipped"
+      exit 1
+    fi
     if ((waited >= wait)); then
       log ERROR "another sync held the lock for ${wait} s; skipped"
       exit 1

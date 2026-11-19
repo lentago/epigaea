@@ -286,3 +286,12 @@ STUB
   [ "$status" -eq 0 ]
   [[ "$output" == *"added 0, completed 0, removed 0"* ]]
 }
+
+@test "any message from flock, whatever its wording, is a flock failure" {
+  mkdir -p "${BATS_TEST_TMPDIR}/bin"
+  printf '#!/bin/sh\necho "flock: Bad file descriptor" >&2\nexit 1\n' >"${BATS_TEST_TMPDIR}/bin/flock"
+  chmod +x "${BATS_TEST_TMPDIR}/bin/flock"
+  SMS_FLAGS_LOCK_WAIT=30 PATH="${BATS_TEST_TMPDIR}/bin:$PATH" run bash "$SCRIPT" "$DIR"
+  [ "$status" -eq 1 ]
+  [[ "$output" == *"flock could not run (flock: Bad file descriptor)"* ]]
+}
