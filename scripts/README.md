@@ -190,8 +190,7 @@ share, so the agent fleet reads Chris's texts from a copy and no worker holds an
 HA token. Called by the `sms_inbox_export` automation in
 `packages/sms_inbox.yaml` (via `shell_command.sms_inbox_export`) on every change
 to the sensor, every 15 minutes and at HA start, with one argument: the export
-directory, `/share/claude_jobs/sources`. Runs inside the HA Core container with
-`SUPERVISOR_TOKEN`, like `force-sync.sh`.
+directory, `/share/claude_jobs/sources`. Runs inside the HA Core container and reads the sensor from Core's own API (`http://127.0.0.1:8123/api`) with a long-lived access token: `HA_TOKEN`, else `ha_token` in `/config/secrets.yaml` (see *Authentication* above; the `Bearer ` prefix is optional). Core's `SUPERVISOR_TOKEN` does not work here: it is for calls out to the Supervisor, and Core's API rejects it. The token goes to `curl` on stdin, never on a command line.
 
 It reads the entity from the Core API and pipes it into `jq`, which writes
 `{ exported_at, messages }` to `.sms_inbox.json.partial`. On success it renames
@@ -434,4 +433,4 @@ Don't conclude auth works just because `ls-remote` returns a SHA.
 
 ## `sms-flags-sync.sh`
 
-Keeps `todo.texts_to_answer` in step with the Claude pass's `sms_flags.json`, the answered ledger (`sensor.sms_answered`) and the inbox. Called by the `sms_flags_sync` automation in `packages/sms_flags.yaml` (via `shell_command.sms_flags_sync`) on a ledger change, every 15 minutes and at start. Each run completes open stubs answered since their text arrived, adds a stub for each valid new flag (it must name a real inbox entry, be under 72 hours old, have a gist that isn't the text, and not be answered), and removes completed stubs 96 hours after their text. Message text is read in one `jq` process and never reaches a file, variable or log; a failed read changes nothing; the script never deletes a file on the share. Log: `/config/sms-flags-sync.log`. Tests: `tests/sms_flags_sync.bats`. Contract and setup: [`docs/sms-flags.md`](../docs/sms-flags.md).
+Keeps `todo.texts_to_answer` in step with the Claude pass's `sms_flags.json`, the answered ledger (`sensor.sms_answered`) and the inbox. Called by the `sms_flags_sync` automation in `packages/sms_flags.yaml` (via `shell_command.sms_flags_sync`) on a ledger change, every 15 minutes and at start. Each run completes open stubs answered since their text arrived, adds a stub for each valid new flag (it must name a real inbox entry, be under 72 hours old, have a gist that isn't the text, and not be answered), and removes completed stubs 96 hours after their text. It uses the same token as `sms-inbox-export.sh`. Message text is read in one `jq` process and never reaches a file, variable or log; a failed read changes nothing; the script never deletes a file on the share. Log: `/config/sms-flags-sync.log`. Tests: `tests/sms_flags_sync.bats`. Contract and setup: [`docs/sms-flags.md`](../docs/sms-flags.md).

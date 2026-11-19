@@ -5,7 +5,11 @@
 # token. Called by the `sms_inbox_export` automation in
 # packages/sms_inbox.yaml (via shell_command.sms_inbox_export) on every change
 # to the sensor, every 15 minutes and at HA start. Runs inside the HA Core
-# container, where SUPERVISOR_TOKEN is injected (same auth as force-sync.sh).
+# container. It reads the sensor from Core's own API at 127.0.0.1:8123 with a
+# long-lived access token (below): Core's SUPERVISOR_TOKEN is for calls out to
+# the Supervisor, and Core's API does not accept it (scripts/README.md,
+# "Authentication"; the live HTTP status was not read when this was written, so
+# if a manual export still fails, the status is on curl's stderr line in the log).
 #
 # Usage: sms-inbox-export.sh <export-dir>
 #
@@ -41,8 +45,13 @@
 #     so a hung mount ends the run with a log line rather than at HA's
 #     60-second shell_command limit.
 #
-# Environment: SUPERVISOR_TOKEN (required), SUPERVISOR_BASE (default
-# http://supervisor), SMS_EXPORT_LOG (default /config/sms-inbox-export.log),
+# Token: HA_TOKEN in the environment, else `ha_token` in /config/secrets.yaml
+# (the repo's convention, scripts/README.md "Authentication"; a long-lived
+# access token, with or without the "Bearer " prefix). It is handed to curl on
+# stdin, never on a command line.
+#
+# Environment: HA_TOKEN, SMS_SECRETS_YAML (default /config/secrets.yaml),
+# CORE_API_BASE (default http://127.0.0.1:8123/api), SMS_EXPORT_LOG (default /config/sms-inbox-export.log),
 # SMS_EXPORT_ALLOW_LOCAL=1 and SMS_EXPORT_SHARE_TIMEOUT (tests).
 #
 # Exit codes: 0 written; 1 the state could not be read or the file could not be
@@ -50,7 +59,8 @@
 # or export dir refused.
 set -euo pipefail
 
-readonly SUPERVISOR_BASE="${SUPERVISOR_BASE:-http://supervisor}"
+readonly CORE_API_BASE="${CORE_API_BASE:-http://127.0.0.1:8123/api}"
+readonly SMS_SECRETS_YAML="${SMS_SECRETS_YAML:-/config/secrets.yaml}"
 readonly ENTITY="sensor.sms_inbox"
 readonly FILE_NAME="sms_inbox.json"
 readonly LOG_MAX_BYTES=262144
@@ -101,10 +111,33 @@ check_export_dir() {
   esac
 }
 
+# The long-lived token, bare. Sets HA_BARE_TOKEN; returns 1 when there is none.
+resolve_ha_token() {
+  local t="${HA_TOKEN:-}"
+  if [[ -z "$t" && -f "$SMS_SECRETS_YAML" ]]; then
+    local raw
+    raw="$(awk '/^ha_token:/ {sub(/^ha_token:[[:space:]]*/, ""); print; exit}' "$SMS_SECRETS_YAML" 2>/dev/null)" || raw=""
+    # Double-quoted, single-quoted or bare; anything after the value (a
+    # comment) is dropped.
+    case "$raw" in
+      \"*) t="${raw#\"}"; t="${t%%\"*}" ;;
+      \'*) t="${raw#\'}"; t="${t%%\'*}" ;;
+      *) t="${raw%%[[:space:]]#*}"; t="${t%"${t##*[![:space:]]}"}" ;;
+    esac
+  fi
+  t="${t#Bearer }"
+  [[ -n "$t" ]] || return 1
+  HA_BARE_TOKEN="$t"
+}
+
+# curl against Core's API with the token on stdin (-K -), so it never shows in
+# a process list. Arguments are curl's own.
+core_curl() {
+  printf 'header = "Authorization: Bearer %s"\n' "$HA_BARE_TOKEN" | curl -K - "$@"
+}
+
 fetch_state() {
-  curl -fsS --max-time 20 \
-    -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
-    "${SUPERVISOR_BASE}/core/api/states/${ENTITY}"
+  core_curl -fsS --max-time 20 "${CORE_API_BASE}/states/${ENTITY}"
 }
 
 # stdin: the entity's state object from the Core API. stdout: the file.
@@ -146,8 +179,8 @@ sms_inbox_export() {
     return 2
   fi
   dir="${dir%/}"
-  if [[ -z "${SUPERVISOR_TOKEN:-}" ]]; then
-    log ERROR "SUPERVISOR_TOKEN is not set; run inside the HA Core container"
+  if ! resolve_ha_token; then
+    log ERROR "no HA token: set ha_token in ${SMS_SECRETS_YAML} (a long-lived access token; scripts/README.md, Authentication)"
     return 2
   fi
   check_export_dir "$dir" || return

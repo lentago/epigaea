@@ -22,7 +22,7 @@ setup() {
   mkdir -p "$DIR"
   export SMS_FLAGS_LOG="${BATS_TEST_TMPDIR}/sync.log"
   LOG_FILE="$SMS_FLAGS_LOG"
-  export SMS_EXPORT_ALLOW_LOCAL=1 SUPERVISOR_TOKEN=test-token
+  export SMS_EXPORT_ALLOW_LOCAL=1 HA_TOKEN=test-token
   WRITES="${BATS_TEST_TMPDIR}/writes.jsonl"
   : >"$WRITES"
   export WRITES
@@ -204,7 +204,7 @@ writes() { jq -r --arg k "$1" 'select(.svc == $k)' "$WRITES"; }
   [ "$status" -eq 2 ]
   run sms_flags_sync "${BATS_TEST_TMPDIR}/missing"
   [ "$status" -eq 2 ]
-  unset SUPERVISOR_TOKEN
+  unset HA_TOKEN
   run sms_flags_sync "$DIR"
   [ "$status" -eq 2 ]
 }

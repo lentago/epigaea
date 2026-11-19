@@ -26,8 +26,10 @@ setup() {
   export SMS_EXPORT_LOG="${BATS_TEST_TMPDIR}/export.log"
   LOG_FILE="$SMS_EXPORT_LOG"
   export SMS_EXPORT_ALLOW_LOCAL=1
-  export SUPERVISOR_TOKEN=test-token
+  export HA_TOKEN=test-token
   export STATE_FILE
+  ARGS_LOG="${BATS_TEST_TMPDIR}/args.log"; AUTH_LOG="${BATS_TEST_TMPDIR}/auth.log"
+  export ARGS_LOG AUTH_LOG
 
   # Text a shell would mangle or run if it ever passed through a command line.
   SENTINEL="SENTINEL-7f3a9c"
@@ -53,6 +55,9 @@ setup() {
 
   # curl stub: print the canned state, or fail like `curl -f` on an HTTP error.
   curl() {
+    # What curl was given: its arguments, and the -K config on stdin.
+    printf '%s\n' "$*" >>"${ARGS_LOG}"
+    if [[ " $* " == *" -K "* ]]; then cat >"${AUTH_LOG}"; fi
     if [[ "${CURL_FAIL:-0}" == "1" ]]; then
       echo "curl: (22) The requested URL returned error: 502" >&2
       return 22
@@ -193,7 +198,7 @@ write_prior_export() {
   [ "$status" -eq 2 ]
   run sms_inbox_export "$EXPORT_DIR" extra
   [ "$status" -eq 2 ]
-  unset SUPERVISOR_TOKEN
+  unset HA_TOKEN
   run sms_inbox_export "$EXPORT_DIR"
   [ "$status" -eq 2 ]
   [ ! -e "$TARGET" ]
@@ -212,4 +217,36 @@ write_prior_export() {
   [[ "$line" != *"{{"* && "$line" != *"{%"* ]]
   [[ "$line" != *"/web"* ]]
   grep -qE '^[[:space:]]+stored_traces: 0$' "$PACKAGE"
+}
+
+@test "the token goes to curl on stdin, never on its command line" {
+  run sms_inbox_export "$EXPORT_DIR"
+  [ "$status" -eq 0 ]
+  grep -q 'Authorization: Bearer test-token' "$AUTH_LOG"
+  ! grep -q 'test-token' "$ARGS_LOG"
+}
+
+@test "with no HA_TOKEN it reads ha_token from secrets.yaml and strips Bearer" {
+  printf 'wifi_ssid: "x"\nha_token: "Bearer from-secrets"\n' >"${BATS_TEST_TMPDIR}/secrets.yaml"
+  unset HA_TOKEN
+  run env SMS_SECRETS_YAML="${BATS_TEST_TMPDIR}/secrets.yaml" bash "$SCRIPT" "$EXPORT_DIR"
+  [ "$status" -eq 0 ]
+  grep -q 'Authorization: Bearer from-secrets' "$AUTH_LOG"
+  ! grep -q 'from-secrets' "$ARGS_LOG"
+}
+
+@test "the scripts no longer use the Supervisor token or proxy" {
+  # Non-comment lines only: no Supervisor token, host or /core/api proxy path.
+  ! grep -inE 'supervisor|/core/api' "$SCRIPT" "${BATS_TEST_DIRNAME}/../scripts/sms-flags-sync.sh" | grep -vE '^[^:]*:[0-9]+:[[:space:]]*#'
+}
+
+@test "ha_token in secrets.yaml may be double-quoted, single-quoted or bare, with a comment" {
+  unset HA_TOKEN
+  local v
+  for v in '"Bearer q1"  # c' "'Bearer q1' # c" 'Bearer q1 # c' 'q1'; do
+    printf 'ha_token: %s\n' "$v" >"${BATS_TEST_TMPDIR}/secrets.yaml"
+    run env SMS_SECRETS_YAML="${BATS_TEST_TMPDIR}/secrets.yaml" bash "$SCRIPT" "$EXPORT_DIR"
+    [ "$status" -eq 0 ]
+    grep -q 'Authorization: Bearer q1"' "$AUTH_LOG"
+  done
 }
