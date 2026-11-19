@@ -71,6 +71,8 @@ jq '{generated_at, flags: (.flags | length)}' /mnt/lentago/claude-jobs/sources/s
 |---|---|
 | `synced: added N, completed N, removed N` | done |
 | `could not build the sync plan … changed nothing` | a read failed or an input had the wrong shape: the to-do list doesn't exist, the ledger or inbox sensor is unavailable, or HA is starting |
+| `another sync held the lock for 60 s` | a second sync run was still going; this one gave up |
+| `flock could not run` | the container's `flock` rejected the call or is missing (HAOS has BusyBox's `flock [-sxun] FD`, with no `-w`) |
 | `synced with N failed write(s)` | the to-do actions failed; the next run retries |
 | `export dir not found` / `not on a network share` | the share isn't mounted (setup step 3) |
 

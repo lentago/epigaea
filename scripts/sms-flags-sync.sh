@@ -204,14 +204,36 @@ sms_flags_sync() {
   log INFO "synced: added ${n_add}, completed ${n_done}, removed ${n_rm} (of $(jq '.dropped' <<<"$plan") flags in the file)"
 }
 
+# Take the run lock on fd 9, waiting up to SMS_FLAGS_LOCK_WAIT seconds (default
+# 60). HAOS's BusyBox flock has only `flock [-sxun] FD`, no -w, so this retries
+# `flock -n -x` once a second. A flock that cannot run at all (an option it
+# rejects, or no flock) is its own error, not "the lock is held".
+acquire_lock() {
+  local wait="${SMS_FLAGS_LOCK_WAIT:-60}" waited=0 err
+  while :; do
+    if err="$(flock -n -x 9 2>&1)"; then
+      return 0
+    fi
+    case "$err" in
+      *unrecognized* | *Usage* | *usage* | *"not found"* | *"No such file"*)
+        log ERROR "flock could not run (${err%%$'\n'*}); skipped"
+        exit 1
+        ;;
+    esac
+    if ((waited >= wait)); then
+      log ERROR "another sync held the lock for ${wait} s; skipped"
+      exit 1
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
+}
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   rotate_log
   # One run at a time: the automation is queued, but a manual run must not
   # read the same plan as a running one and add duplicate stubs.
   exec 9>"${LOG_FILE}.lock"
-  if ! flock -w 60 9; then
-    log ERROR "another sync held the lock for 60 s; skipped"
-    exit 1
-  fi
+  acquire_lock
   sms_flags_sync "$@"
 fi
