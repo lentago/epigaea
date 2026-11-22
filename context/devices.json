@@ -1570,6 +1570,16 @@
     ]
   },
   {
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "name": "kiosk-sim",
+    "manufacturer": null,
+    "model": "Container",
+    "area_id": null,
+    "integrations": [
+      "proxmoxve"
+    ]
+  },
+  {
     "device_id": "dd1f8a3d6a62c689f67b9fd84ac23432",
     "name": "kitchen island",
     "manufacturer": "TP-Link",
