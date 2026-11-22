@@ -744,6 +744,14 @@
     "hidden": false
   },
   {
+    "entity_id": "binary_sensor.kiosk_sim_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
     "entity_id": "binary_sensor.kitchen_island_cloud_connection",
     "friendly_name": "Cloud connection",
     "area_id": null,
@@ -6517,6 +6525,46 @@
     "area_id": null,
     "device_id": "0a6647718a0292e693aab2afb449b75d",
     "platform": "zha",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.kiosk_sim_cpu_usage",
+    "friendly_name": "CPU usage",
+    "area_id": null,
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.kiosk_sim_max_memory_usage",
+    "friendly_name": "Max memory usage",
+    "area_id": null,
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.kiosk_sim_memory_usage_percentage",
+    "friendly_name": "Memory usage percentage",
+    "area_id": null,
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.kiosk_sim_status",
+    "friendly_name": "Status",
+    "area_id": null,
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "platform": "proxmoxve",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.kiosk_sim_uptime",
+    "friendly_name": "Uptime",
+    "area_id": null,
+    "device_id": "660e7a4e0974ddc155149cb0929d4e2f",
+    "platform": "proxmoxve",
     "hidden": false
   },
   {
