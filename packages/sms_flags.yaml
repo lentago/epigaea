@@ -45,14 +45,16 @@
 
 # When the last reply was recorded. sensor.sms_answered keeps only 72 hours, so
 # a dead reply signal is invisible in it once the last entry ages out; this
-# helper remembers. `initial` seeds it on first load only (a restored value wins).
+# helper remembers. No `initial`: HA ignores restored state when one is set, so
+# every restart would reset the stamp. Until the first reply is recorded it
+# reads the 1970 default, which the check treats as "never recorded" and alarms
+# on while texts keep arriving. That is deliberate: it is the dead-signal case.
 input_datetime:
   sms_last_reply:
     name: SMS last reply recorded
     icon: mdi:message-reply-text-outline
     has_date: true
     has_time: true
-    initial: "2026-11-23 18:00:00"
 
 template:
   - triggers:
@@ -266,8 +268,8 @@ automation:
               notification_id: sms_reply_signal_stale
               title: "SMS flags: no reply recorded for 4 days"
               message: >-
-                Texts are arriving but no sent reply has been recorded since
-                {{ states('input_datetime.sms_last_reply') }}. Replies may not be
+                Texts are arriving but no sent reply has been recorded
+                {% if states('input_datetime.sms_last_reply')[:4] == '1970' %}yet{% else %}since {{ states('input_datetime.sms_last_reply') }}{% endif %}. Replies may not be
                 clearing flags. Check the MacroDroid macro and its log, send one
                 plain SMS (not RCS) to a saved contact, and read
                 sensor.sms_answered. See docs/sms-flags.md.
