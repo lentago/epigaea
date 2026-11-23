@@ -221,23 +221,27 @@ automation:
       - trigger: state
         entity_id: sensor.sms_answered
         attribute: answers
-    conditions:
+    actions:
+      # Stamp with the newest entry's own time, so a late-processed webhook
+      # still stamps, and only when that time is newer than the stamp.
+      - variables:
+          newest: >-
+            {% set a = trigger.to_state.attributes.get('answers', []) if trigger.to_state else [] %}
+            {% set t = as_datetime((a | last).get('at', ''), none) if a | count > 0 else none %}
+            {{ as_local(t).strftime('%Y-%m-%d %H:%M:%S') if t is not none else '' }}
       - condition: template
         value_template: >-
-          {% set a = trigger.to_state.attributes.get('answers', []) if trigger.to_state else [] %}
-          {% set t = as_datetime((a | last).get('at', ''), none) if a | count > 0 else none %}
-          {{ t is not none and (now() - t).total_seconds() < 300 }}
-    actions:
+          {{ newest != '' and newest > states('input_datetime.sms_last_reply') }}
       - action: input_datetime.set_datetime
         target:
           entity_id: input_datetime.sms_last_reply
         data:
-          datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+          datetime: "{{ newest }}"
 
   - id: sms_reply_signal_check
     alias: "SMS flags: alert when no reply has been recorded for days"
     description: >-
-      Texts keep arriving (sensor.sms_inbox updated in the last 36 hours) but no
+      Texts keep arriving (newest text in sensor.sms_inbox under 36 hours old) but no
       reply has been recorded for 4 days: the phone recipe, the webhook or the
       body is probably broken, or recent replies went out as RCS (see
       docs/sms-flags.md, "When replies stop registering"). Without this the
@@ -255,10 +259,13 @@ automation:
           stale: >-
             {% set last = states('input_datetime.sms_last_reply') %}
             {% set t = as_datetime(last, none) if last not in ['unknown', 'unavailable', ''] else none %}
-            {% set inbox = states.sensor.sms_inbox %}
+            {# Newest text's own time: the inbox entity also updates on a prune. #}
+            {% set msgs = state_attr('sensor.sms_inbox', 'messages') %}
+            {% set r = as_datetime((msgs | last).get('received', ''), none)
+                       if msgs is iterable and msgs is not string and msgs | count > 0 else none %}
             {{ (t is none or (now() - as_local(t)).total_seconds() > 4 * 86400)
-               and inbox is not none
-               and (now() - inbox.last_updated).total_seconds() < 36 * 3600 }}
+               and r is not none
+               and (now() - as_local(r)).total_seconds() < 36 * 3600 }}
       - if:
           - condition: template
             value_template: "{{ stale | bool(false) }}"
