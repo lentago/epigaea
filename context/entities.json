@@ -280,8 +280,24 @@
     "hidden": false
   },
   {
+    "entity_id": "automation.sms_flags_alert_when_no_reply_has_been_recorded_for_days",
+    "friendly_name": "SMS flags: alert when no reply has been recorded for days",
+    "area_id": null,
+    "device_id": null,
+    "platform": "automation",
+    "hidden": false
+  },
+  {
     "entity_id": "automation.sms_flags_nudge_about_texts_to_answer",
     "friendly_name": "SMS flags: nudge about texts to answer",
+    "area_id": null,
+    "device_id": null,
+    "platform": "automation",
+    "hidden": false
+  },
+  {
+    "entity_id": "automation.sms_flags_remember_when_a_reply_was_last_recorded",
+    "friendly_name": "SMS flags: remember when a reply was last recorded",
     "area_id": null,
     "device_id": null,
     "platform": "automation",
@@ -992,6 +1008,38 @@
     "hidden": false
   },
   {
+    "entity_id": "binary_sensor.office_roku_streaming_stick_plus_headphones_connected",
+    "friendly_name": "Headphones connected",
+    "area_id": null,
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_roku_streaming_stick_plus_supports_airplay",
+    "friendly_name": "Supports AirPlay",
+    "area_id": null,
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_roku_streaming_stick_plus_supports_ethernet",
+    "friendly_name": "Supports Ethernet",
+    "area_id": null,
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "binary_sensor.office_roku_streaming_stick_plus_supports_find_remote",
+    "friendly_name": "Supports find remote",
+    "area_id": null,
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
     "entity_id": "binary_sensor.outdoor_4_1dua_battery",
     "friendly_name": "Battery",
     "area_id": null,
@@ -1117,38 +1165,6 @@
     "area_id": null,
     "device_id": "c13d103ea0a1177f174dba7bd38fbeaa",
     "platform": "tplink",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.play_room_play_room_tv_headphones_connected",
-    "friendly_name": "Headphones connected",
-    "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "platform": "roku",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.play_room_play_room_tv_supports_airplay",
-    "friendly_name": "Supports AirPlay",
-    "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "platform": "roku",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.play_room_play_room_tv_supports_ethernet",
-    "friendly_name": "Supports Ethernet",
-    "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "platform": "roku",
-    "hidden": false
-  },
-  {
-    "entity_id": "binary_sensor.play_room_play_room_tv_supports_find_remote",
-    "friendly_name": "Supports find remote",
-    "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "platform": "roku",
     "hidden": false
   },
   {
@@ -3528,6 +3544,14 @@
     "hidden": false
   },
   {
+    "entity_id": "input_datetime.sms_last_reply",
+    "friendly_name": "SMS last reply recorded",
+    "area_id": null,
+    "device_id": null,
+    "platform": "input_datetime",
+    "hidden": false
+  },
+  {
     "entity_id": "input_number.office_brightness",
     "friendly_name": "Office Brightness",
     "area_id": null,
@@ -3912,10 +3936,10 @@
     "hidden": false
   },
   {
-    "entity_id": "media_player.play_room_play_room_tv",
+    "entity_id": "media_player.office_roku_streaming_stick_plus",
     "friendly_name": null,
     "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
     "platform": "roku",
     "hidden": false
   },
@@ -4480,10 +4504,10 @@
     "hidden": false
   },
   {
-    "entity_id": "remote.play_room_play_room_tv",
+    "entity_id": "remote.office_roku_streaming_stick_plus",
     "friendly_name": null,
     "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
     "platform": "roku",
     "hidden": false
   },
@@ -7104,6 +7128,22 @@
     "hidden": false
   },
   {
+    "entity_id": "sensor.office_roku_streaming_stick_plus_active_app",
+    "friendly_name": "Active app",
+    "area_id": null,
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
+    "entity_id": "sensor.office_roku_streaming_stick_plus_active_app_id",
+    "friendly_name": "Active app ID",
+    "area_id": null,
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "platform": "roku",
+    "hidden": false
+  },
+  {
     "entity_id": "sensor.office_switch_battery",
     "friendly_name": "Battery",
     "area_id": null,
@@ -7173,22 +7213,6 @@
     "area_id": null,
     "device_id": "9631b6b4ce7273e2ea22fee521cbedd2",
     "platform": "spook",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.play_room_play_room_tv_active_app",
-    "friendly_name": "Active app",
-    "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "platform": "roku",
-    "hidden": false
-  },
-  {
-    "entity_id": "sensor.play_room_play_room_tv_active_app_id",
-    "friendly_name": "Active app ID",
-    "area_id": null,
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "platform": "roku",
     "hidden": false
   },
   {

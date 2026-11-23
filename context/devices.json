@@ -880,16 +880,6 @@
     ]
   },
   {
-    "device_id": "b5a2eaa1a2840cca8a4a041e7f680bd4",
-    "name": "Play Room TV",
-    "manufacturer": "TCL",
-    "model": "32S327",
-    "area_id": "play_room",
-    "integrations": [
-      "roku"
-    ]
-  },
-  {
     "device_id": "c13d103ea0a1177f174dba7bd38fbeaa",
     "name": "Play Room outlet",
     "manufacturer": "TP-Link",
@@ -997,6 +987,16 @@
     "area_id": "office",
     "integrations": [
       "sonos"
+    ]
+  },
+  {
+    "device_id": "c282fccf8f4b16eabac4c92ef09c88c2",
+    "name": "Roku Streaming Stick Plus",
+    "manufacturer": "Roku",
+    "model": "Roku Streaming Stick Plus",
+    "area_id": "office",
+    "integrations": [
+      "roku"
     ]
   },
   {
