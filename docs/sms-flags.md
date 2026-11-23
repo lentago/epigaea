@@ -82,6 +82,18 @@ jq '{generated_at, flags: (.flags | length)}' /mnt/lentago/claude-jobs/sources/s
 
 To test the nudge, run **Developer tools → Actions → `automation.trigger`** on `automation.sms_flags_nudge` with at least one open stub. Its condition applies, so it sends nothing when the list is empty.
 
+## When replies stop registering
+
+`sensor.sms_answered` keeps 72 hours, so once the last entry ages out it reads `0` and looks the same as "nothing to record". Two automations in the package catch a dead reply signal: `input_datetime.sms_last_reply` is stamped whenever the ledger gains an entry, and at 10:00 each day (and whenever the stamp changes) a check raises the persistent notice "SMS flags: no reply recorded for 4 days", plus a phone push, if texts are still arriving (`sensor.sms_inbox` updated in the last 36 hours) and the stamp is older than 4 days. The next recorded reply dismisses it. Neither carries a name, number or text. A stretch of 4 days with no replies at all raises a false alarm; tick it away by sending any SMS to a saved contact.
+
+When it fires, work down this list:
+
+1. **Send one plain SMS (not RCS) to a saved contact**, then read `sensor.sms_answered` (**Developer tools → States**). A new `via: reply` entry means HA and the recipe work, and the earlier replies went out as RCS.
+2. **RCS is the likeliest cause.** A sent RCS message fires no trigger (see the 2026-11-19 test above), so a conversation that has moved to RCS records nothing. In daily use that means replies sent as RCS never clear a stub, and the 09:00, 13:00 and 18:00 nudges keep listing it. The fallback is to tick the stub done in `todo.texts_to_answer`. Sending as SMS (long-press send, or turn RCS chats off in Messages settings) registers.
+3. **No entry from a plain SMS and no HA log line:** the phone isn't posting. Open MacroDroid, check the macro is enabled and its log shows an *SMS Sent* trigger, and exempt MacroDroid from battery optimisation.
+4. **No entry and an `orjson` or unknown-webhook warning in the HA log:** the body is cut off or carries a stray double quote (see the phone setup above), or the webhook id in the recipe no longer matches `sms_reply_webhook_id`.
+5. **No entry, fields empty:** the recipient is an unsaved number; see the test results above.
+
 ## Retiring it
 
-Remove `packages/sms_flags.yaml`, `scripts/sms-flags-sync.sh`, the two `sensor.sms_answered` exclusions in `configuration.yaml` and the secret by PR. Delete the `Texts to answer` list and `sources/sms_flags.json` (and its `#recycle` copy). Turn the phone recipe off.
+Remove `packages/sms_flags.yaml` (its `input_datetime.sms_last_reply` goes with it), `scripts/sms-flags-sync.sh`, the two `sensor.sms_answered` exclusions in `configuration.yaml` and the secret by PR. Delete the `Texts to answer` list and `sources/sms_flags.json` (and its `#recycle` copy). Turn the phone recipe off.

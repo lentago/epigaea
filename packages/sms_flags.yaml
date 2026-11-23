@@ -43,6 +43,17 @@
 #
 # Chris directs and reviews this package; Claude writes the code.
 
+# When the last reply was recorded. sensor.sms_answered keeps only 72 hours, so
+# a dead reply signal is invisible in it once the last entry ages out; this
+# helper remembers. `initial` seeds it on first load only (a restored value wins).
+input_datetime:
+  sms_last_reply:
+    name: SMS last reply recorded
+    icon: mdi:message-reply-text-outline
+    has_date: true
+    has_time: true
+    initial: "2026-11-23 18:00:00"
+
 template:
   - triggers:
       # Chris sent a reply. The phone posts JSON {"peer": "<number or name>",
@@ -192,3 +203,81 @@ automation:
             tag: sms-flags
             group: sms-flags
             clickAction: /todo?entity_id=todo.texts_to_answer
+
+  - id: sms_reply_record
+    alias: "SMS flags: remember when a reply was last recorded"
+    description: >-
+      Stamps input_datetime.sms_last_reply whenever the answered ledger gains
+      an entry, so the staleness check below survives the ledger's 72-hour
+      prune. Reads only the entry's timestamp, never a name.
+    mode: queued
+    max: 5
+    max_exceeded: silent
+    trace:
+      stored_traces: 0
+    triggers:
+      - trigger: state
+        entity_id: sensor.sms_answered
+        attribute: answers
+    conditions:
+      - condition: template
+        value_template: >-
+          {% set a = trigger.to_state.attributes.get('answers', []) if trigger.to_state else [] %}
+          {% set t = as_datetime((a | last).get('at', ''), none) if a | count > 0 else none %}
+          {{ t is not none and (now() - t).total_seconds() < 300 }}
+    actions:
+      - action: input_datetime.set_datetime
+        target:
+          entity_id: input_datetime.sms_last_reply
+        data:
+          datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
+  - id: sms_reply_signal_check
+    alias: "SMS flags: alert when no reply has been recorded for days"
+    description: >-
+      Texts keep arriving (sensor.sms_inbox updated in the last 36 hours) but no
+      reply has been recorded for 4 days: the phone recipe, the webhook or the
+      body is probably broken, or recent replies went out as RCS (see
+      docs/sms-flags.md, "When replies stop registering"). Without this the
+      only symptom is a wrongly flagged text. The notice and push carry no
+      names, numbers or text. A quiet stretch with no replies at all gives a
+      false alarm; any recorded reply dismisses it.
+    mode: single
+    triggers:
+      - trigger: time
+        at: "10:00:00"
+      - trigger: state
+        entity_id: input_datetime.sms_last_reply
+    actions:
+      - variables:
+          stale: >-
+            {% set last = states('input_datetime.sms_last_reply') %}
+            {% set t = as_datetime(last, none) if last not in ['unknown', 'unavailable', ''] else none %}
+            {% set inbox = states.sensor.sms_inbox %}
+            {{ (t is none or (now() - as_local(t)).total_seconds() > 4 * 86400)
+               and inbox is not none
+               and (now() - inbox.last_updated).total_seconds() < 36 * 3600 }}
+      - if:
+          - condition: template
+            value_template: "{{ stale | bool(false) }}"
+        then:
+          - action: persistent_notification.create
+            data:
+              notification_id: sms_reply_signal_stale
+              title: "SMS flags: no reply recorded for 4 days"
+              message: >-
+                Texts are arriving but no sent reply has been recorded since
+                {{ states('input_datetime.sms_last_reply') }}. Replies may not be
+                clearing flags. Check the MacroDroid macro and its log, send one
+                plain SMS (not RCS) to a saved contact, and read
+                sensor.sms_answered. See docs/sms-flags.md.
+          - action: notify.mobile_app_sm_s926u1
+            data:
+              title: "SMS replies are not being recorded"
+              message: "No reply recorded for 4 days while texts keep arriving. See docs/sms-flags.md."
+              data:
+                tag: sms-reply-stale
+        else:
+          - action: persistent_notification.dismiss
+            data:
+              notification_id: sms_reply_signal_stale
