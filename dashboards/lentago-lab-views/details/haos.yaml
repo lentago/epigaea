@@ -11,13 +11,13 @@ cards:
       - type: custom:mushroom-template-card
         primary: Home Assistant OS
         secondary: >
-          {% if is_state('binary_sensor.haos_17_1_status', 'on') %}
+          {% if is_state('binary_sensor.haos_status', 'on') %}
             VM 100 · pinned to pve3 by USB-passthrough radios (Z-Wave / Zigbee / Matter)
           {% else %}VM 100 · DOWN{% endif %}
         icon: mdi:home-assistant
         icon_color: >
-          {% if is_state('binary_sensor.haos_17_1_status', 'on') %}green{% else %}red{% endif %}
-        entity: binary_sensor.haos_17_1_status
+          {% if is_state('binary_sensor.haos_status', 'on') %}green{% else %}red{% endif %}
+        entity: binary_sensor.haos_status
         tap_action: { action: none }
 
       # Live state
@@ -26,21 +26,21 @@ cards:
         square: false
         cards:
           - type: gauge
-            entity: sensor.haos_17_1_cpu_usage
+            entity: sensor.haos_cpu_usage
             name: CPU
             min: 0
             max: 100
             needle: true
             severity: { green: 0, yellow: 50, red: 80 }
           - type: gauge
-            entity: sensor.haos_17_1_memory_usage_percentage
+            entity: sensor.haos_memory_usage_percentage
             name: Memory
             min: 0
             max: 100
             needle: true
             severity: { green: 0, yellow: 70, red: 85 }
           - type: gauge
-            entity: sensor.haos_17_1_disk_usage
+            entity: sensor.haos_disk_usage
             name: Disk
             min: 0
             max: 100
@@ -53,23 +53,23 @@ cards:
         square: false
         cards:
           - type: custom:mushroom-entity-card
-            entity: sensor.haos_17_1_network_input
+            entity: sensor.haos_network_input
             name: Network in
             icon: mdi:download-network
           - type: custom:mushroom-entity-card
-            entity: sensor.haos_17_1_network_output
+            entity: sensor.haos_network_output
             name: Network out
             icon: mdi:upload-network
           - type: custom:mushroom-template-card
             primary: Uptime
             secondary: >
-              {% set s = states('sensor.haos_17_1_uptime') | int(-1) %}
+              {% set s = states('sensor.haos_uptime') | int(-1) %}
               {% if s < 0 %}—
               {% elif s >= 86400 %}{{ (s // 86400) }}d {{ ((s % 86400) // 3600) }}h
               {% elif s >= 3600 %}{{ (s // 3600) }}h {{ ((s % 3600) // 60) }}m
               {% else %}{{ (s // 60) }}m{% endif %}
             icon: mdi:clock-outline
-            entity: sensor.haos_17_1_uptime
+            entity: sensor.haos_uptime
             tap_action: { action: more-info }
 
       # Note + actions
@@ -85,7 +85,7 @@ cards:
       - type: markdown
         content: >
           **VM controls (restart / shut down / start / snapshot):** absent
-          from this view because the Proxmox VE `button.haos_17_1_*` control
+          from this view because the Proxmox VE `button.haos_*` control
           entities are `unavailable` from HA (see #376). The integration
           registers them but isn't actuating them — unlike the live stat
           sensors on this device, the control buttons stay dead until the
