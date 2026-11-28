@@ -19,14 +19,3 @@ alarm_control_panel.home_alarm   # YAML-defined manual alarm panel (configuratio
 # once a fresh snapshot lands and the checker says they can go.
 switch.kids_tvs_internet_block   # template switch, packages/kids_tvs_block.yaml
 switch.kids_tvs_youtube_block    # template switch, packages/kids_tvs_block.yaml
-
-# --- Pending rename (lentago/kalmia#363) ---
-# VM 100 haos-17.1 -> haos: the proxmoxve entities move from *.haos_17_1* to
-# *.haos*. Remove these once the context snapshot has the new IDs.
-binary_sensor.haos_status                # pending rename, kalmia#363
-sensor.haos_cpu_usage                    # pending rename, kalmia#363
-sensor.haos_disk_usage                   # pending rename, kalmia#363
-sensor.haos_memory_usage_percentage      # pending rename, kalmia#363
-sensor.haos_network_input                # pending rename, kalmia#363
-sensor.haos_network_output               # pending rename, kalmia#363
-sensor.haos_uptime                       # pending rename, kalmia#363
