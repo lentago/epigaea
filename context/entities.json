@@ -720,7 +720,7 @@
     "hidden": false
   },
   {
-    "entity_id": "binary_sensor.haos_17_1_status",
+    "entity_id": "binary_sensor.haos_status",
     "friendly_name": "Status",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2440,7 +2440,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1",
+    "entity_id": "button.haos",
     "friendly_name": null,
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2448,7 +2448,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_create_snapshot",
+    "entity_id": "button.haos_create_snapshot",
     "friendly_name": "Create snapshot",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2456,7 +2456,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_hibernate",
+    "entity_id": "button.haos_hibernate",
     "friendly_name": "Hibernate",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2464,7 +2464,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_reset",
+    "entity_id": "button.haos_reset",
     "friendly_name": "Reset",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2472,7 +2472,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_restart",
+    "entity_id": "button.haos_restart",
     "friendly_name": "Restart",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2480,7 +2480,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_shut_down",
+    "entity_id": "button.haos_shut_down",
     "friendly_name": "Shut down",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2488,7 +2488,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_start",
+    "entity_id": "button.haos_start",
     "friendly_name": "Start",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -2496,7 +2496,7 @@
     "hidden": false
   },
   {
-    "entity_id": "button.haos_17_1_stop",
+    "entity_id": "button.haos_stop",
     "friendly_name": "Stop",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6176,7 +6176,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_cpu_usage",
+    "entity_id": "sensor.haos_cpu_usage",
     "friendly_name": "CPU usage",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6184,7 +6184,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_disk_usage",
+    "entity_id": "sensor.haos_disk_usage",
     "friendly_name": "Disk usage",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6192,7 +6192,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_max_cpu",
+    "entity_id": "sensor.haos_max_cpu",
     "friendly_name": "Max CPU",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6200,7 +6200,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_max_disk_usage",
+    "entity_id": "sensor.haos_max_disk_usage",
     "friendly_name": "Max disk usage",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6208,7 +6208,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_max_memory_usage",
+    "entity_id": "sensor.haos_max_memory_usage",
     "friendly_name": "Max memory usage",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6216,7 +6216,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_memory_usage",
+    "entity_id": "sensor.haos_memory_usage",
     "friendly_name": "Memory usage",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6224,7 +6224,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_memory_usage_percentage",
+    "entity_id": "sensor.haos_memory_usage_percentage",
     "friendly_name": "Memory usage percentage",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6232,7 +6232,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_network_input",
+    "entity_id": "sensor.haos_network_input",
     "friendly_name": "Network input",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6240,7 +6240,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_network_output",
+    "entity_id": "sensor.haos_network_output",
     "friendly_name": "Network output",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6248,7 +6248,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_status",
+    "entity_id": "sensor.haos_status",
     "friendly_name": "Status",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
@@ -6256,7 +6256,7 @@
     "hidden": false
   },
   {
-    "entity_id": "sensor.haos_17_1_uptime",
+    "entity_id": "sensor.haos_uptime",
     "friendly_name": "Uptime",
     "area_id": null,
     "device_id": "bef28ca998f28dfd9c0eb716b4135707",
