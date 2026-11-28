@@ -93,7 +93,8 @@ apply_reload() {
     # tests/ and assets/ are CI and README material, scripts/*.sh and
     # scripts/*.py are CI, workstation and shell_command tooling that HA Core
     # never loads as config, .claude/ is agent tooling,
-    # and .ha-version plus the two secrets templates are read only by CI.
+    # and .ha-version, the two secrets templates and the dashboard entity
+    # allowlist (read by check-dashboard-entities.py) are read only by CI.
     if   [[ "$f" =~ ^context/ ]] || \
          [[ "$f" =~ ^\.github/ ]] || \
          [[ "$f" =~ ^esphome/ ]] || \
@@ -105,6 +106,7 @@ apply_reload() {
          [[ "$f" =~ ^assets/ ]] || \
          [[ "$f" =~ ^\.claude/ ]] || \
          [[ "$f" =~ \.md$ ]] || \
+         [[ "$f" == "dashboards/entity-allowlist.txt" ]] || \
          [[ "$f" == ".gitignore" || "$f" == ".yamllint.yml" || \
             "$f" == "LICENSE"    || "$f" == ".gitattributes" || \
             "$f" == ".ha-version" || "$f" == "secrets.fake.yaml" || \

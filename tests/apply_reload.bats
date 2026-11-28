@@ -135,6 +135,23 @@ run_with_diff() {
   [ ! -s "$CALLS_FILE" ]
 }
 
+@test "dashboard entity allowlist is a CI-only no-op (#604)" {
+  # check-dashboard-entities.py reads it in CI; HA Core never loads it. It used
+  # to fall through to a full restart because it isn't *.yaml.
+  run_with_diff "dashboards/entity-allowlist.txt"
+  [ "$status" -eq 0 ]
+  [ ! -s "$CALLS_FILE" ]
+}
+
+@test "allowlist alongside a dashboard yaml only reloads the dashboard (#604)" {
+  run_with_diff "$(printf '%s\n' \
+    "dashboards/entity-allowlist.txt" \
+    "dashboards/lentago-lab-views/details/haos.yaml")"
+  [ "$status" -eq 0 ]
+  grep -qx "CALL lovelace reload_resources" "$CALLS_FILE"
+  ! grep -q "RESTART" "$CALLS_FILE"
+}
+
 @test "a piece of signage alongside a package change still restarts" {
   # The no-op set must not mask a heavy file in the same diff.
   run_with_diff "$(printf '%s\n' \
