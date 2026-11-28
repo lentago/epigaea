@@ -112,16 +112,16 @@ cards:
           - type: custom:mushroom-template-card
             primary: HAOS
             secondary: >
-              {% if is_state('binary_sensor.haos_17_1_status', 'on') %}
+              {% if is_state('binary_sensor.haos_status', 'on') %}
                 VM 100 on pve3 (USB-pinned) ·
-                cpu {{ states('sensor.haos_17_1_cpu_usage') | int(0) }}% ·
-                mem {{ states('sensor.haos_17_1_memory_usage_percentage') | int(0) }}%
+                cpu {{ states('sensor.haos_cpu_usage') | int(0) }}% ·
+                mem {{ states('sensor.haos_memory_usage_percentage') | int(0) }}%
               {% else %}VM 100 · DOWN{% endif %}
             icon: mdi:home-assistant
             icon_color: >
-              {% if not is_state('binary_sensor.haos_17_1_status', 'on') %}red
+              {% if not is_state('binary_sensor.haos_status', 'on') %}red
               {% else %}green{% endif %}
-            entity: binary_sensor.haos_17_1_status
+            entity: binary_sensor.haos_status
             tap_action: { action: navigate, navigation_path: /dashboard-lentago-lab-status/haos-detail }
             hold_action: { action: more-info }
 
